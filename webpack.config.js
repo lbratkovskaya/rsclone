@@ -23,13 +23,15 @@ module.exports = (env, options) => {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          resolve: {
-            extensions: ['.js', '.jsx'],
-          },
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
           },
+        },
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/,
         },
         {
           test: /\.css$/,
@@ -43,6 +45,9 @@ module.exports = (env, options) => {
           ],
         },
       ],
+    },
+    resolve: {
+      extensions: [ '.tsx', '.ts', '.jsx', '.js' ],
     },
     plugins: [
       new HtmlWebPackPlugin({
