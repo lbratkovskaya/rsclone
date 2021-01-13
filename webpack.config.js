@@ -1,5 +1,9 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = (env, options) => {
   const isProduction = options.mode === 'production';
@@ -34,25 +38,51 @@ module.exports = (env, options) => {
           exclude: /node_modules/,
         },
         {
-          test: /\.css$/,
+          test: /\.scss$/,
           use: [
             {
-              loader: 'style-loader',
+              loader: MiniCssExtractPlugin.loader,
+              options: { publicPath: '' },
             },
             {
               loader: 'css-loader',
+            },
+            {
+              loader: 'sass-loader',
+            },
+          ],
+        },
+        {
+          test: /\.(png|jpe?g|gif|svg)$/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+                name: "[name].[ext]",
+                outputPath: "img/",
+                options: { publicPath: '' }
+              },
             },
           ],
         },
       ],
     },
     resolve: {
-      extensions: [ '.tsx', '.ts', '.jsx', '.js' ],
+      extensions: ['.tsx', '.ts', '.jsx', '.js'],
     },
     plugins: [
+      new CleanWebpackPlugin(),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'src/img', to: 'img' },
+        ]
+      }),
       new HtmlWebPackPlugin({
         template: './src/index.html',
+        favicon: "./src/img/jet.svg",
       }),
+      new MiniCssExtractPlugin({ filename: 'style.css' }),
+      new ESLintPlugin(),
     ],
   };
 
