@@ -1,2 +1,4 @@
 webpack.config.js
 build/bundle.js
+src/test.js
+src/test2.js
