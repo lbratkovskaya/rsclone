@@ -1,4 +1,4 @@
-import { LatLngBounds } from 'leaflet';
+import { LatLngBounds, LatLngExpression } from 'leaflet';
 import { AircraftsMap, AircraftState } from '.';
 
 export interface FlightsLayerState {
@@ -6,4 +6,5 @@ export interface FlightsLayerState {
   aircrafts: AircraftsMap,
   aircraftArray: AircraftState[],
   mapBounds: LatLngBounds,
+  trackLatLngs: LatLngExpression[],
 }
