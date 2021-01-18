@@ -12,6 +12,7 @@ import {
   getMapURL,
 } from '../../utils/apiUtils';
 import FlightsLayer from '../../components/FlightsLayer';
+import './index.scss';
 
 interface FlightMapState {
   geoPosition: LatLngExpression,
