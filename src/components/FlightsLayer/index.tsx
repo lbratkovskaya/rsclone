@@ -1,27 +1,11 @@
 import React, { Component, ComponentPropsWithoutRef } from 'react';
-import L, { DivIcon, Map } from 'leaflet';
-import { Marker, Popup } from 'react-leaflet';
+import { Polyline } from 'react-leaflet';
+import { LatLngExpression, Map } from 'leaflet';
 import { FlightsLayerState } from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
-import aircraftIcons from '../../airplane_icons.json';
 import { AircraftState, AircraftsMap } from '../../types';
-import './index.scss';
 import AircraftMarker from './AircraftMarker';
-
-interface IconFrame {
-  [key: string]: {
-    x: number,
-    y: number,
-    w: number,
-    h: number
-  },
-}
-
-interface AircraftIcon {
-  rotates: boolean,
-  aliases: string[],
-  frames: IconFrame[]
-}
+import './index.scss';
 
 class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, FlightsLayerState> {
   timerId: NodeJS.Timeout;
@@ -35,6 +19,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
       aircrafts: {},
       aircraftArray: [],
       mapBounds: null,
+      trackLatLngs: [],
     };
     this.angleStep = 15;
   }
@@ -42,7 +27,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   componentDidMount(): void {
     this.timerId = setInterval(
       () => this.getAircrafts(),
-      5000,
+      3000,
     );
   }
 
@@ -55,114 +40,116 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
     const headers = new Headers();
     headers.append('Authorization', `Basic ${btoa('labr_:vjhrjdrf_jgtycrfq')}`);
-    const ne = mapBounds?.getNorthEast();
-    const sw = mapBounds?.getSouthWest();
-    const boundsStr = `lamin=${Math.min(ne.lat, sw.lat)}&lomin=${Math.min(ne.lng, sw.lng)}&lamax=${Math.max(ne.lat, sw.lat)}&lomax=${Math.max(ne.lng, sw.lng)}`;
+    const ne = mapBounds?.getNorthWest();
+    const sw = mapBounds?.getSouthEast();
 
-    fetch(`https://opensky-network.org/api/states/all?${boundsStr}`, { 'method': 'GET', 'headers': headers })
+    const fetchStr = `https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${ne.lat},${sw.lat},${ne.lng},${sw.lng}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`;
+    /* const boundsStr = `lamin=${Math.min(ne.lat, sw.lat)}&lomin=${Math.min(ne.lng, sw.lng)}
+    &lamax=${Math.max(ne.lat, sw.lat)}&lomax=${Math.max(ne.lng, sw.lng)}`; */
+
+    // fetch(`https://opensky-network.org/api/states/all?${boundsStr}`, { 'method': 'GET', 'headers': headers })
+    fetch(`https://thingproxy.freeboard.io/fetch/${fetchStr}`, { method: 'GET', mode: 'cors' })
       .then((resp) => resp.json())
       .then((json) => {
-        this.setState((state) => {
+        this.setState((state): {aircrafts: AircraftsMap} => {
           if (!json) {
             return;
           }
           const aircraftMap: AircraftsMap = state.aircrafts || {};
 
-          json.states?.forEach((stateArr: [
-            string,
-            string,
-            string,
-            number,
-            number,
-            number,
-            number,
-            number,
-            boolean,
-            number,
-            number]) => {
-            const icao24 = stateArr[0];
+          Object.keys(json).filter((key) => !['full_count', 'version'].includes(key))?.forEach((flightId: string) => {
+            const stateArr = json[flightId];
 
-            const currentAircraftState = aircraftMap[icao24];
+            const currentAircraftState = aircraftMap[flightId];
             if (!currentAircraftState) {
               const positions = [];
               positions.unshift({
-                time_position: stateArr[3],
-                longitude: stateArr[5],
-                latitude: stateArr[6],
-                baro_altitude: stateArr[7],
-                velocity: stateArr[9],
+                longitude: stateArr[2],
+                latitude: stateArr[1],
+                altitude: stateArr[4],
+                velocity: stateArr[5],
+                time_position: stateArr[10],
               });
-              aircraftMap[icao24] = {
+              aircraftMap[flightId] = {
                 icao24: stateArr[0],
-                callsign: stateArr[1],
-                origin_country: stateArr[2],
-                time_position: stateArr[3],
-                last_contact: stateArr[4],
-                longitude: stateArr[5],
-                latitude: stateArr[6],
-                baro_altitude: stateArr[7],
-                on_ground: stateArr[8],
-                velocity: stateArr[9],
-                true_track: stateArr[10],
-                positions: positions,
+                latitude: stateArr[1],
+                longitude: stateArr[2],
+                true_track: stateArr[3],
+                altitude: stateArr[4],
+                velocity: stateArr[5],
+                aircraft_type: stateArr[8],
+                registration: stateArr[9],
+                time_position: stateArr[10],
+                airport_from: stateArr[11],
+                airport_to: stateArr[12],
+                callsign: stateArr[13],
+                positions,
               };
             } else {
               Object.assign(currentAircraftState, {
                 icao24: stateArr[0],
-                callsign: stateArr[1],
-                origin_country: stateArr[2],
-                time_position: stateArr[3],
-                last_contact: stateArr[4],
-                longitude: stateArr[5],
-                latitude: stateArr[6],
-                baro_altitude: stateArr[7],
-                on_ground: stateArr[8],
-                velocity: stateArr[9],
-                true_track: stateArr[10],
+                latitude: stateArr[1],
+                longitude: stateArr[2],
+                true_track: stateArr[3],
+                altitude: stateArr[4],
+                velocity: stateArr[5],
+                aircraft_type: stateArr[8],
+                registration: stateArr[9],
+                time_position: stateArr[10],
+                airport_from: stateArr[11],
+                airport_to: stateArr[12],
+                callsign: stateArr[13],
               });
-              const positions = currentAircraftState.positions;
+              const { positions } = currentAircraftState;
               positions.unshift({
-                time_position: stateArr[3],
-                longitude: stateArr[5],
-                latitude: stateArr[6],
-                baro_altitude: stateArr[7],
-                velocity: stateArr[9],
+                longitude: stateArr[2],
+                latitude: stateArr[1],
+                altitude: stateArr[4],
+                velocity: stateArr[5],
+                time_position: stateArr[10],
               });
+              positions.sort((pos1, pos2) => pos2.time_position - pos1.time_position);
             }
           });
 
           return { aircrafts: aircraftMap };
         });
-      })
+      });
   }
 
   getMarkers(): JSX.Element[] {
     const { aircrafts } = this.state;
 
-    return Object.values(aircrafts).map((aircraft: AircraftState) => {
-      const longitude = Math.round(aircraft.longitude * 1000) / 1000;
-      const latitude = Math.round(aircraft.latitude * 1000) / 1000;
+    return Object.entries(aircrafts).map(([flightId, aircraft]) => {
+      const longitude = Math.round((aircraft.positions[0].longitude || aircraft.longitude) * 1000)
+        / 1000;
+      const latitude = Math.round((aircraft.positions[0].latitude || aircraft.latitude) * 1000)
+        / 1000;
       return (<AircraftMarker
-        key={Math.random().toString(36).substr(2, 9)}
+        key={flightId}
         position={[latitude, longitude]}
         trackAngle={aircraft.true_track}
         callsign={aircraft.callsign}
-        onIconClick={() => this.showTrack(aircraft.icao24, aircraft.time_position)}
+        aircraftType={aircraft.aircraft_type}
+        onIconClick={() => this.showTrack(flightId)}
       />);
     });
   }
 
-  showTrack(icao24: string, time_position: number): void {
-    const headers = new Headers();
-    headers.append('method', 'GET');
+  showTrack(flightId: string): void {
+    this.setState((state) => {
+      const { aircrafts } = state;
 
-    fetch(`https://api.joshdouch.me/hex-reg.php?hex=${icao24}`)
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((json) => {
-        console.log(json);
-      });
+      const aircraft: AircraftState = aircrafts[flightId];
+
+      const sortedPositions = [...aircraft.positions]
+        .sort((pos1, pos2) => pos2.time_position - pos1.time_position);
+
+      const latLngs: LatLngExpression[] = sortedPositions
+        .map((pos) => [pos.latitude, pos.longitude]);
+
+      return { trackLatLngs: latLngs };
+    });
   }
 
   updateMapBounds = (map: Map): void => {
@@ -178,10 +165,12 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
   render(): JSX.Element {
     const markers = this.getMarkers();
+    const { trackLatLngs } = this.state;
     return (
       <>
         <FlightLayerUpdater updateMapBounds={this.updateMapBounds} />
         {markers}
+        <Polyline positions={trackLatLngs} pathOptions={{ color: 'lime' }} />
       </>
     );
   }

@@ -23,6 +23,17 @@ module.exports = (env, options) => {
         react: path.join(__dirname, 'node_modules', 'react'),
       },
     },
+    devServer: {
+      proxy: {     
+        '/api': {     
+           target: 'https://localhost:44389/',
+           secure: false,
+           headers: {     
+            host: 'https://api.joshdouch.me/'
+          }     
+        }     
+      }
+    },
     module: {
       rules: [
         {

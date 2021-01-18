@@ -1,4 +1,6 @@
 import L, { LatLngExpression } from 'leaflet';
+import aircraftIcons from '../airplane_icons.json';
+import { AircraftIcon, AircraftIconGroup } from '../types';
 
 interface AccessObject {
   baseUrl: string,
@@ -32,3 +34,24 @@ export const getMapURL = (): string => {
 export const mapCenterCoordinates: LatLngExpression = [56.852, 60.612];
 
 export const mapZoom = 8;
+
+const DEFAULT_ICAO = 'B738';
+
+export const getIconByAircraft = (aircraftType: string): AircraftIcon => {
+  const iconGroups: AircraftIconGroup = aircraftIcons.icons;
+  const iconIcaos = Object.keys(iconGroups);
+  // Match by ICAO
+  if (iconIcaos.indexOf(aircraftType) !== -1) {
+    return iconGroups[aircraftType];
+  }
+  // Match by alias
+  for (let i = 0; i < iconIcaos.length; i += 1) {
+    const iconIcao: string = iconIcaos[i];
+    const currentIcon = iconGroups[iconIcao];
+    if (currentIcon.aliases.indexOf(aircraftType) !== -1) {
+      return currentIcon;
+    }
+  }
+  // Fallback to default
+  return iconGroups[DEFAULT_ICAO];
+};
