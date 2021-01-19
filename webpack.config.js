@@ -24,15 +24,12 @@ module.exports = (env, options) => {
       },
     },
     devServer: {
-      proxy: {     
-        '/api': {     
-           target: 'https://localhost:44389/',
-           secure: false,
-           headers: {     
-            host: 'https://api.joshdouch.me/'
-          }     
-        }     
-      }
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+        }
+      },
+      port: 9000,
     },
     module: {
       rules: [
