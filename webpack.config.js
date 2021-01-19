@@ -23,8 +23,24 @@ module.exports = (env, options) => {
         react: path.join(__dirname, 'node_modules', 'react'),
       },
     },
+    devServer: {
+      proxy: {     
+        '/api': {     
+           target: 'https://localhost:44389/',
+           secure: false,
+           headers: {     
+            host: 'https://api.joshdouch.me/'
+          }     
+        }     
+      }
+    },
     module: {
       rules: [
+        // {
+        //   "jsx-a11y/aria-role": [ 2, {
+        //       "ignoreNonDOM": true
+        //   }],
+        // },
         {
           test: /\.(js|jsx)$/,
           exclude: /node_modules/,
@@ -53,6 +69,10 @@ module.exports = (env, options) => {
           ],
         },
         {
+          test: /\.svg$/,
+          use: ['@svgr/webpack'],
+        },
+        {
           test: /\.(png|jpe?g|gif|svg)$/,
           use: [
             {
@@ -72,14 +92,14 @@ module.exports = (env, options) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      new CopyWebpackPlugin({
-        patterns: [
-          { from: 'src/img', to: 'img' },
-        ]
-      }),
+      // new CopyWebpackPlugin({
+      //   patterns: [
+      //     { from: 'src/img', to: 'img' },
+      //   ]
+      // }),
       new HtmlWebPackPlugin({
         template: './src/index.html',
-        favicon: "./src/img/jet.svg",
+        // favicon: "./src/img/jet.svg",
       }),
       new MiniCssExtractPlugin({ filename: 'style.css' }),
       new ESLintPlugin(),

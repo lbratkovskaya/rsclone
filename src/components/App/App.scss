@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.airport {
+  transition: all 0.3 ease-out;
+}
+
+.airport-button {
+  background: #333;
+  color: white;
+  width: 100px;
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+
+  &:hover {
+    color: #f8C023;
+    path{
+      fill:#f8C023;
+    }
+  }
+
+}
+
+ path{
+  fill: white;
+}
+
+
+.airport-infoLinks {
+  width: 300px;
+  padding: 10px;
+  background: #cacadf;
+  box-sizing: border-box;
+
+  & ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+  }
+
+  & p {
+    margin-top: 0;
+    margin-bottom: 5px;
+    text-align: center;
+  }
+
+  & a {
+    text-decoration: none;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,49 @@
+
+.airport-header {
+  width: 300px;
+  background: #333;
+  color: white;
+  font-size: 13px;
+  box-sizing: border-box;
+}
+
+.airport-header {
+  padding: 10px 10px;
+  position: relative;
+
+  &__name {
+    margin: 0;
+    color: #f8C023;
+  }
+
+  &__description {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+  }
+  
+  &__flag {
+    width: 24px;
+    margin-right: 10px;
+  }
+
+  &__time {
+    margin: 0;
+  }
+
+  & span {
+    margin-right: 10px;
+  }
+}
+
+.panel-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 18px;
+  height: 18px;
+
+  polygon {
+    fill: white;
+  }
+}
