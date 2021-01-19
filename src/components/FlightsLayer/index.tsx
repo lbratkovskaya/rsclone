@@ -43,14 +43,8 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     const ne = mapBounds?.getNorthWest();
     const sw = mapBounds?.getSouthEast();
 
-    const fetchStr = `https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${ne.lat},${sw.lat},${ne.lng},${sw.lng}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`;
-    /* const boundsStr = `lamin=${Math.min(ne.lat, sw.lat)}&lomin=${Math.min(ne.lng, sw.lng)}
-    &lamax=${Math.max(ne.lat, sw.lat)}&lomax=${Math.max(ne.lng, sw.lng)}`; */
-
-    // fetch(`https://opensky-network.org/api/states/all?${boundsStr}`, { 'method': 'GET', 'headers': headers })
-    // fetch(`https://thingproxy.freeboard.io/fetch/${fetchStr}`, { method: 'GET', mode: 'cors' })
-    fetch(`https://localhost:44389/zones/fcgi/feed.js?bounds=${ne.lat},${sw.lat},${ne.lng},${sw.lng}
-    &faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`, { method: 'GET', mode: 'cors' })
+        const fetchStr = `/api?bounds=${ne.lat},${sw.lat},${ne.lng},${sw.lng}`;
+    fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
       .then((resp) => resp.json())
       .then((json) => {
         if (!json) {
