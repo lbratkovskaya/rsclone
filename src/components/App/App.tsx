@@ -1,6 +1,7 @@
 import React from 'react';
 import './index.scss';
+import Register from '../Register/Register';
 
 const App = (): JSX.Element => (
-  <h3>Hello World</h3>);
+  <Register />);
 export default App;
