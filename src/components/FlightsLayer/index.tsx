@@ -23,8 +23,8 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
       supressRequest: false,
       aircrafts: {},
       mapBounds: null,
-      trackLatLngs: [],
-      trackShowingAircraft: null,
+      trackLatLngs: {},
+      trackShowingAircrafts: [],
     };
     this.angleStep = 15;
   }
@@ -58,8 +58,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
         }
 
         this.setState((state) => {
-          const { aircrafts: aircraftMap, trackShowingAircraft } = state;
-          let { trackLatLngs: latLngs } = state;
+          const { aircrafts: aircraftMap, trackShowingAircrafts, trackLatLngs: latLngs } = state;
 
           Object.keys(json).filter((key) => !['full_count', 'version'].includes(key))?.forEach((flightId: string) => {
             const stateArr = json[flightId];
@@ -115,9 +114,8 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
                 time_position: stateArr[10],
               });
               positions.sort((pos1, pos2) => pos2.time_position - pos1.time_position);
-
-              if (flightId === trackShowingAircraft) {
-                latLngs = trackCoordinates(aircraftMap[flightId].positions);
+              if (trackShowingAircrafts.includes(flightId)) {
+                latLngs[flightId] = trackCoordinates(aircraftMap[flightId].positions);
               }
             }
           });
@@ -128,7 +126,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   }
 
   getMarkers(): JSX.Element[] {
-    const { aircrafts, trackShowingAircraft } = this.state;
+    const { aircrafts, trackShowingAircrafts } = this.state;
 
     return Object.entries(aircrafts).map(([flightId, aircraft]) => {
       const longitude = roundCoordinates(aircraft.positions[0].longitude || aircraft.longitude);
@@ -140,24 +138,37 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
         trackAngle={aircraft.positions[0].true_track}
         callsign={aircraft.callsign}
         aircraftType={aircraft.aircraft_type}
-        withTrack={trackShowingAircraft === flightId}
-        onIconClick={() => this.aircraftIconClickHandler(flightId)}
+        withTrack={trackShowingAircrafts.includes(flightId)}
+        onIconClick={(event) => this.aircraftIconClickHandler(
+          flightId,
+          event.originalEvent.ctrlKey,
+        )}
       />);
     });
   }
 
-  aircraftIconClickHandler = (flightId: string): void => {
-    const { trackShowingAircraft } = this.state;
-    if (flightId === trackShowingAircraft) {
+  getTracks(): JSX.Element[] {
+    const { trackLatLngs } = this.state;
+
+    return Object.entries(trackLatLngs).map(([flightId, track]) => (<Polyline
+      key={flightId}
+      positions={track}
+      pathOptions={{ color: 'lime' }}
+    />));
+  }
+
+  aircraftIconClickHandler = (flightId: string, append: boolean): void => {
+    const { trackShowingAircrafts } = this.state;
+    if (trackShowingAircrafts.includes(flightId)) {
       this.hideTrack(flightId);
     } else {
-      this.showTrack(flightId);
+      this.showTrack(flightId, append);
     }
   };
 
-  showTrack(flightId: string): void {
-    const { trackShowingAircraft } = this.state;
-    if (flightId !== trackShowingAircraft) {
+  showTrack(flightId: string, append: boolean): void {
+    const { trackShowingAircrafts } = this.state;
+    if (!trackShowingAircrafts.includes(flightId)) {
       const fetchStr = `/api/flightStatus?flightId=${flightId}`;
       fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
         .then((resp) => resp.json())
@@ -178,10 +189,10 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
             time_position: itm.ts,
           }));
 
-          this.revealTrack(flightId, true, historicTrail);
+          this.revealTrack(flightId, true, append, historicTrail);
         });
     }
-    this.revealTrack(flightId, false, []);
+    this.revealTrack(flightId, false, append, []);
   }
 
   toggleSupressRequest = (): void => this.setState((state) => ({
@@ -213,17 +224,25 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
   hideTrack = (flightId: string): void => {
     this.setState((state) => {
-      return { trackLatLngs: [], trackShowingAircraft: null };
+      const { trackLatLngs, trackShowingAircrafts } = state;
+
+      const flightIndex = trackShowingAircrafts.indexOf(flightId);
+
+      delete trackLatLngs[flightId];
+      trackShowingAircrafts.splice(flightIndex, 1);
+      return { trackLatLngs, trackShowingAircrafts };
     });
   };
 
   revealTrack = (
     flightId: string,
     needUpdateTrack: boolean,
+    append: boolean,
     historicTrail: AircraftPosition[],
   ): void => {
     this.setState((state) => {
       const { aircrafts } = state;
+      let { trackLatLngs, trackShowingAircrafts } = state;
 
       const aircraft: AircraftState = aircrafts[flightId];
 
@@ -236,18 +255,31 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
       const latLngs = trackCoordinates(joinedTracks);
 
-      return { trackLatLngs: latLngs, trackShowingAircraft: flightId };
+      if (append) {
+        if (!trackShowingAircrafts.includes(flightId) && append) {
+          trackShowingAircrafts.push(flightId);
+          trackLatLngs[flightId] = latLngs;
+        }
+      } else {
+        trackShowingAircrafts = Array.of(flightId);
+        trackLatLngs = { [flightId]: latLngs };
+      }
+
+      return { trackLatLngs, trackShowingAircrafts };
     });
   };
 
   render(): JSX.Element {
     const markers = this.getMarkers();
-    const { trackLatLngs } = this.state;
+    const tracks = this.getTracks();
     return (
       <>
-        <FlightLayerUpdater updateMapBounds={this.updateMapBounds} showFavoritiesTacks={() => {}} />
+        <FlightLayerUpdater
+          updateMapBounds={this.updateMapBounds}
+          showFavoritiesTacks={() => { /* TODO */ }}
+        />
         {markers}
-        <Polyline positions={trackLatLngs} pathOptions={{ color: 'lime' }} />
+        {tracks}
       </>
     );
   }
