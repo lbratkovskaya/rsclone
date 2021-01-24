@@ -1,11 +1,8 @@
-import { Map } from 'leaflet';
+import { LatLng, LeafletKeyboardEvent } from 'leaflet';
 import {
   useMapEvents,
 } from 'react-leaflet';
-
-interface FlightLayerUpdaterProps {
-  updateMapBounds: (map: Map) => void,
-}
+import { FlightLayerUpdaterProps } from '../../types/FlightsLayerType';
 
 export default function FlightLayerUpdater({ updateMapBounds }:
 FlightLayerUpdaterProps): JSX.Element {

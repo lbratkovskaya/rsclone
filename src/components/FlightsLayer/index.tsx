@@ -3,9 +3,13 @@ import { Polyline } from 'react-leaflet';
 import { Map } from 'leaflet';
 import { FlightsLayerState } from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
-import { AircraftState } from '../../types';
+import { AircraftPosition, AircraftState } from '../../types';
 import AircraftMarker from './AircraftMarker';
-import { roundCoordinates, calculateTrack } from '../../utils/apiUtils';
+import {
+  joinTracks,
+  roundCoordinates,
+  trackCoordinates,
+} from '../../utils/apiUtils';
 import './index.scss';
 
 class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, FlightsLayerState> {
@@ -62,7 +66,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
             const currentAircraftState = aircraftMap[flightId];
             if (!currentAircraftState) {
-              const positions = [];
+              const positions: AircraftPosition[] = [];
               positions.unshift({
                 latitude: stateArr[1],
                 longitude: stateArr[2],
@@ -113,7 +117,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
               positions.sort((pos1, pos2) => pos2.time_position - pos1.time_position);
 
               if (flightId === trackShowingAircraft) {
-                latLngs = calculateTrack(aircraftMap[flightId], false, []);
+                latLngs = trackCoordinates(aircraftMap[flightId].positions);
               }
             }
           });
@@ -143,7 +147,12 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   }
 
   aircraftIconClickHandler = (flightId: string): void => {
-    this.showTrack(flightId);
+    const { trackShowingAircraft } = this.state;
+    if (flightId === trackShowingAircraft) {
+      this.hideTrack(flightId);
+    } else {
+      this.showTrack(flightId);
+    }
   };
 
   showTrack(flightId: string): void {
@@ -189,8 +198,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
     this.setState((state) => {
       if (state.mapBounds === null
-        || (map.getBounds().getNorthEast().lat !== state.mapBounds.getNorthEast().lat
-          || map.getBounds().getNorthEast().lng !== state.mapBounds.getNorthEast().lng)) {
+        || !map.getBounds().equals(state.mapBounds)) {
         return {
           supressRequest: true,
           mapBounds: map.getBounds(),
@@ -203,20 +211,30 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     });
   };
 
-  revealTrack = (flightId: string, needUpdateTrack: boolean, historicTrail: {
-    latitude: number,
-    longitude: number,
-    true_track: number,
-    altitude: number,
-    velocity: number,
-    time_position: number,
-  }[]): void => {
+  hideTrack = (flightId: string): void => {
+    this.setState((state) => {
+      return { trackLatLngs: [], trackShowingAircraft: null };
+    });
+  };
+
+  revealTrack = (
+    flightId: string,
+    needUpdateTrack: boolean,
+    historicTrail: AircraftPosition[],
+  ): void => {
     this.setState((state) => {
       const { aircrafts } = state;
 
       const aircraft: AircraftState = aircrafts[flightId];
 
-      const latLngs = calculateTrack(aircraft, needUpdateTrack, historicTrail);
+      const joinedTracks = needUpdateTrack ? joinTracks(aircraft.positions, historicTrail)
+        : aircraft.positions;
+
+      if (needUpdateTrack) {
+        aircraft.positions = joinedTracks;
+      }
+
+      const latLngs = trackCoordinates(joinedTracks);
 
       return { trackLatLngs: latLngs, trackShowingAircraft: flightId };
     });
