@@ -1,6 +1,6 @@
-import L, { LatLngExpression } from 'leaflet';
+import { LatLngExpression } from 'leaflet';
 import aircraftIcons from '../airplane_icons.json';
-import { AircraftIcon, AircraftIconGroup } from '../types';
+import { AircraftIcon, AircraftIconGroup, AircraftState } from '../types';
 
 interface AccessObject {
   baseUrl: string,
@@ -16,10 +16,6 @@ export const mapAccessObj: AccessObject = {
   token: 'pk.eyJ1IjoibGJyYXRrb3Zza2F5YSIsImEiOiJja2pqcTY0N2owNnd0MnJzMnNrbzVveGVuIn0.ibWjrmV2-J50CKfeNbZvsw',
 };
 
-export const icon = L.divIcon({
-  html: '<img src="../../img/t-sprite_c-yellow_w-25_s-yes.png" draggable="false" style="position: absolute; left: -492px; top: -640px; width: 880px; height: 1200px; user-select: none; border: 0px; padding: 0px; margin: 0px; max-width: none; opacity: 1;">',
-});
-
 export const getMapURL = (): string => {
   const {
     baseUrl,
@@ -34,6 +30,14 @@ export const getMapURL = (): string => {
 export const mapCenterCoordinates: LatLngExpression = [56.852, 60.612];
 
 export const mapZoom = 8;
+
+export const anglesRound = 360;
+
+const roundingCoeff = 1000;
+
+export const roundCoordinates = (
+  coordinate: number,
+): number => Math.round(coordinate * roundingCoeff) / roundingCoeff;
 
 const DEFAULT_ICAO = 'B738';
 
@@ -54,4 +58,29 @@ export const getIconByAircraft = (aircraftType: string): AircraftIcon => {
   }
   // Fallback to default
   return iconGroups[DEFAULT_ICAO];
+};
+
+export const nonTrackingIconPath = '../../img/t-sprite_c-yellow_w-30_s-yes.png';
+
+export const trackingIconPath = '../../img/t-sprite_c-red_w-30_s-yes.png';
+
+export const unknownCallsign = 'unknown';
+
+export const calculateTrack = (aircraft: AircraftState, needUpdateTrack: boolean, historicTrail: {
+  latitude: number,
+  longitude: number,
+  true_track: number,
+  altitude: number,
+  velocity: number,
+  time_position: number,
+}[]): LatLngExpression[] => {
+  if (needUpdateTrack) {
+    const sortedPositions = [...aircraft.positions, ...historicTrail]
+      .sort((pos1, pos2) => pos2.time_position - pos1.time_position);
+
+    aircraft.positions = [...sortedPositions];
+  }
+
+  return aircraft.positions
+    .map((pos) => [pos.latitude, pos.longitude]);
 };

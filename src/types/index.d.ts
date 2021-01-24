@@ -13,11 +13,12 @@ export interface AircraftState {
   callsign: string,
   positions:
   {
-    time_position: number,
-    longitude: number,
     latitude: number,
+    longitude: number,
+    true_track: number,
     altitude: number,
     velocity: number,
+    time_position: number,
   }[],
 }
 

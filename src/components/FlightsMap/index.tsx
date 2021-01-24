@@ -13,6 +13,7 @@ import {
 } from '../../utils/apiUtils';
 import FlightsLayer from '../../components/FlightsLayer';
 import './index.scss';
+import AirportsLayer from '../AirportsLayer';
 
 interface FlightMapState {
   geoPosition: LatLngExpression,
@@ -34,7 +35,6 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
         zoom={mapZoom}
         scrollWheelZoom={true}
         whenCreated={(map) => {
-          console.log(geoPosition);
           map.locate({ setView: true, maxZoom: 8 });
         }}
       >
@@ -42,6 +42,7 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
           url={getMapURL()}
         />
         <FlightsLayer />
+        <AirportsLayer />
       </MapContainer>
     );
   }

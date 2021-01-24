@@ -1,10 +1,10 @@
 import { LatLngBounds, LatLngExpression } from 'leaflet';
-import { AircraftsMap, AircraftState } from '.';
+import { AircraftsMap } from '.';
 
 export interface FlightsLayerState {
-  // needRerender: boolean,
+  supressRequest: boolean,
   aircrafts: AircraftsMap,
-  aircraftArray: AircraftState[],
   mapBounds: LatLngBounds,
   trackLatLngs: LatLngExpression[],
+  trackShowingAircraft: string,
 }
