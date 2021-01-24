@@ -12,11 +12,13 @@ import { IconFrame, AircraftIcon } from '../../types';
 import { AircraftMarkerProps } from '../../types/AircraftMarkerType';
 import {
   getIconByAircraft,
+} from '../../utils/apiUtils';
+import {
   nonTrackingIconPath,
   trackingIconPath,
   anglesRound,
   unknownCallsign,
-} from '../../utils/apiUtils';
+} from '../../utils/constants';
 
 class AircraftMarker extends Component<AircraftMarkerProps> {
   angleStep: number;
@@ -45,7 +47,7 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
       this.markerRef.current.setLatLng(newProps.position);
     }
     if ((newProps.trackAngle !== this.props.trackAngle)
-    || (newProps.withTrack !== this.props.withTrack)) {
+      || (newProps.withTrack !== this.props.withTrack)) {
       this.markerRef.current.setIcon(this.getIcon(
         newProps.aircraftType,
         newProps.trackAngle,

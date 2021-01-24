@@ -1,22 +1,25 @@
 import { LatLngExpression } from 'leaflet';
 import aircraftIcons from '../airplane_icons.json';
-import { AircraftIcon, AircraftIconGroup, AircraftState } from '../types';
-
-interface AccessObject {
-  baseUrl: string,
-  nickname: string,
-  styleId: string,
-  token: string
-}
-
-export const mapAccessObj: AccessObject = {
-  baseUrl: 'https://api.mapbox.com',
-  nickname: 'lbratkovskaya',
-  styleId: 'ckjjqmnue0vlk1ao2gj8cdamy',
-  token: 'pk.eyJ1IjoibGJyYXRrb3Zza2F5YSIsImEiOiJja2pqcTY0N2owNnd0MnJzMnNrbzVveGVuIn0.ibWjrmV2-J50CKfeNbZvsw',
-};
+import {
+  AircraftIcon,
+  AircraftIconGroup,
+  AircraftPosition,
+} from '../types';
 
 export const getMapURL = (): string => {
+  interface AccessObject {
+    baseUrl: string,
+    nickname: string,
+    styleId: string,
+    token: string
+  }
+
+  const mapAccessObj: AccessObject = {
+    baseUrl: 'https://api.mapbox.com',
+    nickname: 'lbratkovskaya',
+    styleId: 'ckjjqmnue0vlk1ao2gj8cdamy',
+    token: 'pk.eyJ1IjoibGJyYXRrb3Zza2F5YSIsImEiOiJja2pqcTY0N2owNnd0MnJzMnNrbzVveGVuIn0.ibWjrmV2-J50CKfeNbZvsw',
+  };
   const {
     baseUrl,
     nickname,
@@ -26,12 +29,6 @@ export const getMapURL = (): string => {
 
   return `${baseUrl}/styles/v1/${nickname}/${styleId}/tiles/256/{z}/{x}/{y}@2x?access_token=${token}`;
 };
-
-export const mapCenterCoordinates: LatLngExpression = [56.852, 60.612];
-
-export const mapZoom = 8;
-
-export const anglesRound = 360;
 
 const roundingCoeff = 1000;
 
@@ -60,27 +57,16 @@ export const getIconByAircraft = (aircraftType: string): AircraftIcon => {
   return iconGroups[DEFAULT_ICAO];
 };
 
-export const nonTrackingIconPath = '../../img/t-sprite_c-yellow_w-30_s-yes.png';
+export const joinTracks = (
+  livePositions: AircraftPosition[],
+  historicTrail: AircraftPosition[],
+): AircraftPosition[] => {
+  const sortedPositions = [...livePositions, ...historicTrail]
+    .sort((pos1, pos2) => pos2.time_position - pos1.time_position);
 
-export const trackingIconPath = '../../img/t-sprite_c-red_w-30_s-yes.png';
-
-export const unknownCallsign = 'unknown';
-
-export const calculateTrack = (aircraft: AircraftState, needUpdateTrack: boolean, historicTrail: {
-  latitude: number,
-  longitude: number,
-  true_track: number,
-  altitude: number,
-  velocity: number,
-  time_position: number,
-}[]): LatLngExpression[] => {
-  if (needUpdateTrack) {
-    const sortedPositions = [...aircraft.positions, ...historicTrail]
-      .sort((pos1, pos2) => pos2.time_position - pos1.time_position);
-
-    aircraft.positions = [...sortedPositions];
-  }
-
-  return aircraft.positions
-    .map((pos) => [pos.latitude, pos.longitude]);
+  return sortedPositions;
 };
+
+export const trackCoordinates = (
+  trackPositions: AircraftPosition[],
+): LatLngExpression[] => trackPositions.map((pos) => [pos.latitude, pos.longitude]);

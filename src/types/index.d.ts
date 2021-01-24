@@ -1,3 +1,12 @@
+export interface AircraftPosition {
+  latitude: number,
+  longitude: number,
+  true_track: number,
+  altitude: number,
+  velocity: number,
+  time_position: number,
+}
+
 export interface AircraftState {
   icao24: string,
   latitude: number,
@@ -11,19 +20,11 @@ export interface AircraftState {
   airport_from: string,
   airport_to: string,
   callsign: string,
-  positions:
-  {
-    latitude: number,
-    longitude: number,
-    true_track: number,
-    altitude: number,
-    velocity: number,
-    time_position: number,
-  }[],
+  positions: AircraftPosition[],
 }
 
 interface AircraftsMap {
-  [key: string]: AircraftState;
+  [key: string]: AircraftState,
 }
 
 interface IconFrame {
@@ -31,16 +32,16 @@ interface IconFrame {
     x: number,
     y: number,
     w: number,
-    h: number
+    h: number,
   },
 }
 
 export interface AircraftIcon {
   rotates: boolean,
   aliases: string[],
-  frames: IconFrame[]
+  frames: IconFrame[],
 }
 
 export interface AircraftIconGroup {
-  [key: string]: AircraftIcon
+  [key: string]: AircraftIcon,
 }

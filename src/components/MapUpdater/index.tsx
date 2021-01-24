@@ -1,10 +1,6 @@
-import { LatLngExpression, Map } from 'leaflet';
+import { Map } from 'leaflet';
 import { useMap } from 'react-leaflet';
-
-interface MapUpdaterProps {
-  geoPosition: LatLngExpression,
-  mapZoom: number,
-}
+import { MapUpdaterProps } from '../../types/FlightsMapType';
 
 export default function MapUpdater({ geoPosition, mapZoom }: MapUpdaterProps): JSX.Element {
   const map: Map = useMap();
