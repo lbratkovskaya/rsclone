@@ -7,38 +7,23 @@ import {
 } from '../types';
 
 export const getMapURL = (): string => {
-  interface AccessObject {
-    baseUrl: string,
-    nickname: string,
-    styleId: string,
-    token: string
-  }
-
-  const mapAccessObj: AccessObject = {
-    baseUrl: 'https://api.mapbox.com',
-    nickname: 'lbratkovskaya',
-    styleId: 'ckjjqmnue0vlk1ao2gj8cdamy',
-    token: 'pk.eyJ1IjoibGJyYXRrb3Zza2F5YSIsImEiOiJja2pqcTY0N2owNnd0MnJzMnNrbzVveGVuIn0.ibWjrmV2-J50CKfeNbZvsw',
-  };
-  const {
-    baseUrl,
-    nickname,
-    styleId,
-    token,
-  } = mapAccessObj;
+  const baseUrl = 'https://api.mapbox.com';
+  const nickname = 'lbratkovskaya';
+  const styleId = 'ckjjqmnue0vlk1ao2gj8cdamy';
+  const token = 'pk.eyJ1IjoibGJyYXRrb3Zza2F5YSIsImEiOiJja2pqcTY0N2owNnd0MnJzMnNrbzVveGVuIn0.ibWjrmV2-J50CKfeNbZvsw';
 
   return `${baseUrl}/styles/v1/${nickname}/${styleId}/tiles/256/{z}/{x}/{y}@2x?access_token=${token}`;
 };
 
-const roundingCoeff = 1000;
-
 export const roundCoordinates = (
   coordinate: number,
-): number => Math.round(coordinate * roundingCoeff) / roundingCoeff;
-
-const DEFAULT_ICAO = 'B738';
+): number => {
+  const roundingCoeff = 1000;
+  return Math.round(coordinate * roundingCoeff) / roundingCoeff;
+};
 
 export const getIconByAircraft = (aircraftType: string): AircraftIcon => {
+  const DEFAULT_ICAO = 'B738';
   const iconGroups: AircraftIconGroup = aircraftIcons.icons;
   const iconIcaos = Object.keys(iconGroups);
   // Match by ICAO

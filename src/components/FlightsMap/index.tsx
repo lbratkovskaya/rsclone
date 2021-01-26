@@ -2,7 +2,7 @@ import React, {
   Component,
   ComponentPropsWithoutRef,
 } from 'react';
-import { latLng } from 'leaflet';
+import { Map } from 'leaflet';
 import {
   MapContainer,
   TileLayer,
@@ -11,15 +11,18 @@ import FlightsLayer from '../../components/FlightsLayer';
 import AirportsLayer from '../AirportsLayer';
 import { FlightMapState } from '../../types/FlightsMapType';
 import { getMapURL } from '../../utils/apiUtils';
-import { mapZoom } from '../../utils/constants';
+import { EURASIAN_CENTER, mapZoom } from '../../utils/constants';
 import './index.scss';
 
 class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMapState> {
+  setCurrentUserLocation: (map: Map) => void;
+
   constructor(props: ComponentPropsWithoutRef<'object'>) {
     super(props);
     this.state = {
-      geoPosition: latLng(50.41111, 80.2275),
+      geoPosition: EURASIAN_CENTER,
     };
+    this.setCurrentUserLocation = (map: Map) => map.locate({ setView: true, maxZoom: mapZoom });
   }
 
   render(): JSX.Element {
@@ -28,10 +31,8 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
       <MapContainer
         center={geoPosition}
         zoom={mapZoom}
-        scrollWheelZoom={true}
-        whenCreated={(map) => {
-          map.locate({ setView: true, maxZoom: 8 });
-        }}
+        scrollWheelZoom
+        whenCreated={this.setCurrentUserLocation}
       >
         <TileLayer
           url={getMapURL()}

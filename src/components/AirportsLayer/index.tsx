@@ -1,8 +1,9 @@
 import React, { Component, ComponentPropsWithoutRef } from 'react';
 import { Marker } from 'react-leaflet';
-import L from 'leaflet';
+import L, { PointExpression } from 'leaflet';
 import { AirportsLayerState, AirportType } from '../../types/AirportsLayerType';
 import { roundCoordinates } from '../../utils/apiUtils';
+import { ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
 
 class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, AirportsLayerState> {
   constructor(props: ComponentPropsWithoutRef<'object'>) {
@@ -28,23 +29,23 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
         if (!json) {
           return;
         }
+        const { airportsMap } = this.state;
 
-        this.setState((state) => {
-          const { airportsMap } = state;
-          if (airportsMap) {
-            if (json.version > airportsMap.version) {
-              // should update to fresh version
-              return {
-                airportsMap: {
-                  version: json.version,
-                  airports: [...json.rows],
-                },
-              };
-            }
+        const newState = { airportsMap };
+
+        if (airportsMap) {
+          if (json.version > airportsMap.version) {
+            // should update to fresh version
+            Object.assign(newState, {
+              airportsMap: {
+                version: json.version,
+                airports: [...json.rows],
+              },
+            });
           }
+        }
 
-          return state;
-        });
+        this.setState(newState);
       });
   }
 
@@ -56,8 +57,8 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
       const latitude: number = roundCoordinates(airport.lat);
       const icon = L.divIcon({
         html: '<img src="../../img/airport_pin_40_blue.png" style="height:20px;width:20px;position:absolute;">',
-        iconSize: [20, 20],
-        iconAnchor: [20, 20],
+        iconSize: ICON_SIZE as PointExpression,
+        iconAnchor: ICON_ANCHOR_SIZE as PointExpression,
       });
       return (<Marker
         key={airport.iata}

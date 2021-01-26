@@ -1,5 +1,5 @@
 import { LatLngBounds, LatLngExpression, Map } from 'leaflet';
-import { AircraftsMap } from '.';
+import { AircraftsMap } from './';
 
 export interface FlightsLayerState {
   supressRequest: boolean,

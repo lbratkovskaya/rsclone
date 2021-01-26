@@ -5,6 +5,7 @@ import React, {
 import { Marker, Popup } from 'react-leaflet';
 import L, {
   DivIcon,
+  LeafletMouseEvent,
   Marker as LeafletMarker,
 } from 'leaflet';
 import aircraftIcons from '../../airplane_icons.json';
@@ -27,12 +28,18 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
 
   angleCorrection: (angle: number) => number;
 
+  openIconPopup: (event: LeafletMouseEvent) => void;
+
+  closeIconPopup: (event: LeafletMouseEvent) => void;
+
   constructor(props: AircraftMarkerProps) {
     super(props);
     this.angleStep = 15;
     this.markerRef = React.createRef<LeafletMarker>();
     this.angleCorrection = (angle: number) => (angle + 360) % 360;
     this.shouldComponentUpdate = () => false;
+    this.openIconPopup = (event: LeafletMouseEvent) => event.target.openPopup();
+    this.closeIconPopup = (event: LeafletMouseEvent) => event.target.closePopup();
   }
 
   componentDidMount(): void {
@@ -44,11 +51,11 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
   */
   UNSAFE_componentWillReceiveProps = (newProps: AircraftMarkerProps): void => {
     if (newProps.position !== this.props.position) {
-      this.markerRef.current.setLatLng(newProps.position);
+      this.markerRef.current?.setLatLng(newProps.position);
     }
     if ((newProps.trackAngle !== this.props.trackAngle)
       || (newProps.withTrack !== this.props.withTrack)) {
-      this.markerRef.current.setIcon(this.getIcon(
+      this.markerRef.current?.setIcon(this.getIcon(
         newProps.aircraftType,
         newProps.trackAngle,
         newProps.withTrack,
@@ -91,8 +98,8 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
       icon={icon}
       zIndexOffset={altitude}
       eventHandlers={{
-        mouseover: (e) => e.target.openPopup(),
-        mouseout: (e) => e.target.closePopup(),
+        mouseover: this.openIconPopup,
+        mouseout: this.closeIconPopup,
         click: onIconClick,
       }}
     >

@@ -9,14 +9,10 @@ export interface AircraftPosition {
 
 export interface AircraftState {
   icao24: string,
-  latitude: number,
-  longitude: number,
-  true_track: number,
-  altitude: number,
-  velocity: number,
+
+  currentPosition: AircraftPosition,
   aircraft_type: string,
   registration: string,
-  time_position: number,
   airport_from: string,
   airport_to: string,
   callsign: string,

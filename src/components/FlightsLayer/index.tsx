@@ -57,73 +57,67 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
           return;
         }
 
-        this.setState((state) => {
-          const { aircrafts: aircraftMap, trackShowingAircraft } = state;
-          let { trackLatLngs: latLngs } = state;
+        const { aircrafts: aircraftMap, trackShowingAircraft, trackLatLngs } = this.state;
+        let latLngs = [...trackLatLngs];
+        const newAircraftsMap = { ...aircraftMap };
 
-          Object.keys(json).filter((key) => !['full_count', 'version'].includes(key))?.forEach((flightId: string) => {
-            const stateArr = json[flightId];
+        const filteredResponseKeys = Object.keys(json).filter((key) => !['full_count', 'version'].includes(key));
+        if (!filteredResponseKeys) {
+          return;
+        }
+        filteredResponseKeys.forEach((flightId: string) => {
+          const stateArr = json[flightId];
 
-            const currentAircraftState = aircraftMap[flightId];
-            if (!currentAircraftState) {
-              const positions: AircraftPosition[] = [];
-              positions.unshift({
-                latitude: stateArr[1],
-                longitude: stateArr[2],
-                true_track: stateArr[3],
-                altitude: stateArr[4],
-                velocity: stateArr[5],
-                time_position: stateArr[10],
-              });
-              aircraftMap[flightId] = {
-                icao24: stateArr[0],
-                latitude: stateArr[1],
-                longitude: stateArr[2],
-                true_track: stateArr[3],
-                altitude: stateArr[4],
-                velocity: stateArr[5],
-                aircraft_type: stateArr[8],
-                registration: stateArr[9],
-                time_position: stateArr[10],
-                airport_from: stateArr[11],
-                airport_to: stateArr[12],
-                callsign: stateArr[13],
-                positions,
-              };
-            } else {
-              Object.assign(currentAircraftState, {
-                icao24: stateArr[0],
-                latitude: stateArr[1],
-                longitude: stateArr[2],
-                true_track: stateArr[3],
-                altitude: stateArr[4],
-                velocity: stateArr[5],
-                aircraft_type: stateArr[8],
-                registration: stateArr[9],
-                time_position: stateArr[10],
-                airport_from: stateArr[11],
-                airport_to: stateArr[12],
-                callsign: stateArr[13],
-              });
-              const { positions } = currentAircraftState;
-              positions.unshift({
-                latitude: stateArr[1],
-                longitude: stateArr[2],
-                true_track: stateArr[3],
-                altitude: stateArr[4],
-                velocity: stateArr[5],
-                time_position: stateArr[10],
-              });
-              positions.sort((pos1, pos2) => pos2.time_position - pos1.time_position);
-
-              if (flightId === trackShowingAircraft) {
-                latLngs = trackCoordinates(aircraftMap[flightId].positions);
-              }
+          const aircraftState: AircraftState = {
+            icao24: stateArr[0],
+            currentPosition: {
+              latitude: stateArr[1],
+              longitude: stateArr[2],
+              true_track: stateArr[3],
+              altitude: stateArr[4],
+              velocity: stateArr[5],
+              time_position: stateArr[10],
+            },
+            aircraft_type: stateArr[8],
+            registration: stateArr[9],
+            airport_from: stateArr[11],
+            airport_to: stateArr[12],
+            callsign: stateArr[13],
+            positions: [],
+          };
+          const currentAircraftState = newAircraftsMap[flightId];
+          if (!currentAircraftState) {
+            const positions: AircraftPosition[] = [];
+            positions.unshift({
+              latitude: stateArr[1],
+              longitude: stateArr[2],
+              true_track: stateArr[3],
+              altitude: stateArr[4],
+              velocity: stateArr[5],
+              time_position: stateArr[10],
+            });
+            Object.assign(aircraftState, { positions });
+            newAircraftsMap[flightId] = aircraftState;
+          } else {
+            const { positions } = currentAircraftState;
+            Object.assign(currentAircraftState, aircraftState);
+            positions.unshift({
+              latitude: stateArr[1],
+              longitude: stateArr[2],
+              true_track: stateArr[3],
+              altitude: stateArr[4],
+              velocity: stateArr[5],
+              time_position: stateArr[10],
+            });
+            positions.sort((pos1, pos2) => pos2.time_position - pos1.time_position);
+            Object.assign(currentAircraftState, { positions });
+            if (flightId === trackShowingAircraft) {
+              latLngs = trackCoordinates(aircraftMap[flightId].positions);
             }
-          });
-
-          return { aircrafts: aircraftMap, trackLatLngs: latLngs };
+          }
         });
+
+        this.setState({ aircrafts: newAircraftsMap, trackLatLngs: latLngs });
       });
   }
 
@@ -131,8 +125,10 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     const { aircrafts, trackShowingAircraft } = this.state;
 
     return Object.entries(aircrafts).map(([flightId, aircraft]) => {
-      const longitude = roundCoordinates(aircraft.positions[0].longitude || aircraft.longitude);
-      const latitude = roundCoordinates(aircraft.positions[0].latitude || aircraft.latitude);
+      const longitude = roundCoordinates(aircraft.positions[0].longitude
+        || aircraft.currentPosition.longitude);
+      const latitude = roundCoordinates(aircraft.positions[0].latitude
+        || aircraft.currentPosition.latitude);
       return (<AircraftMarker
         key={flightId}
         position={[latitude, longitude]}
@@ -149,7 +145,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   aircraftIconClickHandler = (flightId: string): void => {
     const { trackShowingAircraft } = this.state;
     if (flightId === trackShowingAircraft) {
-      this.hideTrack(flightId);
+      this.hideTrack();
     } else {
       this.showTrack(flightId);
     }
@@ -211,10 +207,8 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     });
   };
 
-  hideTrack = (flightId: string): void => {
-    this.setState((state) => {
-      return { trackLatLngs: [], trackShowingAircraft: null };
-    });
+  hideTrack = (): void => {
+    this.setState({ trackLatLngs: [], trackShowingAircraft: null });
   };
 
   revealTrack = (
