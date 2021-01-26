@@ -1,7 +1,7 @@
 import React from 'react';
-import General from '../images/General';
-import Arrivals from '../images/Arrivals';
-import Departures from '../images/Departures';
+import General from '../../../img/General';
+import Arrivals from '../../../img/Arrivals';
+import Departures from '../../../img/Departures';
 import './Button.scss';
 
 type ChangeTabHandler = (num: number) => void;

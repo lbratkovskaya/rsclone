@@ -1,6 +1,6 @@
 import React from 'react';
 import { AirportInfo } from '../../../types/types';
-import Close from '../images/Close';
+import Close from '../../../img/Close';
 import './Header.scss';
 import getLocalData from '../../../utils/getLocalData';
 

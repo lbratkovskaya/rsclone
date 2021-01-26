@@ -1,6 +1,6 @@
 import React from 'react';
 import { AirportInfo } from '../../../types/types';
-import GoTo from '../images/Goto';
+import GoTo from '../../../img/Goto';
 import './AirportPhoto.scss';
 
 interface AirportPhotoProps {

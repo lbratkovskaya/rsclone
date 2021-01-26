@@ -1,7 +1,7 @@
 import React from 'react';
 import { Schedule } from '../../../types/types';
-import Routes from '../images/Routes';
-import Arrow from '../images/Arrow';
+import Routes from '../../../img/Routes';
+import Arrow from '../../../img/Arrow';
 import './ScheduledFlights.scss';
 
 interface ScheduledFlightsProps {
