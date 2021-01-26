@@ -1,36 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Rating.scss';
+import { RatingInfo } from '../../../types/types';
 
 interface RatingProps {
-  icao: string,
+  iata: string,
   name: string
 }
 
-const Rating:React.FC<RatingProps> = ({ icao, name }:RatingProps) => {
-  const newArr = icao.split('');
-  let pseudoRandomNum = 0;
-  for (let i = 0; i < newArr.length; i++) {
-    pseudoRandomNum += newArr[i].charCodeAt(0);
-  }
-  const rating = (2 + (pseudoRandomNum % 30) / 10).toString();
-  document.documentElement.style.setProperty('--rating', rating);
+const Rating:React.FC<RatingProps> = ({ iata, name }:RatingProps) => {
+  const [ratingInfo, setRatingInfo] = useState< RatingInfo | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/rating?airportCode=${iata}`, { method: 'GET' })
+      .then((response) => response.json())
+      .then((data) => {
+        document.documentElement.style.setProperty('--rating', data.rating.rating);
+        setRatingInfo(data.rating);
+      });
+  }, [iata]);
 
   return (
-    <div className="airport-rating">
-      <p>
-        <span className="airport-rating__number">{rating}</span>
-        <span className="airport-rating__stars" />
-      </p>
-      <p>
-        {pseudoRandomNum}
-        {' '}
-        <span className="airport-rating__name">RSCloneFlightRadar</span>
-        {' '}
-        users have rated
-        {' '}
-        {name}
-      </p>
-    </div>
+    <>
+      { ratingInfo
+      && (
+      <div className="airport-rating">
+        <p>
+          <span className="airport-rating__number">{ratingInfo.rating}</span>
+          <span className="airport-rating__stars" />
+        </p>
+        <p>
+          {ratingInfo.total}
+          {' '}
+          <span className="airport-rating__name">RSCloneFlightRadar</span>
+          {' '}
+          users have rated
+          {' '}
+          {name}
+        </p>
+      </div>
+      )}
+    </>
   );
 };
 

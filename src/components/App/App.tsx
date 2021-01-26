@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import './App.scss';
+import './index.scss';
 import Airport from '../Airport/Airport';
 
-const App:React.FC = () => {
-  const [openAirportPanel, setOpenAirportPanel] = useState(true);
-  const code = 'UMMS';
-
-  const closeAirportPanel = () => {
-    setOpenAirportPanel(false);
-  };
+const App:React.FC = (): JSX.Element => {
+  const [openAirportPanel] = useState(true);
+  const code = 'MSQ';
 
   return (
-    <Airport code={code} openAirportPanel closeAirportPanel={closeAirportPanel} />
+    <>
+      <Airport code={code} openAirportPanel={openAirportPanel} />
+    </>
   );
 };
 

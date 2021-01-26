@@ -1,0 +1,21 @@
+
+.airport-button {
+  background: #333;
+  color: white;
+  width: 101px;
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+
+  path{
+    fill: white;
+  }
+
+  &:hover,
+  &-active {
+    color: #f8C023;
+    path{
+      fill:#f8C023;
+    }
+  }
+}

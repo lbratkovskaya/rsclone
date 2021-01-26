@@ -1,0 +1,24 @@
+.airport-flight-wrapper {
+  width: 303px;
+  overflow: hidden;
+  max-height: calc(100vh - 126px);
+
+  &:hover {
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      height: 3px;
+      width: 4px;
+      background: #404040;
+    }
+  
+    &::-webkit-scrollbar-track {
+      border-radius: 10px;
+    }
+  
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      background: yellow;
+    }
+  }
+
+}

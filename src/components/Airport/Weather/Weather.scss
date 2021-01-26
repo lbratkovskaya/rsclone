@@ -1,9 +1,10 @@
 
 .airport-weather {
-  width: 300px;
+  width: 303px;
+  height: 103px;
   background: #333;
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 13px;
   display: flex;
   justify-content: space-between;
   padding: 10px 0;
@@ -19,14 +20,14 @@
   }
 
   &__conditions,
-  &__temprature,
+  &__temperature,
   &__wind {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     text-align: center;
-    border-right: 1px solid #7a7474;
+    border-right: 1px solid #6d6d6d;
   }
 
   &__wind {
@@ -36,5 +37,9 @@
 
   &__conditions img {
     width: fit-content;
+  }
+
+  &__degrees {
+    font-size: 18px;
   }
 }

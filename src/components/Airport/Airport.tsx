@@ -1,37 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import airports from './airports.json';
 import Header from './Header/Header';
+import AirportPhoto from './AirportPhoto/AirportPhoto';
 import Rating from './Rating/Rating';
 import Weather from './Weather/Weather';
-// import InfoLinks from './InfoLinks/InfoLinks';
+import Runway from './Runway/Runway';
 import Button from './Button/Button';
-// import Arrivals from './Arrivals/Arrivals';
-import { TargetAirport, Time } from '../../types';
+import ScheduledFlights from './ScheduledFlights/ScheduledFlights';
+import ArrivalsAndDepartures from './ArrivalsAndDepartures/ArrivalsAndDepartures';
+import { AirportInfo, Schedule, Runways } from '../../types/types';
+import './Airport.scss';
 
 interface AirportProps {
   code: string,
   openAirportPanel: boolean,
-  closeAirportPanel: () => void
 }
 
 type ChangeTabHandler = (num: number) => void;
 
 const Airport:React.FC<AirportProps> = ({
-  code, openAirportPanel, closeAirportPanel,
+  code, openAirportPanel,
 }:AirportProps) => {
-  const targetAirport:TargetAirport = airports.find((el) => el.icao === code);
-  // const [airportInfo, setAirportInfo] = useState< TargetAirport2 | null>(null);
-  const [time, setTime] = useState< Time | null>(null);
+  const [airportInfo, setAirportInfo] = useState< AirportInfo | null>(null);
+  const [schedule, setSchedule] = useState< Schedule | null>(null);
+  const [runways, setRunways] = useState< Runways[] | null>(null);
+  const [satelliteImage, setSatelliteImage] = useState('');
   const [activeTab, setActiveTab] = useState(1);
-  // const [openAirportPanel, setOpenAirportPanel] = useState(true)
+  const [openPanel, setOpenPanel] = useState(openAirportPanel);
 
   const changeTabHandler:ChangeTabHandler = (num) => {
     setActiveTab(num);
   };
-
-  const Tab3 = () => (
-    <h1>Text of tab3</h1>
-  );
 
   const buttons = [
     { num: 1, name: 'General' },
@@ -40,75 +38,46 @@ const Airport:React.FC<AirportProps> = ({
   ];
 
   useEffect(() => {
-    fetch(`http://api.geonames.org/timezoneJSON?lat=${targetAirport.lat}&lng=${targetAirport.lon}&username=chbani`)
+    fetch(`/api/airport?airportCode=${code}`, { method: 'GET', mode: 'no-cors' })
       .then((response) => response.json())
-    // .then(data => console.log(data))
-      .then((data) => setTime(data));
-  }, [targetAirport.lat, targetAirport.lon]);
+      .then((data) => {
+        const airportData = data.result.response.airport.pluginData.details;
+        const scheduleData = data.result.response.airport.pluginData.scheduledRoutesStatistics;
+        const runwaysData = data.result.response.airport.pluginData.runways;
+        const satelliteImageData = data.result.response.airport.pluginData.satelliteImage;
+        setAirportInfo(airportData);
+        setSchedule(scheduleData);
+        setRunways(runwaysData);
+        setSatelliteImage(satelliteImageData);
+      });
+  }, [code]);
 
-  useEffect(() => {
-    fetch('https://cors-anywhere.herokuapp.com/https://www.airport-data.com/api/ap_info.json?iata=JFK')
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }, []);
-
-  // useEffect(()=> {
-  //   fetch(`https://aerodatabox.p.rapidapi.com/airports/icao/${code}`, {
-  //     "headers": {
-  //       "x-rapidapi-key": "62d5080ea6msh20280fa2924efafp1db373jsnba4406f081aa",
-  //       "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
-  //     }
-  //   })
-  //   .then((response) => response.json())
-  //   .then(data => setAirportInfo(data))
-  //   .catch(err => {
-  //     console.error(err);
-  //   });
-  // },[code])
-
-  // useEffect(()=> {
-  //   fetch(`https://aerodatabox.p.rapidapi.com/airports/icao/${code}/time/local`, {
-  //     "method": "GET",
-  //     "headers": {
-  //       "x-rapidapi-key": "62d5080ea6msh20280fa2924efafp1db373jsnba4406f081aa",
-  //       "x-rapidapi-host": "aerodatabox.p.rapidapi.com"
-  //     }
-  //   })
-  //   .then((response) => response.json())
-  //   .then(data => setTime(data.localTime))
-  //   .catch(err => {
-  //     console.error(err);
-  //   });
-  // },[code])
-
-  // useEffect(()=> {
-  //   const headers = new Headers();
-  //   headers.append('Authorization', `Basic ${btoa('ChrisBani:OPENSKY')}`);
-  //   const curDate = new Date;
-  //   const seconds = Math.floor(curDate.getTime() / 1000);
-  //   fetch(`https://opensky-network.org/api/flights/departure?airport=EDDF&begin=1517227200&end=1517230800`, { headers })
-  //   .then(response => response.json())
-  // },[])
+  const closeHandler = () => {
+    setOpenPanel(false);
+  };
 
   return (
-    <div id="airport" style={{ transform: openAirportPanel ? 'translateY(0)' : 'translateY(-100vw)' }}>
-      {/* {airportInfo && time ? <Header airportInfo={airportInfo} time={time} name ={targetAirport.name}/> :
-      null} */}
-      <Header targetAirport={targetAirport} />
-      {activeTab === 1 ? (
+    <div id="airport" style={{ transform: openPanel ? 'translateX(0)' : 'translateX(-100vw)' }}>
+      {airportInfo ? <Header airportInfo={airportInfo} closeHandler={closeHandler} /> : null}
+      {activeTab === 1 && airportInfo && schedule && satelliteImage ? (
         <>
-          <Weather targetAirport={targetAirport} />
-          <Rating icao={targetAirport.icao} name={targetAirport.name} />
-          {/* <InfoLinks links = {airportInfo.urls}/> */}
+          <AirportPhoto airportInfo={airportInfo} />
+          <div className="airport-scroll-wrapper">
+            <Weather airportInfo={airportInfo} />
+            <Rating iata={airportInfo.code.iata} name={airportInfo.name} />
+            <ScheduledFlights schedule={schedule} />
+            <Runway satelliteImage={satelliteImage} runways={runways} />
+          </div>
         </>
       ) : null}
-      {/* {time && activeTab === 2 ? <Arrivals code={code} time={time}/> : null} */}
-      {activeTab === 3 ? <Tab3 /> : null}
+      {activeTab === 2 && airportInfo ? <ArrivalsAndDepartures code={airportInfo.code.iata} mode="arrivals" /> : null}
+      {activeTab === 3 && airportInfo ? <ArrivalsAndDepartures code={airportInfo.code.iata} mode="departures" /> : null}
       {buttons.map((button) => (
         <Button
           key={button.num}
           num={button.num}
           name={button.name}
+          active={activeTab}
           changeTabHandler={changeTabHandler}
         />
       ))}

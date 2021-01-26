@@ -1,63 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { TargetAirport } from '../../../types';
-import countriesDifferent from '../countriesDifferent';
+import React from 'react';
+import { AirportInfo } from '../../../types/types';
 import Close from '../images/Close';
 import './Header.scss';
-
-type Month = {
-  [key: string] :string
-};
-
-// interface HeaderProps {
-//   airportInfo: TargetAirport2,
-//   time: string,
-//   name: string
-// }
+import getLocalData from '../../../utils/getLocalData';
 
 interface HeaderProps {
-  targetAirport: TargetAirport
+  airportInfo: AirportInfo
+  closeHandler: () => void
 }
 
-const Header:React.FC<HeaderProps> = ({ targetAirport }:HeaderProps) => {
-  const [flagUrl, setFlagUrl] = useState('');
+const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps) => {
+  const flagUrl = `https://www.countryflags.io/${airportInfo.position.country.code}/flat/64.png`;
 
-  // const flagUrl = `https://www.countryflags.io/${airportInfo.country.code}/flat/64.png`
-  const month: Month = {
-    '01': 'Jan', '02': 'Feb', '03': 'Mar', '04': 'Apr', '05': 'May', '06': 'June', '07': 'July', '08': 'Aug', '09': 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec',
-  };
-  let { country } = targetAirport;
-  if (countriesDifferent[country]) {
-    country = countriesDifferent[country];
+  const localTime = getLocalData((new Date().getTime()) / 1000,
+    airportInfo.timezone.offset).toString();
+
+  const hours = airportInfo.timezone.offset / 3600;
+  let UTCTime = (hours) < 10 ? `0${hours}`
+    : hours;
+  if (hours > -1 && hours < 10) {
+    UTCTime = `0${hours}`;
+  } else if (hours < -1 && hours > -10) {
+    UTCTime = `-0${Math.abs(hours)}`;
+  } else {
+    UTCTime = hours;
   }
-
-  const closePanel = (e:React.MouseEvent<HTMLDivElement>) => {
-    console.log(e.target, 5);
-  };
-
-  useEffect(() => {
-    fetch('https://restcountries.eu/rest/v2/all?fields=name;population;flag')
-      .then((response) => response.json())
-      .then((data) => data.filter((el: any) => el.name === country))
-      .then((data) => setFlagUrl(data[0].flag));
-  });
 
   return (
     <div className="airport-header">
-      <div className="panel-close" onClick={closePanel} aria-hidden="true">
+      <div className="panel-close" onClick={closeHandler} aria-hidden="true">
         <Close />
       </div>
-      <h3 className="airport-header__name">{targetAirport.name}</h3>
+      <h3 className="airport-header__name">{airportInfo.name}</h3>
       <p className="airport-header__description">
         <img src={flagUrl} className="airport-header__flag" alt="flag" />
         <span>
-          {targetAirport.iata}
+          {airportInfo.code.iata}
           /
-          {targetAirport.icao}
+          {airportInfo.code.icao}
         </span>
       </p>
       <p className="airport-header__time">
-        {/* <span>{time.slice(11,16)} UTC({time.slice(19)})</span>
-        <span>{month[time.slice(5,7)]} {time.slice(8,10)}</span> */}
+        <span>
+          {localTime.slice(16, 21)}
+        </span>
+        <span>
+          {airportInfo.timezone.abbr}
+          &nbsp;
+          (UTC&nbsp;
+          {UTCTime}
+          :00
+          )
+        </span>
+        <span className="separator">|</span>
+        <span className="airport-header_bordered">
+          {localTime.slice(4, 7)}
+          &nbsp;
+          {localTime.slice(8, 10)}
+        </span>
+        <span className="separator">|</span>
+        <span>
+          Elev.
+          {airportInfo.position.elevation}
+          ft
+        </span>
       </p>
     </div>
   );

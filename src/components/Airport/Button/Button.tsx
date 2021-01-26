@@ -2,17 +2,19 @@ import React from 'react';
 import General from '../images/General';
 import Arrivals from '../images/Arrivals';
 import Departures from '../images/Departures';
+import './Button.scss';
 
 type ChangeTabHandler = (num: number) => void;
 
 interface ButtonProps {
   num: number,
   name: string,
+  active: number,
   changeTabHandler:ChangeTabHandler
 }
 
 const Button:React.FC<ButtonProps> = ({
-  num, name, changeTabHandler,
+  num, name, active, changeTabHandler,
 }:ButtonProps) => {
   const handleTab = (e:React.MouseEvent<HTMLButtonElement>) => {
     if (!(e.target instanceof HTMLButtonElement || e.target instanceof SVGElement)) {
@@ -36,7 +38,13 @@ const Button:React.FC<ButtonProps> = ({
   }
 
   return (
-    <button type="button" data-name={num} className="airport-button" name={name} onClick={handleTab}>
+    <button
+      type="button"
+      data-name={num}
+      className={active === num ? 'airport-button airport-button-active' : 'airport-button'}
+      name={name}
+      onClick={handleTab}
+    >
       {icon}
       {name}
     </button>

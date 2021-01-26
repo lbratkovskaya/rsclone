@@ -23,12 +23,33 @@
         "@typescript-eslint"
     ],
     "rules": {
-      "react/jsx-filename-extension": [2, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
-      "@typescript-eslint/no-use-before-define": ["warn"]
+      "react/jsx-filename-extension": [1, { "extensions": [".js",".ts",".jsx",".tsx"] }],
+      "@typescript-eslint/no-use-before-define": ["warn"],
+      "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never",
+          "": "never"
+        }
+      ]
     },
     "settings": {
-      "react": {
-        "version": "detect"
+      "react": { "version": "detect" },
+      "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".mjs"],
+      "import/parsers": {
+        "@typescript-eslint/parser": [".ts", ".tsx"]
       }
+      // "import/resolver": {
+      //   "typescript": {
+      //     "directory": "./tsconfig.json"
+      //   },
+      //   "node": {
+      //     "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      //   }
+      // }
     }
 }
