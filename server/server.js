@@ -8,8 +8,20 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const bodyParser = require('body-parser');
+const User =  require('./user');
 
 const app = express();
+
+const uri = "mongodb+srv://dbuser:dbpassword@cluster0.7s7qp.mongodb.net/rsclone?retryWrites=true&w=majority";
+
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+  if (err) {
+    throw err
+  } else {
+    console.log('MongoDB is connected');
+  }
+});
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -23,10 +35,53 @@ app.use(session({
   saveUninitialized: true,
 }));
 app.use(cookieParser("rsclone"));
+app.use(passport.initialize());
+app.use(passport.session());
+require('./passportConfig')(passport);
 
 const authRouter = express.Router();
 
-authRouter.route('/register').post((req, res) => console.log(req.body));
+authRouter.route('/register').post((req, res) => {
+  const { username, password } = req.body
+
+  User.findOne({ username }, async (err, doc) => {
+    if (err) throw err;
+
+    if (doc) {
+      res.send(`User ${req.body.username} already exists`);
+    } else {
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({
+        username,
+        password: hashedPassword
+      });
+
+      await newUser.save();
+      res.send(`User ${req.body.username} was created`);
+    }
+  });
+});
+
+authRouter.route('/login').post((req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      res.send('Wrong data. Change username or password');
+    } else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send('Authentication succeed');
+        console.log(req.user);
+      })
+    }
+  })(req, res, next);
+});
+
+authRouter.route('/current_user').get((req, res) => {
+  res.send(req.user);
+});
 
 app.use('/auth', authRouter);
 
