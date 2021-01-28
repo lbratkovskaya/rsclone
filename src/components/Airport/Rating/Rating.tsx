@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Rating.scss';
-import { RatingInfo } from '../../../types/types';
-
-interface RatingProps {
-  iata: string,
-  name: string
-}
+import { RatingInfo, RatingProps } from '../../../types/airportDataTypes';
 
 const Rating:React.FC<RatingProps> = ({ iata, name }:RatingProps) => {
   const [ratingInfo, setRatingInfo] = useState< RatingInfo | null>(null);

@@ -7,27 +7,22 @@ import Runway from './Runway/Runway';
 import Button from './Button/Button';
 import ScheduledFlights from './ScheduledFlights/ScheduledFlights';
 import ArrivalsAndDepartures from './ArrivalsAndDepartures/ArrivalsAndDepartures';
-import { AirportInfo, Schedule, Runways } from '../../types/types';
+import {
+  AirportInfo, Schedule, Runways, AirportProps,
+} from '../../types/airportDataTypes';
 import './Airport.scss';
-
-interface AirportProps {
-  code: string,
-  openAirportPanel: boolean,
-}
-
-type ChangeTabHandler = (num: number) => void;
 
 const Airport:React.FC<AirportProps> = ({
   code, openAirportPanel,
 }:AirportProps) => {
   const [airportInfo, setAirportInfo] = useState< AirportInfo | null>(null);
   const [schedule, setSchedule] = useState< Schedule | null>(null);
-  const [runways, setRunways] = useState< Runways[] | null>(null);
-  const [satelliteImage, setSatelliteImage] = useState('');
+  const [runwaysData, setRunways] = useState< Runways[] | null>(null);
+  const [satelliteImageData, setSatelliteImage] = useState('');
   const [activeTab, setActiveTab] = useState(1);
   const [openPanel, setOpenPanel] = useState(openAirportPanel);
 
-  const changeTabHandler:ChangeTabHandler = (num) => {
+  const changeTabHandler = (num: number): void => {
     setActiveTab(num);
   };
 
@@ -41,14 +36,13 @@ const Airport:React.FC<AirportProps> = ({
     fetch(`/api/airport?airportCode=${code}`, { method: 'GET', mode: 'no-cors' })
       .then((response) => response.json())
       .then((data) => {
-        const airportData = data.result.response.airport.pluginData.details;
-        const scheduleData = data.result.response.airport.pluginData.scheduledRoutesStatistics;
-        const runwaysData = data.result.response.airport.pluginData.runways;
-        const satelliteImageData = data.result.response.airport.pluginData.satelliteImage;
-        setAirportInfo(airportData);
-        setSchedule(scheduleData);
-        setRunways(runwaysData);
-        setSatelliteImage(satelliteImageData);
+        const {
+          details, scheduledRoutesStatistics, runways, satelliteImage,
+        } = data.result.response.airport.pluginData;
+        setAirportInfo(details);
+        setSchedule(scheduledRoutesStatistics);
+        setRunways(runways);
+        setSatelliteImage(satelliteImage);
       });
   }, [code]);
 
@@ -57,16 +51,16 @@ const Airport:React.FC<AirportProps> = ({
   };
 
   return (
-    <div id="airport" style={{ transform: openPanel ? 'translateX(0)' : 'translateX(-100vw)' }}>
+    <div id="airport" className={openPanel ? 'opened' : 'closed'}>
       {airportInfo ? <Header airportInfo={airportInfo} closeHandler={closeHandler} /> : null}
-      {activeTab === 1 && airportInfo && schedule && satelliteImage ? (
+      {activeTab === 1 && airportInfo && schedule && satelliteImageData ? (
         <>
           <AirportPhoto airportInfo={airportInfo} />
           <div className="airport-scroll-wrapper">
             <Weather airportInfo={airportInfo} />
             <Rating iata={airportInfo.code.iata} name={airportInfo.name} />
             <ScheduledFlights schedule={schedule} />
-            <Runway satelliteImage={satelliteImage} runways={runways} />
+            <Runway satelliteImage={satelliteImageData} runways={runwaysData} />
           </div>
         </>
       ) : null}

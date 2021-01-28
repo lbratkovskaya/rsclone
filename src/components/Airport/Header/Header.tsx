@@ -1,13 +1,8 @@
 import React from 'react';
-import { AirportInfo } from '../../../types/types';
+import { HeaderProps } from '../../../types/airportDataTypes';
 import Close from '../../../img/Close';
 import './Header.scss';
 import getLocalData from '../../../utils/getLocalData';
-
-interface HeaderProps {
-  airportInfo: AirportInfo
-  closeHandler: () => void
-}
 
 const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps) => {
   const flagUrl = `https://www.countryflags.io/${airportInfo.position.country.code}/flat/64.png`;

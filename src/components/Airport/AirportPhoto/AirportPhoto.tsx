@@ -1,20 +1,19 @@
 import React from 'react';
-import { AirportInfo } from '../../../types/types';
+import { AirportPhotoProps } from '../../../types/airportDataTypes';
 import GoTo from '../../../img/Goto';
 import './AirportPhoto.scss';
 
-interface AirportPhotoProps {
-  airportInfo: AirportInfo
-}
-
-const AirportPhoto:React.FC<AirportPhotoProps> = ({ airportInfo }:AirportPhotoProps)
-:JSX.Element => (
-  <div className="airport-photo">
-    <img src={airportInfo.airportImages.large[0].src} alt="airport" />
-    <a target="_blank" href={`${airportInfo.airportImages.large[0].link}`} rel="noreferrer">
-      <GoTo />
-    </a>
-  </div>
-);
+const AirportPhoto:React.FC<AirportPhotoProps> = ({ airportInfo }: AirportPhotoProps)
+: JSX.Element => {
+  const { src, link } = airportInfo.airportImages.large[0];
+  return (
+    <div className="airport-photo">
+      <img src={src} alt="airport" />
+      <a target="_blank" href={link} rel="noreferrer">
+        <GoTo />
+      </a>
+    </div>
+  );
+};
 
 export default AirportPhoto;

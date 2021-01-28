@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import Arrow from '../../../img/Arrow';
 import RunwayIcon from '../../../img/RunwayIcon';
 import './Runway.scss';
-import { Runways } from '../../../types/types';
-
-interface RunwayProps {
-  satelliteImage: string
-  runways: Runways[]
-}
+import { RunwayProps } from '../../../types/airportDataTypes';
 
 const Runway:React.FC<RunwayProps> = ({ satelliteImage, runways }: RunwayProps): JSX.Element => {
   const [openDetails, setOpenDetails] = useState(false);

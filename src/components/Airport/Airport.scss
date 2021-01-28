@@ -1,16 +1,20 @@
 #airport {
   max-height: 100vh;
   transition: 0.6s ease-in-out;
-  // overflow: hidden;
+
+  .opened {
+    transform: translateX(0);
+  }
+
+  .closed {
+    transform: translateX(-100vw);
+  }
 }
 
 .airport-scroll-wrapper {
   width: 303px;
-  // overflow-x: visible;
   overflow: hidden;
-  // overflow-y: scroll;
   max-height: calc(100vh - 296px);
-  // overflow-y: hidden;
 
   &:hover {
     overflow-y: scroll;
@@ -27,7 +31,6 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 10px;
-      // height: 20px;
       background: yellow;
     }
   }

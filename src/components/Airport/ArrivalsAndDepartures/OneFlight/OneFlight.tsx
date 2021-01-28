@@ -1,17 +1,7 @@
 import React from 'react';
 import './OneFlight.scss';
 import getLocalData from '../../../../utils/getLocalData';
-
-interface OneFlightProps {
-  time: number,
-  offset: number,
-  airlineCodeIata: string,
-  airlineCodeIcao: string,
-  airportTo: string,
-  airportToCode: string,
-  aircraftNumber: string,
-  aircraftModel: string
-}
+import { OneFlightProps } from '../../../../types/airportDataTypes';
 
 const OneFlight:React.FC<OneFlightProps> = ({
   time, offset,
@@ -19,6 +9,7 @@ const OneFlight:React.FC<OneFlightProps> = ({
   airlineCodeIata,
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
+  const image = `https://cdn.flightradar24.com/assets/airlines/logotypes/${airlineCodeIata}_${airlineCodeIcao}.png`;
   return (
     <div className="airport-flight">
       <div className="airport-flight__time">
@@ -26,7 +17,7 @@ const OneFlight:React.FC<OneFlightProps> = ({
         <span>Scheduled</span>
       </div>
       <div className="airport-flight__airlineLogo">
-        <img src={`https://cdn.flightradar24.com/assets/airlines/logotypes/${airlineCodeIata}_${airlineCodeIcao}.png`} alt="logo" />
+        <img src={image} alt="logo" />
       </div>
       <div className="airport-flight__flightInformation">
         <div className="airport-flight__flightInformation-airport">

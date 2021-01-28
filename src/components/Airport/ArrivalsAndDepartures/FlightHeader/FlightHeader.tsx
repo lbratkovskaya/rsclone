@@ -1,10 +1,6 @@
 import React from 'react';
 import './FlightHeader.scss';
-
-interface FlightHeaderProps {
-  mode: string
-  date: string
-}
+import { FlightHeaderProps } from '../../../../types/airportDataTypes';
 
 const FlightHeader:React.FC<FlightHeaderProps> = ({ mode, date }: FlightHeaderProps)
 : JSX.Element => (

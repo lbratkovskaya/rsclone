@@ -1,18 +1,7 @@
 import React from 'react';
+import { InfoLinksProps } from '../../../types/airportDataTypes';
 
-type Urls = {
-  webSite: string,
-  wikipedia:string,
-  twitter:string,
-  googleMaps:string,
-  flightRadar:string
-};
-
-interface InfolinksProps {
-  links: Urls
-}
-
-const Infolinks:React.FC<InfolinksProps> = ({ links }:InfolinksProps) => (
+const InfoLinks:React.FC<InfoLinksProps> = ({ links }: InfoLinksProps) => (
   <div className="airport-infoLinks">
     <p>Find more info:</p>
     <ul>
@@ -23,4 +12,4 @@ const Infolinks:React.FC<InfolinksProps> = ({ links }:InfolinksProps) => (
   </div>
 );
 
-export default Infolinks;
+export default InfoLinks;

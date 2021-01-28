@@ -2,30 +2,19 @@ import React from 'react';
 import General from '../../../img/General';
 import Arrivals from '../../../img/Arrivals';
 import Departures from '../../../img/Departures';
+import { ButtonProps } from '../../../types/airportDataTypes';
 import './Button.scss';
-
-type ChangeTabHandler = (num: number) => void;
-
-interface ButtonProps {
-  num: number,
-  name: string,
-  active: number,
-  changeTabHandler:ChangeTabHandler
-}
 
 const Button:React.FC<ButtonProps> = ({
   num, name, active, changeTabHandler,
-}:ButtonProps) => {
+}: ButtonProps) => {
   const handleTab = (e:React.MouseEvent<HTMLButtonElement>) => {
     if (!(e.target instanceof HTMLButtonElement || e.target instanceof SVGElement)) {
       return;
     }
-    if (e.target instanceof HTMLButtonElement) {
-      changeTabHandler(+e.target.dataset.name);
-    }
-    if (e.target instanceof SVGElement) {
-      changeTabHandler(+e.target.parentElement.dataset.name);
-    }
+    const tabHandlerTarget = (e.target instanceof HTMLButtonElement)
+      ? +e.target.dataset.name : +e.target.parentElement.dataset.name;
+    changeTabHandler(tabHandlerTarget);
   };
 
   let icon;
@@ -41,7 +30,7 @@ const Button:React.FC<ButtonProps> = ({
     <button
       type="button"
       data-name={num}
-      className={active === num ? 'airport-button airport-button-active' : 'airport-button'}
+      className={`airport-button ${active === num ? 'airport-button-active' : ''}`}
       name={name}
       onClick={handleTab}
     >
