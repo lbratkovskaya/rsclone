@@ -6,7 +6,11 @@ const app = express();
 app.use(cors());
 
 app.get('/api/flights', async (req, res) => {
-    await https.get(`https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${req.query.bounds}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`, responseHandler(res))
+  await https.get(`https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${req.query.bounds}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`, responseHandler(res))
+});
+
+app.get('/api/fly', async (req, res) => {
+  await https.get(`https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=${req.query.flightCode}`, responseHandler(res))
 });
 
 app.get('/api/airport', async (req, res) => {

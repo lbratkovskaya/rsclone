@@ -95,3 +95,31 @@ export type RatingInfo = {
   rating: number
   total: number
 };
+
+export type Timezone = {
+  abbr: any
+  abbrName: string
+  isDst: boolean
+  name: string
+  offset: number
+  offsetHours: string
+};
+
+export type FlightTime = {
+  estimated: {
+    departure: number | null,
+    arrival: number | null}
+  historical: {
+    flighttime: string,
+    delay: string}
+  other: {
+    eta: number | null,
+    updated: number | null}
+  real:
+  {departure: number | null
+    arrival: number | null}
+  scheduled: {
+    departure: number | null,
+    arrival: number | null
+  }
+};

@@ -1,0 +1,22 @@
+.flight-header {
+  width: 303px;
+  background: #333;
+  color: white;
+  font-size: 12px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+
+  h3 {
+    color: #f8C023;
+    margin: 0;
+
+    span:first-child {
+      font-weight: bold;
+      font-size: 17.5px;
+    }
+  }
+
+  p {
+    margin: 0;
+  }
+}
