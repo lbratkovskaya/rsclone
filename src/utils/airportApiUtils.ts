@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { WeatherInfo } from '../types/airportDataTypes';
 
 export const getWeatherURL = (lat: number, lon: number): string => {

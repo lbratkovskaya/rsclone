@@ -9,7 +9,19 @@ const OneFlight:React.FC<OneFlightProps> = ({
   airlineCodeIata,
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
-  const image = `https://cdn.flightradar24.com/assets/airlines/logotypes/${airlineCodeIata}_${airlineCodeIcao}.png`;
+  const img = document.createElement('img');
+  let isLoadedFromFirst = false;
+  img.src = `https://cdn.flightradar24.com/assets/airlines/logotypes/${airlineCodeIata}_${airlineCodeIcao}.png`;
+  img.onload = () => {
+    isLoadedFromFirst = true;
+  };
+
+  setTimeout(() => {
+    if (!isLoadedFromFirst) {
+      img.src = `https://content.airhex.com/content/logos/airlines_${airlineCodeIata}_60_20_r.png`;
+    }
+  }, 1000);
+
   return (
     <div className="airport-flight">
       <div className="airport-flight__time">
@@ -17,7 +29,7 @@ const OneFlight:React.FC<OneFlightProps> = ({
         <span>Scheduled</span>
       </div>
       <div className="airport-flight__airlineLogo">
-        <img src={image} alt="logo" />
+        <img src={img.src} alt="logo" />
       </div>
       <div className="airport-flight__flightInformation">
         <div className="airport-flight__flightInformation-airport">
