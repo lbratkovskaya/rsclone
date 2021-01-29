@@ -1,6 +1,6 @@
 import React from 'react';
-import Routes from '../../../img/Routes';
-import Arrow from '../../../img/Arrow';
+import Routes from '../SVGComponents/Routes';
+import Arrow from '../SVGComponents/Arrow';
 import './ScheduledFlights.scss';
 import { ScheduledFlightsProps } from '../../../types/airportDataTypes';
 import { futurePeriod } from '../../../utils/airportConstants';

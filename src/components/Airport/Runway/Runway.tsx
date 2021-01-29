@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Arrow from '../../../img/Arrow';
-import RunwayIcon from '../../../img/RunwayIcon';
+import Arrow from '../SVGComponents/Arrow';
+import RunwayIcon from '../SVGComponents/RunwayIcon';
 import './Runway.scss';
 import { RunwayProps } from '../../../types/airportDataTypes';
 

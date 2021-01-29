@@ -1,6 +1,6 @@
 import React from 'react';
 import { AirportPhotoProps } from '../../../types/airportDataTypes';
-import GoTo from '../../../img/Goto';
+import GoTo from '../SVGComponents/Goto';
 import './AirportPhoto.scss';
 
 const AirportPhoto:React.FC<AirportPhotoProps> = ({ airportInfo }: AirportPhotoProps)

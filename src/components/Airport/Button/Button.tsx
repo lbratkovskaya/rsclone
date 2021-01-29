@@ -1,7 +1,7 @@
 import React from 'react';
-import General from '../../../img/General';
-import Arrivals from '../../../img/Arrivals';
-import Departures from '../../../img/Departures';
+import General from '../SVGComponents/General';
+import Arrivals from '../SVGComponents/Arrivals';
+import Departures from '../SVGComponents/Departures';
 import { ButtonProps } from '../../../types/airportDataTypes';
 import './Button.scss';
 

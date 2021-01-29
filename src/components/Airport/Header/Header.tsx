@@ -1,6 +1,6 @@
 import React from 'react';
 import { HeaderProps } from '../../../types/airportDataTypes';
-import Close from '../../../img/Close';
+import Close from '../SVGComponents/Close';
 import './Header.scss';
 import getLocalData from '../../../utils/getLocalData';
 
