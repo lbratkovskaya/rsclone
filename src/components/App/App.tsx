@@ -1,7 +1,7 @@
 import React from 'react';
 import './index.scss';
-import Register from '../Register/Register';
+import StartForm from '../StartForm/StartForm';
 
 const App = (): JSX.Element => (
-  <Register />);
+  <StartForm />);
 export default App;
