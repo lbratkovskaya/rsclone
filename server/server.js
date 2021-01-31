@@ -17,10 +17,10 @@ const uri = "mongodb+srv://dbuser:dbpassword@cluster0.7s7qp.mongodb.net/rsclone?
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
   if (err) {
-    throw err
-  } else {
-    console.log('MongoDB is connected');
-  }
+    throw err;
+  } 
+
+  console.log('MongoDB is connected');
 });
 
 app.use(cors({
@@ -45,12 +45,13 @@ authRouter.route('/register').post((req, res) => {
   const { username, password } = req.body
 
   User.findOne({ username }, async (err, doc) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
 
     if (doc) {
       res.send(`User ${req.body.username} already exists`);
     } else {
-
       const hashedPassword = await bcrypt.hash(password, 10);
 
       const newUser = new User({
