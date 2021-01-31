@@ -1,0 +1,6 @@
+const CORS = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+};
+
+module.exports = CORS;
