@@ -8,7 +8,7 @@ import {
   TileLayer,
 } from 'react-leaflet';
 import FlightsLayer from '../FlightsLayer';
-import AirportsLayer from '../AirportsLayer';
+import FuncAirportsLayer from '../FuncAirportsLayer';
 import { FlightMapState } from '../../types/FlightsMapType';
 import { getMapURL } from '../../utils/apiUtils';
 import { EURASIAN_CENTER, mapZoom } from '../../utils/constants';
@@ -38,7 +38,7 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
           url={getMapURL()}
         />
         <FlightsLayer />
-        <AirportsLayer />
+        <FuncAirportsLayer />
       </MapContainer>
     );
   }
