@@ -2,6 +2,7 @@ import React from 'react';
 import './OneFlight.scss';
 import getLocalData from '../../../../utils/getLocalData';
 import { OneFlightProps } from '../../../../types/airportDataTypes';
+import { firstLogoUrl, secondLogoUrl } from '../../../../utils/airportApiUtils';
 
 const OneFlight:React.FC<OneFlightProps> = ({
   time, offset,
@@ -10,15 +11,13 @@ const OneFlight:React.FC<OneFlightProps> = ({
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
   const img = document.createElement('img');
-  let isLoadedFromFirst = false;
-  img.src = `https://cdn.flightradar24.com/assets/airlines/logotypes/${airlineCodeIata}_${airlineCodeIcao}.png`;
-  img.onload = () => {
-    isLoadedFromFirst = true;
+  img.src = firstLogoUrl(airlineCodeIata, airlineCodeIcao);
+  img.onerror = () => {
+    img.src = secondLogoUrl(airlineCodeIata);
   };
-
-  // if (!isLoadedFromFirst) {
-  //   img.src = `https://content.airhex.com/content/logos/airlines_${airlineCodeIata}_60_20_r.png`;
-  // }
+  img.onerror = () => {
+    img.src = '';
+  };
 
   return (
     <div className="airport-flight">

@@ -51,8 +51,4 @@ function responseHandler(res) {
       res.send(data);
     });
   };
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 1cb026cde2d217785e56ee816d930a436c8fd6fd
