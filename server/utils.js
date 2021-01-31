@@ -1,6 +1,11 @@
 const CORS = {
-    origin: 'http://localhost:3000',
-    credentials: true,
+  origin: 'http://localhost:3000',
+  credentials: true,
 };
 
-module.exports = CORS;
+const PORT = process.env.PORT || 3000;
+
+module.exports = {
+  CORS,
+  PORT,
+}
