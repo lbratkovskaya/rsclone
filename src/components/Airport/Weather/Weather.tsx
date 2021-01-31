@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { WeatherProps, WeatherInfo, Temp, Wind } from '../../../types/airportDataTypes';
+import {
+  WeatherProps, WeatherInfo, Temp, Wind,
+} from '../../../types/airportDataTypes';
 import { getWeatherURL, getWeatherIcon } from '../../../utils/airportApiUtils';
 import './Weather.scss';
 

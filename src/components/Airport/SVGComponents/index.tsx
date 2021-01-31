@@ -14,4 +14,4 @@ export {
   General,
   Routes,
   RunwayIcon,
-}
+};

@@ -1,2 +1,2 @@
-// export const diffInFlightRadar = 1000;
-export const futurePeriod = 7;
+const futurePeriod = 7;
+export default futurePeriod;

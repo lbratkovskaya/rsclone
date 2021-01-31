@@ -1,0 +1,264 @@
+{
+  "request": {
+   "flightId": {
+    "requested": "1052488470",
+    "interpreted": 1052488470
+   },
+   "includeFlightPlan": {
+    "requested": "false",
+    "interpreted": false
+   },
+   "maxPositions": {
+    "requested": "20",
+    "interpreted": 20
+   },
+   "url": "https://api.flightstats.com/flex/flightstatus/rest/v2/json/flight/track/1052488470?includeFlightPlan=false&maxPositions=20"
+  },
+  "appendix": {
+   "airlines": [
+    {
+     "fs": "UT",
+     "iata": "UT",
+     "icao": "UTA",
+     "name": "UTair Aviation",
+     "active": true
+    }
+   ],
+   "airports": [
+    {
+     "fs": "TJM",
+     "iata": "TJM",
+     "icao": "USTR",
+     "faa": "",
+     "name": "Roshchino International Airport",
+     "city": "Tyumen",
+     "cityCode": "TJM",
+     "countryCode": "RU",
+     "countryName": "Russian Federation",
+     "regionName": "Europe",
+     "timeZoneRegionName": "Asia/Yekaterinburg",
+     "weatherZone": "",
+     "localTime": "2021-01-16T13:58:58.825",
+     "utcOffsetHours": 5,
+     "latitude": 57.181826,
+     "longitude": 65.350246,
+     "elevationFeet": 371,
+     "classification": 3,
+     "active": true,
+     "weatherUrl": "https://api.flightstats.com/flex/weather/rest/v1/json/all/TJM?codeType=fs",
+     "delayIndexUrl": "https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/TJM?codeType=fs"
+    },
+    {
+     "fs": "KZN",
+     "iata": "KZN",
+     "icao": "UWKD",
+     "faa": "",
+     "name": "Kazan International Airport",
+     "city": "Kazan",
+     "cityCode": "KZN",
+     "countryCode": "RU",
+     "countryName": "Russian Federation",
+     "regionName": "Europe",
+     "timeZoneRegionName": "Europe/Moscow",
+     "weatherZone": "",
+     "localTime": "2021-01-16T11:58:58.825",
+     "utcOffsetHours": 3,
+     "latitude": 55.608439,
+     "longitude": 49.29824,
+     "elevationFeet": 407,
+     "classification": 3,
+     "active": true,
+     "weatherUrl": "https://api.flightstats.com/flex/weather/rest/v1/json/all/KZN?codeType=fs",
+     "delayIndexUrl": "https://api.flightstats.com/flex/delayindex/rest/v1/json/airports/KZN?codeType=fs"
+    }
+   ],
+   "equipments": [
+    {
+     "iata": "AT7",
+     "name": "ATR 72",
+     "turboProp": true,
+     "jet": false,
+     "widebody": false,
+     "regional": true
+    }
+   ]
+  },
+  "flightTrack": {
+   "flightId": 1052488470,
+   "carrierFsCode": "UT",
+   "flightNumber": "209",
+   "tailNumber": "VQ-BMB",
+   "callsign": "UTA209",
+   "departureAirportFsCode": "TJM",
+   "arrivalAirportFsCode": "KZN",
+   "departureDate": {
+    "dateUtc": "2021-01-15T13:55:00.000Z",
+    "dateLocal": "2021-01-15T18:55:00.000"
+   },
+   "equipment": "AT7",
+   "bearing": 264.6080538716432,
+   "heading": 79.1028031532244,
+   "positions": [
+    {
+     "lon": 63.4767,
+     "lat": 57.1854,
+     "speedMph": 65,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:35:33.000Z"
+    },
+    {
+     "lon": 63.4513,
+     "lat": 57.183,
+     "speedMph": 158,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:34:33.000Z"
+    },
+    {
+     "lon": 63.4534,
+     "lat": 57.1835,
+     "speedMph": 323,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:33:33.000Z"
+    },
+    {
+     "lon": 63.3119,
+     "lat": 57.1686,
+     "speedMph": 329,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:32:33.000Z"
+    },
+    {
+     "lon": 63.1731,
+     "lat": 57.1539,
+     "speedMph": 342,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:31:33.000Z"
+    },
+    {
+     "lon": 63.0228,
+     "lat": 57.1378,
+     "speedMph": 341,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:30:33.000Z"
+    },
+    {
+     "lon": 62.8753,
+     "lat": 57.1218,
+     "speedMph": 343,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:29:33.000Z"
+    },
+    {
+     "lon": 62.7238,
+     "lat": 57.1053,
+     "speedMph": 337,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:28:33.000Z"
+    },
+    {
+     "lon": 62.5782,
+     "lat": 57.0892,
+     "speedMph": 345,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:27:33.000Z"
+    },
+    {
+     "lon": 62.429,
+     "lat": 57.0724,
+     "speedMph": 349,
+     "altitudeFt": 22999,
+     "source": "derived",
+     "date": "2021-01-15T19:26:33.000Z"
+    },
+    {
+     "lon": 62.278,
+     "lat": 57.0553,
+     "speedMph": 350,
+     "altitudeFt": 22999,
+     "source": "derived",
+     "date": "2021-01-15T19:25:33.000Z"
+    },
+    {
+     "lon": 62.1255,
+     "lat": 57.0388,
+     "speedMph": 347,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:24:33.000Z"
+    },
+    {
+     "lon": 61.9748,
+     "lat": 57.0203,
+     "speedMph": 340,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:23:33.000Z"
+    },
+    {
+     "lon": 61.827,
+     "lat": 57.0032,
+     "speedMph": 315,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:22:33.000Z"
+    },
+    {
+     "lon": 61.676,
+     "lat": 56.9864,
+     "speedMph": 351,
+     "altitudeFt": 23001,
+     "source": "derived",
+     "date": "2021-01-15T19:21:33.000Z"
+    },
+    {
+     "lon": 61.5262,
+     "lat": 56.9688,
+     "speedMph": 360,
+     "altitudeFt": 23001,
+     "source": "derived",
+     "date": "2021-01-15T19:20:33.000Z"
+    },
+    {
+     "lon": 61.3733,
+     "lat": 56.9519,
+     "speedMph": 381,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:19:33.000Z"
+    },
+    {
+     "lon": 61.2125,
+     "lat": 56.928,
+     "speedMph": 377,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:18:32.000Z"
+    },
+    {
+     "lon": 61.038,
+     "lat": 56.8975,
+     "speedMph": 389,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:17:32.000Z"
+    },
+    {
+     "lon": 60.9508,
+     "lat": 56.8746,
+     "speedMph": 521,
+     "altitudeFt": 23000,
+     "source": "derived",
+     "date": "2021-01-15T19:16:32.000Z"
+    }
+   ]
+  }
+ }

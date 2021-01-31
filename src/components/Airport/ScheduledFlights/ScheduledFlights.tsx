@@ -3,7 +3,7 @@ import Routes from '../SVGComponents/Routes';
 import Arrow from '../SVGComponents/Arrow';
 import './ScheduledFlights.scss';
 import { ScheduledFlightsProps } from '../../../types/airportDataTypes';
-import { futurePeriod } from '../../../utils/airportConstants';
+import futurePeriod from '../../../utils/airportConstants';
 
 const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: ScheduledFlightsProps)
 : JSX.Element => {
@@ -12,10 +12,10 @@ const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: Schedule
   return (
     <div className="airport-schedule">
       <h2 className="airport-schedule__name">
-        `SCHEDULED FLIGHTS - NEXT $
+        SCHEDULED FLIGHTS - NEXT
         {futurePeriod}
         {' '}
-        DAYS`
+        DAYS
       </h2>
       <div className="airport-schedule__container">
         <div className="airport-schedule__icon"><Routes /></div>

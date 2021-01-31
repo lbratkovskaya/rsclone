@@ -1,8 +1,7 @@
 import React from 'react';
 import { HeaderProps } from '../../../types/airportDataTypes';
 import Close from '../SVGComponents/Close';
-import getLocalData from '../../../utils/getLocalData';
-import addZeroToTimes from '../../../utils/addZeroToTime';
+import { addZeroToTimes, getLocalData } from '../../../utils';
 import './Header.scss';
 
 const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps) => {

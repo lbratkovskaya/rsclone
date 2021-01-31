@@ -53,6 +53,10 @@
     background-color: #d1d0d0;
   }
 
+  & tbody {
+    background-color: #efeff4;
+  }
+
   & .reverse+svg {
     transform: rotate(180deg);
   }

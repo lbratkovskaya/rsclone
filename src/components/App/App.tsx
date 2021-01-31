@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import './index.scss';
+import FlightsMap from '../FlightsMap';
 import Airport from '../Airport/Airport';
+import './index.scss';
 
 const App:React.FC = (): JSX.Element => {
   const [openAirportPanel] = useState(true);
@@ -8,6 +9,7 @@ const App:React.FC = (): JSX.Element => {
 
   return (
     <>
+      <FlightsMap />
       <Airport code={code} openAirportPanel={openAirportPanel} />
     </>
   );
