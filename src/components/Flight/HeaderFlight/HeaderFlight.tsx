@@ -1,6 +1,6 @@
 import React from 'react';
 import './HeaderFlight.scss';
-import Close from '../../../img/Close';
+import Close from '../SVGComponents/Close';
 
 interface HeaderFlightPanelProps {
   number: string
@@ -23,6 +23,7 @@ const HeaderFlight:React.FC<HeaderFlightPanelProps> = ({
     <h3 className="flight-header__name">
       <span>{number}</span>
       <span>
+        {' '}
         /
         {callsign}
       </span>

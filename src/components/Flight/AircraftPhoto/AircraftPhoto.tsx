@@ -1,5 +1,5 @@
 import React from 'react';
-import GoTo from '../../../img/Goto';
+import GoTo from '../SVGComponents/GoTo';
 import './AircraftPhoto.scss';
 
 interface AircraftPhotoProps {

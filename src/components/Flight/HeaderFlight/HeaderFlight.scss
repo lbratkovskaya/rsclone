@@ -15,8 +15,22 @@
       font-size: 17.5px;
     }
   }
-
   p {
     margin: 0;
+  }
+  .panel-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 18px;
+    height: 18px;
+  
+    &:hover {
+      cursor: pointer;
+    }
+  
+    polygon {
+      fill: white;
+    }
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import Airborne from '../../../img/Airborne';
+import Airborne from '../SVGComponents/Airborne';
 import './FlightInfo.scss';
 import { Timezone, FlightTime } from '../../../types/types';
 import addPlusMinusUTCTime from '../../../utils/addPlusMinusUTCTime';

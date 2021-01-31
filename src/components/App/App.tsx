@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
 import './index.scss';
-import Airport from '../Airport/Airport';
 import Flight from '../Flight/Flight';
 
 const App:React.FC = (): JSX.Element => {
-  const [openAirportPanel] = useState(false);
   const [openFlightPanel] = useState(true);
-  const code = 'MSQ';
-  const hexCode = '26ae5afd';
+  const hexCode = '26b3c1e2';
 
   return (
     <>
-      <Airport code={code} openAirportPanel={openAirportPanel} />
       <Flight hexCode={hexCode} openFlightPanel={openFlightPanel} />
     </>
   );
