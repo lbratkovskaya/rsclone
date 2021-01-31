@@ -6,20 +6,21 @@ import getLocalData from '../../../utils/getLocalData';
 import separateFlightsByDate from '../../../utils/separateFlightsBeDate';
 import './ArrivalsAndDepartures.scss';
 
-const Arrivals:React.FC<ArrivalsProps> = ({ code, mode }: ArrivalsProps): JSX.Element => {
+const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps): JSX.Element => {
   const [flights, setFlights] = useState<Flight[] | null>(null);
 
-  const modeInSingle = mode === 'arrivals' ? 'arrival' : 'departure';
-  const aimAirport = mode === 'arrivals' ? 'origin' : 'destination';
-  const aimAirportOffset = mode !== 'arrivals' ? 'origin' : 'destination';
+  const modeBoolean = mode === 'arrivals';
+  const modeInSingle = modeBoolean ? 'arrival' : 'departure';
+  const aimAirport = modeBoolean ? 'origin' : 'destination';
+  const aimAirportOffset = modeBoolean ? 'origin' : 'destination';
 
   const timestamp = Math.floor(((new Date()).getTime()) / 1000);
 
   useEffect(() => {
-    fetch(`/api/schedule?airportCode=${code}&mode=${mode}&timestamp=${timestamp}`, { method: 'GET' })
+    fetch(`/api/schedule?airportCode=${airportCode}&mode=${mode}&timestamp=${timestamp}`, { method: 'GET' })
       .then((response) => response.json())
       .then((res) => setFlights(res.result.response.airport.pluginData.schedule[mode].data));
-  }, [code, mode]);
+  }, [airportCode, mode]);
 
   let flightsSeparatedByDate: Array<Array<Flight>> = [];
   if (flights) {
@@ -29,26 +30,31 @@ const Arrivals:React.FC<ArrivalsProps> = ({ code, mode }: ArrivalsProps): JSX.El
   return (
     <div className="airport-flight-wrapper">
       { flightsSeparatedByDate
-        && flightsSeparatedByDate.map((flightsDay: Flight[]) => (
-          <React.Fragment key={Math.random()}>
+        && flightsSeparatedByDate.map((flightsDay: Flight[], i: number) => (
+          <React.Fragment key={`flightsDay_${i}`}>
             <FlightHeader
               mode={mode}
-              date={getLocalData(flightsDay[0].flight.time.scheduled[modeInSingle],
-                flightsDay[0].flight.airport.origin.timezone.offset).toString()}
+              date={getLocalData(flightsDay[0]?.flight?.time?.scheduled[modeInSingle],
+                flightsDay[0]?.flight?.airport?.origin?.timezone?.offset).toString() || ''}
             />
-            {flightsDay.map((flight:Flight) => (
-              <OneFlight
-                key={flight.flight.identification.number.default}
-                time={flight.flight.time.scheduled[modeInSingle]}
-                offset={flight.flight.airport[aimAirportOffset].timezone.offset}
-                airlineCodeIata={flight.flight.airline.code.iata}
-                airlineCodeIcao={flight.flight.airline.code.icao}
-                airportTo={flight.flight.airport[aimAirport].position.region.city}
-                airportToCode={flight.flight.airport[aimAirport].code.iata}
-                aircraftNumber={flight.flight.identification.number.default}
-                aircraftModel={flight.flight.aircraft.model.code}
-              />
-            ))}
+            {flightsDay.map((flight:Flight) => {
+              const { airport, identification, aircraft } = flight.flight;
+              const { position } = airport?.[aimAirport] || {};
+              const { code } = flight?.flight?.airline || {};
+              return (
+                <OneFlight
+                  key={identification.number.default}
+                  time={flight.flight.time?.scheduled[modeInSingle] || 0}
+                  offset={airport[aimAirportOffset]?.timezone?.offset || 0}
+                  airlineCodeIata={code.iata || 'N/A'}
+                  airlineCodeIcao={code.icao || 'N/A'}
+                  airportTo={position?.region?.city || 'N/A'}
+                  airportToCode={code?.iata || 'N/A'}
+                  aircraftNumber={identification?.number?.default || 'N/A'}
+                  aircraftModel={aircraft?.model?.code || 'N/A'}
+                />
+              );
+            })}
           </React.Fragment>
         ))}
     </div>

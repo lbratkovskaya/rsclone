@@ -10,7 +10,7 @@ const FlightHeader:React.FC<FlightHeaderProps> = ({ mode, date }: FlightHeaderPr
     {date.slice(0, 3).toUpperCase()}
     ,
     {date.slice(3, 8).toUpperCase()}
-    {date.slice(8, 11)}
+    {date.slice(8, 11) }
   </p>
 );
 

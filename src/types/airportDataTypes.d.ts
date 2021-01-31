@@ -6,126 +6,126 @@ type Photo = {
 };
 
 export type AirportInfo = {
-  airportImages: {
-    large: Photo[],
-    medium: Photo[],
-    thumbnails: Photo[],
+  airportImages?: {
+    large?: Photo[] | null,
+    medium?: Photo[] | null,
+    thumbnails?: Photo[] | null,
   },
-  code: {
-    iata: string,
-    icao: string,
+  code?: {
+    iata?: string | null,
+    icao?: string | null,
   },
-  delayIndex: {
-    arrivals: null,
-    departures: null,
+  delayIndex?: {
+    arrivals?: any,
+    departures?: any,
   },
-  name: string,
-  position: {
-    country: {name: string, code: string, id: number},
-    elevation: number,
-    latitude: number,
-    longitude: number,
-    region: {city: string},
+  name?: string | null,
+  position?: {
+    country?: {name?: string | null, code?: string | null, id?: number | null},
+    elevation?: number | null,
+    latitude?: number | null,
+    longitude?: number | null,
+    region?: {city?: string | null},
   },
-  stats: null,
-  timezone: {
-    abbr: string,
-    abbrName: null,
-    isDst: boolean,
-    name: string,
-    offset: number,
+  stats?: any,
+  timezone?: {
+    abbr?: string | null,
+    abbrName?: any,
+    isDst?: boolean | null,
+    name?: string | null,
+    offset?: number | null,
   }
-  url: {
-    homepage: string | null,
-    webcam: string | null,
-    wikipedia: string | null,
+  url?: {
+    homepage?: string | null,
+    webcam?: string | null,
+    wikipedia?: string | null,
   }
-  visible: boolean,
+  visible?: boolean | null,
 };
 
 export type Schedule = {
-  airportsServed: number,
-  countriesServed: number,
-  topRoute: {
-    count: number,
-    from: string,
-    to: string,
+  airportsServed?: number | null,
+  countriesServed?: number | null,
+  topRoute?: {
+    count?: number | null,
+    from?: string | null,
+    to?: string | null,
   }
-  totalFlights: number,
+  totalFlights?: number | null,
 };
 
 export type Runways = {
-  length: {
-    ft: number,
-    m: number,
+  length?: {
+    ft?: number | null,
+    m: number | null,
   },
-  name: string,
-  surface: {
-    code: string,
-    name: string,
+  name?: string | null,
+  surface?: {
+    code?: string | null,
+    name?: string | null,
   }
 };
 
 export type Flight = {
-  flight : {
+  flight?: {
     aircraft: any,
-    airline: {
-      code: {
+    airline?: {
+      code?: {
         iata: string,
         icao: string,
       }
-      name: string,
-      short: string,
+      name?: string,
+      short?: string,
     }
-    airport: {
-      destination: any,
-      origin: any,
-      real: any,
+    airport?: {
+      destination?: any,
+      origin?: any,
+      real?: any,
     }
-    identification: any,
-    owner: any,
-    status: any,
-    time: any,
+    identification?: any,
+    owner?: any,
+    status?: any,
+    time?: any,
   }
 };
 
 export type RatingInfo = {
-  color: string,
-  percentage: number,
-  rating: number,
-  total: number,
+  color?: string | null,
+  percentage?: number | null,
+  rating?: number | null,
+  total?: number | null,
 };
 
 export interface AirportPhotoProps {
-  airportInfo: AirportInfo,
+  airportInfo?: AirportInfo | null,
 }
 
 export interface ArrivalsProps {
-  code: string,
-  mode: string,
+  airportCode?: string | null,
+  mode?: string | null,
 }
 
 export interface AirportProps {
-  code: string,
-  openAirportPanel: boolean,
+  code?: string | null,
+  openAirportPanel?: boolean | null,
 }
 
 export interface FlightHeaderProps {
-  mode: string,
-  date: string,
+  mode?: string | null,
+  date?: string | null,
 }
 
 export interface ScheduledFlightsProps {
-  schedule: Schedule,
+  schedule?: Schedule | null,
 }
 
 export interface RunwayProps {
-  satelliteImage: string,
-  runways: Runways[],
+  satelliteImage?: string | null,
+  runways?: Runways[] | null,
 }
 
 export interface WeatherProps {
-  airportInfo: AirportInfo,
+  airportInfo?: AirportInfo | null,
 }
 
 export interface RatingProps {
@@ -136,18 +136,6 @@ export interface RatingProps {
 export interface HeaderProps {
   airportInfo: AirportInfo,
   closeHandler: () => void,
-}
-
-type Urls = {
-  webSite: string,
-  wikipedia:string,
-  twitter:string,
-  googleMaps:string,
-  flightRadar:string,
-};
-
-export interface InfoLinksProps {
-  links: Urls,
 }
 
 export interface OneFlightProps {
@@ -168,11 +156,22 @@ export interface ButtonProps {
   changeTabHandler: (num: number) => void,
 }
 
-export type WeatherInfo = {id:number, main:string, description: string, icon: string};
+export type WeatherInfo = {
+  id?:number | null,
+  main?:string | null,
+  description?: string | null,
+  icon?: string | null
+};
 
 export type Temp = {
-  temp:number, feels_like :number, temp_min:number,
-  temp_max:number, pressure:number, humidity:number, sea_level:number, grnd_level:number,
+  temp?:number | null,
+  feels_like?: number | null,
+  temp_min?:number | null,
+  temp_max?:number | null,
+  pressure?:number | null,
+  humidity?:number | null,
+  sea_level?:number | null,
+  grnd_level?: number | null,
 };
 
 export type Wind= {speed: number, deg: number};

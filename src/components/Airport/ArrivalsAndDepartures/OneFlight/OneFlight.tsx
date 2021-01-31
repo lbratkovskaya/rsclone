@@ -2,11 +2,16 @@ import React from 'react';
 import './OneFlight.scss';
 import getLocalData from '../../../../utils/getLocalData';
 import { OneFlightProps } from '../../../../types/airportDataTypes';
-import { firstLogoUrl, secondLogoUrl } from '../../../../utils/airportApiUtils';
+import { firstLogoUrl, secondLogoUrl, noLogoUrl } from '../../../../utils/airportApiUtils';
 
 const OneFlight:React.FC<OneFlightProps> = ({
-  time, offset,
-  aircraftModel, aircraftNumber, airportTo, airlineCodeIcao, airportToCode,
+  time,
+  offset,
+  aircraftModel,
+  aircraftNumber,
+  airportTo,
+  airlineCodeIcao,
+  airportToCode,
   airlineCodeIata,
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
@@ -16,7 +21,7 @@ const OneFlight:React.FC<OneFlightProps> = ({
     img.src = secondLogoUrl(airlineCodeIata);
   };
   img.onerror = () => {
-    img.src = '';
+    img.src = noLogoUrl;
   };
 
   return (
@@ -31,20 +36,20 @@ const OneFlight:React.FC<OneFlightProps> = ({
       <div className="airport-flight__flightInformation">
         <div className="airport-flight__flightInformation-airport">
           <span>
-            {airportTo}
+            {airportTo || 'N/A'}
             &nbsp;
           </span>
           <span>
             (
-            {airportToCode}
+            {airportToCode || 'N/A'}
             )
           </span>
         </div>
         <div className="airport-flight__flightInformation-aircraft">
-          <span>{aircraftNumber}</span>
+          <span>{aircraftNumber || 'N/A'}</span>
           <span>
             (
-            {aircraftModel}
+            {aircraftModel || 'N/A'}
             )
           </span>
         </div>

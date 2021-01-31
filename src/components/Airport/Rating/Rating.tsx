@@ -24,7 +24,7 @@ const Rating:React.FC<RatingProps> = ({ iata, name }:RatingProps) => {
           <span className="airport-rating__stars" />
         </p>
         <p>
-          {ratingInfo.total}
+          {ratingInfo.total || 'N/A'}
           {' '}
           <span className="airport-rating__name">RSCloneFlightRadar</span>
           {' '}

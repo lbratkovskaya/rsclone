@@ -84,14 +84,14 @@ module.exports = (env, options) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      // new CopyWebpackPlugin({
-      //   patterns: [
-      //     { from: 'src/img', to: 'img' },
-      //   ]
-      // }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'src/img', to: 'img' },
+        ]
+      }),
       new HtmlWebPackPlugin({
         template: './src/index.html',
-        // favicon: "./src/img/jet.svg",
+        favicon: "./src/img/jet.svg",
       }),
       new MiniCssExtractPlugin({ filename: 'style.css' }),
       new ESLintPlugin(),

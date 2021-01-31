@@ -53,22 +53,26 @@ const Airport:React.FC<AirportProps> = ({
     setOpenPanel(false);
   };
 
+  const checkTab1 = activeTab === 1 && airportInfo && schedule && satelliteImageData;
+  const checkTab2 = activeTab === 2 && airportInfo;
+  const checkTab3 = activeTab === 3 && airportInfo;
+
   return (
     <div id="airport" className={openPanel ? 'opened' : 'closed'}>
-      {airportInfo ? <Header airportInfo={airportInfo} closeHandler={closeHandler} /> : null}
-      {activeTab === 1 && airportInfo && schedule && satelliteImageData ? (
+      {!!airportInfo && <Header airportInfo={airportInfo} closeHandler={closeHandler} />}
+      {checkTab1 && (
         <>
           <AirportPhoto airportInfo={airportInfo} />
           <div className="airport-scroll-wrapper">
             <Weather airportInfo={airportInfo} />
-            <Rating iata={airportInfo.code.iata} name={airportInfo.name} />
+            <Rating iata={airportInfo.code?.iata || ''} name={airportInfo.name || ''} />
             <ScheduledFlights schedule={schedule} />
-            <Runway satelliteImage={satelliteImageData} runways={runwaysData} />
+            <Runway satelliteImage={satelliteImageData || ''} runways={runwaysData} />
           </div>
         </>
-      ) : null}
-      {activeTab === 2 && airportInfo ? <ArrivalsAndDepartures code={airportInfo.code.iata} mode="arrivals" /> : null}
-      {activeTab === 3 && airportInfo ? <ArrivalsAndDepartures code={airportInfo.code.iata} mode="departures" /> : null}
+      )}
+      {checkTab2 && <ArrivalsAndDepartures airportCode={airportInfo.code.iata} mode="arrivals" />}
+      {checkTab3 && <ArrivalsAndDepartures airportCode={airportInfo.code.iata} mode="departures" />}
       {buttons.map((button) => (
         <Button
           key={button.num}
