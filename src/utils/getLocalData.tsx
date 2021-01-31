@@ -1,6 +1,8 @@
 function getLocalData(time:number, offset:number) {
-  const tzoffset = (new Date()).getTimezoneOffset() * 60000; // offset in milliseconds
-  return new Date(time * 1000 + offset * 1000 + tzoffset);
+  const msecInHour = 60000;
+  const tzoffset = (new Date()).getTimezoneOffset() * msecInHour; // offset in milliseconds
+  const diffInFlightRadar = 1000;
+  return new Date(time * diffInFlightRadar + offset * diffInFlightRadar + tzoffset);
 }
 
 export default getLocalData;

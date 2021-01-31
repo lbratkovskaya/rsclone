@@ -24,11 +24,10 @@ module.exports = (env, options) => {
       },
     },
     devServer: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:3000',
-        }
-      },
+      proxy: [{
+        context: ['/auth', '/api'],
+        target: 'http://localhost:3000',
+      }],
       port: 9000,
     },
     module: {
@@ -84,14 +83,14 @@ module.exports = (env, options) => {
     },
     plugins: [
       new CleanWebpackPlugin(),
-      // new CopyWebpackPlugin({
-      //   patterns: [
-      //     { from: 'src/img', to: 'img' },
-      //   ]
-      // }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { from: 'src/img', to: 'img' },
+        ]
+      }),
       new HtmlWebPackPlugin({
         template: './src/index.html',
-        // favicon: "./src/img/jet.svg",
+        favicon: "./src/img/jet.svg",
       }),
       new MiniCssExtractPlugin({ filename: 'style.css' }),
       new ESLintPlugin(),

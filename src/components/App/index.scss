@@ -7,3 +7,14 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.leaflet-container {
+  width: 100%;
+  top: 0;
+  left: 0;
+  border-radius: 5px;
+  height: calc(100vh - 80px);
+  z-index: 1;
+  height: 40vw;
+  margin: auto;
+}
+

@@ -15,14 +15,14 @@
     width: 20px;
   }
 
-  path{
+  path {
     fill: white;
   }
 
   &:hover,
   &_active {
     color: #f8C023;
-    path{
+    path {
       fill:#f8C023;
     }
   }
