@@ -7,7 +7,7 @@ import {
   MapContainer,
   TileLayer,
 } from 'react-leaflet';
-import FlightsLayer from '../../components/FlightsLayer';
+import FlightsLayer from '../FlightsLayer';
 import AirportsLayer from '../AirportsLayer';
 import { FlightMapState } from '../../types/FlightsMapType';
 import { getMapURL } from '../../utils/apiUtils';

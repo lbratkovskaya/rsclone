@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    // "outDir": "./dist/",
+    "outDir": "./dist/",
     "module": "es6",
     "target": "es5",
     "jsx": "react",
@@ -20,3 +20,5 @@
     "src/test2.js"
   ]
 }
+
+

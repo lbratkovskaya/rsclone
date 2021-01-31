@@ -92,21 +92,23 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
 
     const icon = this.getIcon(aircraftType, trackAngle, withTrack);
 
-    return (<Marker
-      ref={this.markerRef}
-      position={position}
-      icon={icon}
-      zIndexOffset={altitude}
-      eventHandlers={{
-        mouseover: this.openIconPopup,
-        mouseout: this.closeIconPopup,
-        click: onIconClick,
-      }}
-    >
-      <Popup>
-        {callsign || unknownCallsign}
-      </Popup>
-    </Marker>);
+    return (
+      <Marker
+        ref={this.markerRef}
+        position={position}
+        icon={icon}
+        zIndexOffset={altitude}
+        eventHandlers={{
+          mouseover: this.openIconPopup,
+          mouseout: this.closeIconPopup,
+          click: onIconClick,
+        }}
+      >
+        <Popup>
+          {callsign || unknownCallsign}
+        </Popup>
+      </Marker>
+    );
   }
 }
 

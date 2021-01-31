@@ -129,16 +129,18 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
         || aircraft.currentPosition.longitude);
       const latitude = roundCoordinates(aircraft.positions[0].latitude
         || aircraft.currentPosition.latitude);
-      return (<AircraftMarker
-        key={flightId}
-        position={[latitude, longitude]}
-        altitude={aircraft.positions[0].altitude}
-        trackAngle={aircraft.positions[0].true_track}
-        callsign={aircraft.callsign}
-        aircraftType={aircraft.aircraft_type}
-        withTrack={trackShowingAircraft === flightId}
-        onIconClick={() => this.aircraftIconClickHandler(flightId)}
-      />);
+      return (
+        <AircraftMarker
+          key={flightId}
+          position={[latitude, longitude]}
+          altitude={aircraft.positions[0].altitude}
+          trackAngle={aircraft.positions[0].true_track}
+          callsign={aircraft.callsign}
+          aircraftType={aircraft.aircraft_type}
+          withTrack={trackShowingAircraft === flightId}
+          onIconClick={() => this.aircraftIconClickHandler(flightId)}
+        />
+      );
     });
   }
 

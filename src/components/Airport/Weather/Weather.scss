@@ -1,0 +1,45 @@
+
+.airport-weather {
+  width: 303px;
+  height: 103px;
+  background: #333;
+  box-sizing: border-box;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  background: #cacadf;
+  color: black;
+
+  & > * {
+    flex-basis: 33%;
+  }
+
+  &_upperCase {
+    font-size: 11px;
+  }
+
+  &__conditions,
+  &__temperature,
+  &__wind {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    border-right: 1px solid #6d6d6d;
+  }
+
+  &__wind {
+    border-right: none;
+    flex-basis: 31%;
+  }
+
+  &__conditions img {
+    width: fit-content;
+  }
+
+  &__degrees {
+    font-size: 18px;
+  }
+}
