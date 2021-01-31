@@ -28,29 +28,29 @@ const Arrivals:React.FC<ArrivalsProps> = ({ code, mode }: ArrivalsProps): JSX.El
 
   return (
     <div className="airport-flight-wrapper">
-      { flightsSeparatedByDate ? flightsSeparatedByDate.map((flightsDay: Flight[]) => (
-        <React.Fragment key={Math.random()}>
-          <FlightHeader
-            mode={mode}
-            date={getLocalData(flightsDay[0].flight.time.scheduled[modeInSingle],
-              flightsDay[0].flight.airport.origin.timezone.offset).toString()}
-          />
-          {flightsDay.map((flight:Flight) => (
-            <OneFlight
-              key={flight.flight.identification.number.default}
-              time={flight.flight.time.scheduled[modeInSingle]}
-              offset={flight.flight.airport[aimAirportOffset].timezone.offset}
-              airlineCodeIata={flight.flight.airline.code.iata}
-              airlineCodeIcao={flight.flight.airline.code.icao}
-              airportTo={flight.flight.airport[aimAirport].position.region.city}
-              airportToCode={flight.flight.airport[aimAirport].code.iata}
-              aircraftNumber={flight.flight.identification.number.default}
-              aircraftModel={flight.flight.aircraft.model.code}
+      { flightsSeparatedByDate
+        && flightsSeparatedByDate.map((flightsDay: Flight[]) => (
+          <React.Fragment key={Math.random()}>
+            <FlightHeader
+              mode={mode}
+              date={getLocalData(flightsDay[0].flight.time.scheduled[modeInSingle],
+                flightsDay[0].flight.airport.origin.timezone.offset).toString()}
             />
-          ))}
-        </React.Fragment>
-      ))
-        : null}
+            {flightsDay.map((flight:Flight) => (
+              <OneFlight
+                key={flight.flight.identification.number.default}
+                time={flight.flight.time.scheduled[modeInSingle]}
+                offset={flight.flight.airport[aimAirportOffset].timezone.offset}
+                airlineCodeIata={flight.flight.airline.code.iata}
+                airlineCodeIcao={flight.flight.airline.code.icao}
+                airportTo={flight.flight.airport[aimAirport].position.region.city}
+                airportToCode={flight.flight.airport[aimAirport].code.iata}
+                aircraftNumber={flight.flight.identification.number.default}
+                aircraftModel={flight.flight.aircraft.model.code}
+              />
+            ))}
+          </React.Fragment>
+        ))}
     </div>
   );
 };

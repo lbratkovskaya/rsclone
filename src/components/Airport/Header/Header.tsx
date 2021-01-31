@@ -1,25 +1,15 @@
 import React from 'react';
 import { HeaderProps } from '../../../types/airportDataTypes';
 import Close from '../SVGComponents/Close';
-import './Header.scss';
 import getLocalData from '../../../utils/getLocalData';
+import addZeroToTimes from '../../../utils/addZeroToTime';
+import './Header.scss';
 
 const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps) => {
   const flagUrl = `https://www.countryflags.io/${airportInfo.position.country.code}/flat/64.png`;
 
   const localTime = getLocalData((new Date().getTime()) / 1000,
     airportInfo.timezone.offset).toString();
-
-  const hours = airportInfo.timezone.offset / 3600;
-  let UTCTime = (hours) < 10 ? `0${hours}`
-    : hours;
-  if (hours > -1 && hours < 10) {
-    UTCTime = `0${hours}`;
-  } else if (hours < -1 && hours > -10) {
-    UTCTime = `-0${Math.abs(hours)}`;
-  } else {
-    UTCTime = hours;
-  }
 
   return (
     <div className="airport-header">
@@ -43,7 +33,7 @@ const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps
           {airportInfo.timezone.abbr}
           &nbsp;
           (UTC&nbsp;
-          {UTCTime}
+          {addZeroToTimes(airportInfo.timezone.offset)}
           :00
           )
         </span>

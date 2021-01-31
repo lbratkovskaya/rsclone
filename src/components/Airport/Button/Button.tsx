@@ -1,13 +1,15 @@
 import React from 'react';
-import General from '../SVGComponents/General';
-import Arrivals from '../SVGComponents/Arrivals';
-import Departures from '../SVGComponents/Departures';
+import { General, Arrivals, Departures } from '../SVGComponents';
 import { ButtonProps } from '../../../types/airportDataTypes';
 import './Button.scss';
 
 const Button:React.FC<ButtonProps> = ({
-  num, name, active, changeTabHandler,
-}: ButtonProps) => {
+  num,
+  name,
+  active,
+  changeTabHandler,
+}
+: ButtonProps): JSX.Element => {
   const handleTab = (e:React.MouseEvent<HTMLButtonElement>) => {
     if (!(e.target instanceof HTMLButtonElement || e.target instanceof SVGElement)) {
       return;

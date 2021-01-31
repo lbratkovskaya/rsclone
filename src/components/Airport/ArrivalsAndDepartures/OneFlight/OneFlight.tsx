@@ -16,11 +16,9 @@ const OneFlight:React.FC<OneFlightProps> = ({
     isLoadedFromFirst = true;
   };
 
-  setTimeout(() => {
-    if (!isLoadedFromFirst) {
-      img.src = `https://content.airhex.com/content/logos/airlines_${airlineCodeIata}_60_20_r.png`;
-    }
-  }, 1000);
+  if (!isLoadedFromFirst) {
+    img.src = `https://content.airhex.com/content/logos/airlines_${airlineCodeIata}_60_20_r.png`;
+  }
 
   return (
     <div className="airport-flight">

@@ -8,7 +8,10 @@ import Button from './Button/Button';
 import ScheduledFlights from './ScheduledFlights/ScheduledFlights';
 import ArrivalsAndDepartures from './ArrivalsAndDepartures/ArrivalsAndDepartures';
 import {
-  AirportInfo, Schedule, Runways, AirportProps,
+  AirportInfo,
+  Schedule,
+  Runways,
+  AirportProps,
 } from '../../types/airportDataTypes';
 import './Airport.scss';
 

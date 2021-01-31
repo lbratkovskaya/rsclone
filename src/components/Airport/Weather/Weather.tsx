@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { WeatherProps, WeatherInfo, Temp } from '../../../types/airportDataTypes';
+import { WeatherProps, WeatherInfo, Temp, Wind } from '../../../types/airportDataTypes';
 import { getWeatherURL, getWeatherIcon } from '../../../utils/airportApiUtils';
 import './Weather.scss';
 
 const Weather:React.FC<WeatherProps> = ({ airportInfo }:WeatherProps) => {
   const [weatherInfo, setWeatherInfo] = useState<WeatherInfo | null>(null);
-  const [wind, setWind] = useState<{speed: number, deg: number} | null>(null);
+  const [wind, setWind] = useState<Wind | null>(null);
   const [temp, setTemp] = useState<Temp | null>(null);
 
   useEffect(() => {

@@ -17,7 +17,7 @@ const Runway:React.FC<RunwayProps> = ({ satelliteImage, runways }: RunwayProps):
         <span className={openDetails ? 'reverse' : ''}>Runway details</span>
         <Arrow />
       </p>
-      <div className={openDetails ? 'airport-runway-info' : 'airport-runway-info collapse'}>
+      <div className={`airport-runway-info ${openDetails ? '' : 'collapse'}`}>
         <img src={satelliteImage} alt="satelliteImage" />
         <table>
           <thead>
