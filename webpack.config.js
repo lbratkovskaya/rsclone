@@ -24,11 +24,10 @@ module.exports = (env, options) => {
       },
     },
     devServer: {
-      proxy: {
-        '/api': {
-          target: 'http://localhost:3000',
-        }
-      },
+      proxy: [{
+        context: ['/auth', '/api'],
+        target: 'http://localhost:3000',
+      }],
       port: 9000,
     },
     module: {

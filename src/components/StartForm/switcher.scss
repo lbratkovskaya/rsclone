@@ -1,0 +1,29 @@
+.switcher {
+  width: 40px;
+  height: 20px;
+  border-radius: 30px;
+  outline: none;
+  border: none;
+  background: #ddd;
+  padding: 0 3px;
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+
+  &__circle {
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    display: block;
+    border-radius: 50%;
+    line-height: 35px;
+    transition: all 0.1s ease-in;
+
+    &.isActive {
+      transform: translateX(18px);
+    }
+  }
+
+  &.isActive {
+    background: lightgreen;
+  }
+}

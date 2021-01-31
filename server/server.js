@@ -1,9 +1,40 @@
 const express = require('express');
 const cors = require('cors');
 const https = require('https');
+const mongoose = require('mongoose');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const bodyParser = require('body-parser');
+const authRouter = require('./auth/router');
+const CORS = require('./utils');
+const DB = require('./db');
 
 const app = express();
-app.use(cors());
+
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+  if (err) {
+    throw err;
+  } 
+
+  console.log('MongoDB is connected');
+});
+
+app
+  .use(cors(CORS))
+  .use(bodyParser.json())
+  .use(bodyParser.urlencoded({extended: true}))
+  .use(session({
+    secret: "rsclone",
+    resave: true,
+    saveUninitialized: true,
+  }))
+  .use(cookieParser("rsclone"))
+  .use(passport.initialize())
+  .use(passport.session())
+  .use('/auth', authRouter);
+
+require('./passportConfig')(passport);
 
 const apiRouter = express.Router();
 
@@ -26,8 +57,6 @@ apiRouter.route('/schedule').get( async (req, res) => {
 apiRouter.route('/flightStatus').get( async (req, res) => {
   await https.get(`https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=${req.query.flightId}`, responseHandler(res))
 });
-
-app.use('/api', apiRouter);
 
 app.listen(3000, () => {
     console.log('used 3000 port for server');
