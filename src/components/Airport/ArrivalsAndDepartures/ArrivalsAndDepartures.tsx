@@ -26,10 +26,11 @@ const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps):
   if (flights) {
     flightsSeparatedByDate = separateFlightsByDate(flights, modeInSingle);
   }
+  const flightsSeparatedByDateBoolean = flightsSeparatedByDate && flightsSeparatedByDate !== [];
 
   return (
     <div className="airport-flight-wrapper">
-      { flightsSeparatedByDate
+      { flightsSeparatedByDateBoolean
         && flightsSeparatedByDate.map((flightsDay: Flight[], i: number) => {
           const { time, airport: airp } = flightsDay[0]?.flight || {};
           const dateBoolean = time.scheduled[modeInSingle] && airp.origin?.timezone?.offset;

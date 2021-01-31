@@ -25,31 +25,31 @@ const Weather:React.FC<WeatherProps> = ({ airportInfo }:WeatherProps) => {
       <div className="airport-weather__conditions">
         <span className="airport-weather_upperCase">CONDITIONS</span>
         <img src={getWeatherIcon(weatherInfo)} alt="weather-icon" />
-        {weatherInfo && <span>{weatherInfo.description}</span>}
+        {weatherInfo && <span>{weatherInfo.description || 'N/A'}</span>}
       </div>
       { temp && (
         <>
           <div className="airport-weather__temperature">
             <span className="airport-weather_upperCase">TEMPERATURE</span>
             <span className="airport-weather__degrees">
-              {temp.temp.toFixed(0)}
+              {temp.temp.toFixed(0) || 'N/A'}
               °C
             </span>
             <span className="airport-weather_upperCase">FEELS LIKE</span>
             <span>
-              {temp.feels_like.toFixed(0)}
+              {temp.feels_like.toFixed(0) || 'N/A'}
               °C
             </span>
           </div>
           <div className="airport-weather__wind">
             <span className="airport-weather_upperCase">WIND</span>
             <span>
-              {wind.speed}
+              {wind ? wind.speed : 'N/A'}
               m/s
             </span>
             <span className="airport-weather_upperCase">HUMIDITY</span>
             <span>
-              {temp.feels_like}
+              {temp.feels_like || 'N/A'}
               %
             </span>
           </div>

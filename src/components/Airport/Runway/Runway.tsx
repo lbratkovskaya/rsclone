@@ -32,16 +32,16 @@ const Runway:React.FC<RunwayProps> = ({ satelliteImage, runways }: RunwayProps):
           </thead>
           <tbody>
             {runways && runways.map((item) => (
-              <tr key={item.name}>
-                <td><span>{item.name}</span></td>
+              <tr key={item.name || 'N/A'}>
+                <td><span>{item.name || 'N/A'}</span></td>
                 <td>
                   <span>
-                    {item.length.m }
+                    {item.length?.m || 'N/A'}
                     &nbsp;/&nbsp;
-                    {item.length.ft}
+                    {item.length?.ft || 'N/A'}
                   </span>
                 </td>
-                <td><span>{item.surface.name}</span></td>
+                <td><span>{item.surface?.name || 'N/A'}</span></td>
               </tr>
             ))}
           </tbody>

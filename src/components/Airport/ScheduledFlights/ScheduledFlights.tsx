@@ -23,17 +23,17 @@ const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: Schedule
           <div className="row">
             <div className="hasTooltip" data-tooltip-value={`Total number of scheduled flights in the next ${futurePeriod} days.`}>
               <span>Departures</span>
-              <span>{schedule.totalFlights}</span>
+              <span>{schedule?.totalFlights || 'N/A'}</span>
             </div>
             <div className="hasTooltip" data-tooltip-value={`The route with the most number of scheduled flights over the next ${futurePeriod} days.`}>
               <span>Busiest route</span>
               <span>
-                {schedule.topRoute.from}
+                {schedule?.topRoute?.from || 'N/A'}
                 –
-                {schedule.topRoute.to}
+                {schedule?.topRoute?.to || 'N/A'}
                 &nbsp;
                 <span className="route-count">
-                  {schedule.topRoute.count}
+                  {schedule?.topRoute?.count || 'N/A'}
                   &nbsp;
                   flights
                 </span>
@@ -43,13 +43,14 @@ const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: Schedule
           <div className="row">
             <div className="hasTooltip" data-tooltip-value="Total number of destinations from this airport.">
               <span>Airports served</span>
-              <span>{schedule.airportsServed}</span>
+              <span>{schedule.airportsServed || 'N/A'}</span>
             </div>
             <div className="hasTooltip" data-tooltip-value="Total number of countries served from this airport.">
               <span>Countries served</span>
-              <span>{schedule.countriesServed}</span>
+              <span>{schedule.countriesServed || 'N/A'}</span>
             </div>
           </div>
+          {link && (
           <div className="row-link">
             <a
               target="_blank"
@@ -62,6 +63,7 @@ const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: Schedule
               </span>
             </a>
           </div>
+          )}
         </div>
       </div>
     </div>
