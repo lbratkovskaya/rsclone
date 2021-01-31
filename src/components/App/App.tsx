@@ -1,6 +1,6 @@
 import React from 'react';
-import './index.scss';
 import StartForm from '../StartForm/StartForm';
+import './index.scss';
 
 const App = (): JSX.Element => (
   <StartForm />);

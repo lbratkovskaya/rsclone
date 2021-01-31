@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface ILoginProps {
-  login: () => void,
-  setLoginUsername: (value: string) => void,
-  setLoginPassword: (value: string) => void,
-}
+import ILoginProps from './ILoginProps';
 
 const Login = ({ login, setLoginUsername, setLoginPassword }: ILoginProps): JSX.Element => (
   <div className="start-form">

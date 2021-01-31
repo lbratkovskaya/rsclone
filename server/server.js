@@ -55,7 +55,7 @@ authRouter.route('/register').post((req, res) => {
 
       const newUser = new User({
         username,
-        password: hashedPassword
+        password: hashedPassword,
       });
 
       await newUser.save();
@@ -66,12 +66,18 @@ authRouter.route('/register').post((req, res) => {
 
 authRouter.route('/login').post((req, res, next) => {
   passport.authenticate('local', (err, user) => {
-    if (err) throw err;
+    if (err) {
+      throw err;
+    }
+
     if (!user) {
       res.send('Wrong data. Change username or password');
     } else {
       req.logIn(user, (err) => {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
+
         res.send('Authentication succeed');
         console.log(req.user);
       })

@@ -1,20 +1,14 @@
 import React from 'react';
+import ISwitchProps from './ISwitchProps';
 import './switcher.scss';
 
-interface ISwitchProps {
-  isRegister: boolean,
-  toggleIsRegister: (currentFormState: boolean) => void
-};
-
-const Switcher = ({ isRegister, toggleIsRegister }: ISwitchProps): JSX.Element => {
-  return (
+const Switcher = ({ isRegister, toggleIsRegister }: ISwitchProps): JSX.Element => (
     <button
       className={`switcher ${isRegister ? 'isActive' : ''}`}
       onClick={() => toggleIsRegister(!isRegister)}
     >
       <span className={`switcher__circle ${isRegister ? 'isActive' : ''}` }></span>
     </button>
-  );
-};
+);
 
 export default Switcher;

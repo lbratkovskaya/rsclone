@@ -1,10 +1,5 @@
 import React from 'react';
-
-interface IRegisterProps {
-  register: () => void,
-  setRegisterUsername: (value: string) => void,
-  setRegisterPassword: (value: string) => void,
-}
+import IRegisterProps from './IRegisterProps';
 
 const Register = ({
   register,
