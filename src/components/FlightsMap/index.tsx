@@ -10,7 +10,11 @@ import {
 } from 'react-leaflet';
 import FlightsLayer from '../FlightsLayer';
 import FuncAirportsLayer from '../FuncAirportsLayer';
-import { FlightMapState, FlightsMapStyle } from '../../types/FlightsMapType';
+import {
+  FlightMapProps,
+  FlightMapState,
+  FlightsMapStyle
+} from '../../types/FlightsMapType';
 import MapStyleSelector from './MapStyleSelector';
 import {
   getMapURL,
@@ -25,12 +29,12 @@ import {
 import { UserMapSettings } from '../../types';
 import './index.scss';
 
-class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMapState> {
+class FlightsMap extends Component<FlightMapProps, FlightMapState> {
   tileLayerRef: RefObject<LeafletTileLayer>;
 
   userKey: string;
 
-  constructor(props: ComponentPropsWithoutRef<'object'>) {
+  constructor(props: FlightMapProps) {
     super(props);
     // TODO
     this.userKey = 'UserKeyStub';
@@ -74,6 +78,7 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
 
   render(): JSX.Element {
     const { geoPosition, mapZoom, mapStyle } = this.state;
+    const { onAirportIconClick } = this.props;
     return (
       <MapContainer
         center={geoPosition}
@@ -86,7 +91,7 @@ class FlightsMap extends Component<ComponentPropsWithoutRef<'object'>, FlightMap
           url={getMapURL(mapStyle)}
         />
         <FlightsLayer onMapBoundsUpdate={this.onMapBoundsUpdate}/>
-        <FuncAirportsLayer />
+        <FuncAirportsLayer onAirportIconClick={onAirportIconClick}/>
         <MapStyleSelector currentSelection={mapStyle} onStyleSelect={this.onMapStyleSelect} />
       </MapContainer>
     );

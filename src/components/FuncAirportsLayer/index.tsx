@@ -4,6 +4,8 @@ import L, {
   latLng,
   Marker,
   PointExpression,
+  LeafletMouseEvent,
+  LeafletMouseEventHandlerFn,
 } from 'leaflet';
 import { useMap } from 'react-leaflet';
 import { AirportType } from '../../types/AirportsLayerType';
@@ -11,6 +13,7 @@ import { roundCoordinates } from '../../utils/apiUtils';
 import { AIRPORT_BLUE_PIN_HTML, ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
 import 'leaflet-contextmenu';
 import { ContextMenuMap, ExtendedMarkerOptions } from 'leaflet-contextmenu';
+import { FuncAirportsLayerProps } from '../../types/FlightsMapType';
 
 function showCoordinates(coord: LatLng, marker: Marker) {
   marker.bindPopup(`<p>Latitude: ${coord.lat}</p><p>Longitude: ${coord.lng}</p>`).openPopup();
@@ -36,7 +39,7 @@ function fetchAirports(
     });
 }
 
-export default function FuncAirportsLayer(): JSX.Element {
+export default function FuncAirportsLayer(props: FuncAirportsLayerProps): JSX.Element {
   const [version, setVersion] = useState(0);
   const [airports, setAirports] = useState([]);
   const map: ContextMenuMap = useMap() as ContextMenuMap;
@@ -47,6 +50,7 @@ export default function FuncAirportsLayer(): JSX.Element {
       map.contextmenu.hide();
     }
   });
+
 
   fetchAirports(version, setAirports, setVersion);
 
@@ -77,7 +81,7 @@ export default function FuncAirportsLayer(): JSX.Element {
           // TODO callback: showArrivals
         },
       ],
-    } as ExtendedMarkerOptions).addTo(map);
+    } as ExtendedMarkerOptions).addTo(map).on('click', (event) => props.onAirportIconClick(event as LeafletMouseEvent) );
   });
 
   return null;
