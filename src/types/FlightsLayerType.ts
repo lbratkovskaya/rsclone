@@ -2,11 +2,13 @@ import { LatLngBounds, LatLngExpression, Map } from 'leaflet';
 import { AircraftsMap } from '.';
 
 export interface FlightsLayerState {
-  supressRequest: boolean,
+  suppressRequest: boolean,
   aircrafts: AircraftsMap,
   mapBounds: LatLngBounds,
-  trackLatLngs: LatLngExpression[],
-  trackShowingAircraft: string,
+  trackLatLngs: {
+    [key: string]: LatLngExpression[],
+  }
+  trackShowingAircrafts: string[],
 }
 
 export interface TrackLayerUpdaterProps {
@@ -15,4 +17,5 @@ export interface TrackLayerUpdaterProps {
 
 export interface FlightLayerUpdaterProps {
   updateMapBounds: (map: Map) => void,
+  showFavoritiesTacks: () => void,
 }
