@@ -3,15 +3,16 @@ import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
 export type FlightsMapStyle = 'dark' | 'light' | 'natural';
 
 export interface FlightMapProps {
+  userData: IUser,
   onAircraftIconClick: () => void,
   onAirportIconClick: () => void,
 }
+
 export interface FlightMapState {
   geoPosition: LatLngExpression,
   mapZoom: number,
   mapStyle: FlightsMapStyle,
 }
-
 export interface MapUpdaterProps {
   geoPosition: LatLngExpression,
   mapZoom: number,
