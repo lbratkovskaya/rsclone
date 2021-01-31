@@ -1,7 +1,10 @@
 import React, { Component, ComponentPropsWithoutRef } from 'react';
 import { Polyline } from 'react-leaflet';
 import { Map } from 'leaflet';
-import { FlightsLayerState } from '../../types/FlightsLayerType';
+import {
+  FlightsLayerProps,
+  FlightsLayerState
+} from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
 import { AircraftPosition, AircraftState } from '../../types';
 import AircraftMarker from './AircraftMarker';
@@ -12,12 +15,12 @@ import {
 } from '../../utils/apiUtils';
 import './index.scss';
 
-class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, FlightsLayerState> {
+class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
   timerId: NodeJS.Timeout;
 
   angleStep: number;
 
-  constructor(props: ComponentPropsWithoutRef<'object'>) {
+  constructor(props: FlightsLayerProps) {
     super(props);
     this.state = {
       suppressRequest: false,
@@ -199,11 +202,14 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
   updateMapBounds = (map: Map): void => {
     const { suppressRequest } = this.state;
+    const { onMapBoundsUpdate } = this.props;
     if (suppressRequest) {
       return;
     }
 
     setTimeout(() => this.toggleSuppressRequest(), 5000);
+
+    onMapBoundsUpdate(map);
 
     this.setState((state) => {
       if (state.mapBounds === null

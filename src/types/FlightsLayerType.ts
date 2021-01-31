@@ -11,6 +11,9 @@ export interface FlightsLayerState {
   trackShowingAircrafts: string[],
 }
 
+export interface FlightsLayerProps {
+  onMapBoundsUpdate: (map: Map) => void,
+}
 export interface TrackLayerUpdaterProps {
   latLngs: LatLngExpression[],
 }
