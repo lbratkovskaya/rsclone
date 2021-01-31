@@ -4,41 +4,13 @@ import Register from './Register';
 import Login from './Login';
 import Switcher from './Switcher';
 import './start-form.scss';
+import { IUser } from '../../types';
 
-interface IUser{
-  id: string,
-  username: string,
-  lastSessionEndedDate?: Date,
-  favorites?: [
-    {
-      addedToFavorites: Date,
-      codeName: string,
-      arrivalAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-      departureAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-    },
-  ]
-}
-
-const StartForm = (): JSX.Element => {
+const StartForm = (props: {getCurrentUser: () => IUser}): JSX.Element => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [userData, setUserData] = useState<null | IUser>(null);
   const [isRegister, toggleIsRegister] = useState(false);
 
   const register = () => {
@@ -65,17 +37,7 @@ const StartForm = (): JSX.Element => {
     }).then((res) => console.log(res));
   };
 
-  const getCurrentUser = () => {
-    axios({
-      method: 'get',
-      withCredentials: true,
-      url: 'auth/current_user',
-    }).then((res) => {
-      console.log(res.data);
-      setUserData(res.data);
-    });
-  };
-
+  const { getCurrentUser } = props;
   return (
     <div className="start-form-container">
       <Switcher

@@ -1,6 +1,5 @@
 import React, {
   Component,
-  ComponentPropsWithoutRef,
   RefObject,
 } from 'react';
 import { Map, TileLayer as LeafletTileLayer } from 'leaflet';
@@ -32,13 +31,9 @@ import './index.scss';
 class FlightsMap extends Component<FlightMapProps, FlightMapState> {
   tileLayerRef: RefObject<LeafletTileLayer>;
 
-  userKey: string;
-
   constructor(props: FlightMapProps) {
     super(props);
-    // TODO
-    this.userKey = 'UserKeyStub';
-    const userSettings: UserMapSettings = readUserMapSettings(this.userKey);
+    const userSettings: UserMapSettings = readUserMapSettings(props.userData?.username);
     this.state = {
       geoPosition: EURASIAN_CENTER,
       mapStyle: userSettings ? userSettings.mapStyle : MAP_STYLE_DARK,
@@ -53,8 +48,8 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
 
   componentGracefulUnmount = (): void => {
     const { mapZoom, mapStyle } = this.state;
-    // TODO
-    saveUserMapSettings(this.userKey, {mapZoom, mapStyle});
+    const { userData } = this.props;
+    saveUserMapSettings(userData?.username, {mapZoom, mapStyle});
   }
 
   onMapStyleSelect = (key: FlightsMapStyle) => {
@@ -64,8 +59,8 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
 
   setCurrentUserLocation = (map: Map) => {
     const { mapZoom } =  this.state;
-        // TODO
-    const userSettings: UserMapSettings = readUserMapSettings(this.userKey);
+    const { userData } = this.props;
+    const userSettings: UserMapSettings = readUserMapSettings(userData?.username);
 
     const userZoom: number = userSettings ? userSettings.mapZoom : mapZoom;
     map.locate({ setView: true, maxZoom: userZoom });

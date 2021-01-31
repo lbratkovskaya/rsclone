@@ -82,7 +82,7 @@ const parseJSON = (jsonString: string) => {
 const USER_SETTINGS_KEY = 'mapUserSettings';
 
 const getUserMapSettingsKey = (userKey: string) => {
-  return `${USER_SETTINGS_KEY}_${userKey}`
+  return `${USER_SETTINGS_KEY}${userKey ? `_${userKey}` : ''}`
 }
 
 export const readUserMapSettings = (userKey: string): UserMapSettings | null => {
