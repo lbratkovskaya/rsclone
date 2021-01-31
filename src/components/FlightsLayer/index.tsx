@@ -57,7 +57,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
           return;
         }
         const { aircrafts: aircraftMap, trackShowingAircrafts, trackLatLngs } = this.state;
-        let latLngs = { ...trackLatLngs };
+        const latLngs = { ...trackLatLngs };
         const newAircraftsMap = { ...aircraftMap };
 
         const filteredResponseKeys = Object.keys(json).filter((key) => !['full_count', 'version'].includes(key));
@@ -129,30 +129,33 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
       const latitude = roundCoordinates(aircraft.positions[0].latitude
         || aircraft.currentPosition.latitude);
       return (
-      <AircraftMarker
-        key={flightId}
-        position={[latitude, longitude]}
-        altitude={aircraft.positions[0].altitude}
-        trackAngle={aircraft.positions[0].true_track}
-        callsign={aircraft.callsign}
-        aircraftType={aircraft.aircraft_type}
-        withTrack={trackShowingAircrafts.includes(flightId)}
-        onIconClick={(event) => this.aircraftIconClickHandler(
-          flightId,
-          event.originalEvent.ctrlKey,
-        )}
-      />);
+        <AircraftMarker
+          key={flightId}
+          position={[latitude, longitude]}
+          altitude={aircraft.positions[0].altitude}
+          trackAngle={aircraft.positions[0].true_track}
+          callsign={aircraft.callsign}
+          aircraftType={aircraft.aircraft_type}
+          withTrack={trackShowingAircrafts.includes(flightId)}
+          onIconClick={(event) => this.aircraftIconClickHandler(
+            flightId,
+            event.originalEvent.ctrlKey,
+          )}
+        />
+      );
     });
   }
 
   getTracks(): JSX.Element[] {
     const { trackLatLngs } = this.state;
 
-    return Object.entries(trackLatLngs).map(([flightId, track]) => (<Polyline
-      key={flightId}
-      positions={track}
-      pathOptions={{ color: 'lime' }}
-    />));
+    return Object.entries(trackLatLngs).map(([flightId, track]) => (
+      <Polyline
+        key={flightId}
+        positions={track}
+        pathOptions={{ color: 'lime' }}
+      />
+    ));
   }
 
   aircraftIconClickHandler = (flightId: string, append: boolean): void => {

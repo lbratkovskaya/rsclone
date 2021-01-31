@@ -42,52 +42,52 @@ const FlightPanel = ({ hexCode, openFlightPanel }:FlightPanelProps):JSX.Element 
       {flightInfo && (
       <>
         <HeaderFlight
-          number={flightInfo.identification.number.default}
-          callsign={flightInfo.identification.callsign}
-          airline={flightInfo.airline.name}
+          number={flightInfo.identification?.number?.default || ''}
+          callsign={flightInfo.identification?.callsign || ''}
+          airline={flightInfo.airline?.name || ''}
           closeHandler={closeHandler}
         />
         <AircraftPhoto
-          photo={flightInfo.aircraft.images.large[0].src}
-          photoLink={flightInfo.aircraft.images.large[0].link}
+          photo={flightInfo.aircraft?.images?.large[0]?.src || null}
+          photoLink={flightInfo.aircraft?.images?.large[0]?.link || null}
         />
         <div className="flight-scroll-wrapper">
           <FlightInfo
-            iataOrigin={flightInfo.airport.origin.code.iata}
-            cityOrigin={flightInfo.airport.origin.position.region.city}
-            iataDestination={flightInfo.airport.destination.code.iata}
-            cityDestination={flightInfo.airport.destination.position.region.city}
-            timezoneOrigin={flightInfo.airport.origin.timezone}
-            timezoneDestination={flightInfo.airport.destination.timezone}
-            time={flightInfo.time}
+            iataOrigin={flightInfo.airport?.origin?.code?.iata || ''}
+            cityOrigin={flightInfo.airport?.origin?.position?.region?.city || ''}
+            iataDestination={flightInfo.airport?.destination?.code?.iata || ''}
+            cityDestination={flightInfo.airport?.destination?.position?.region?.city || ''}
+            timezoneOrigin={flightInfo.airport?.origin?.timezone || null}
+            timezoneDestination={flightInfo.airport?.destination?.timezone || null}
+            time={flightInfo.time || null}
           />
           <FlightProgress
-            startPoint={flightInfo.trail[flightInfo.trail.length - 1]}
-            currentPoint={flightInfo.trail[0]}
-            endPoint={flightInfo.airport.destination.position}
-            currentTime={flightInfo.trail[0].ts}
-            startTime={flightInfo.time.real.departure}
-            endTime={flightInfo.time.estimated.arrival}
+            startPoint={flightInfo.trail[flightInfo.trail.length - 1] || null}
+            currentPoint={flightInfo.trail[0] || null}
+            endPoint={flightInfo.airport.destination.position || null}
+            currentTime={flightInfo.trail[0].ts || null}
+            startTime={flightInfo.time.real.departure || null}
+            endTime={flightInfo.time.estimated.arrival || null}
           />
           <AircraftInfo
-            model={flightInfo.aircraft.model}
-            registration={flightInfo.aircraft.registration}
-            airline={flightInfo.airline.code}
+            model={flightInfo.aircraft?.model || {}}
+            registration={flightInfo.aircraft?.registration || ''}
+            airline={flightInfo.airline?.code || {}}
           />
           <RecentFlights
-            registration={flightInfo.aircraft.registration}
-            history={flightInfo.flightHistory.aircraft}
+            registration={flightInfo.aircraft?.registration || ''}
+            history={flightInfo.flightHistory?.aircraft || null}
           />
           <Altitude
-            alt={flightInfo.trail[0].alt}
-            hd={flightInfo.trail[0].hd}
+            alt={flightInfo.trail[0]?.alt || null}
+            hd={flightInfo.trail[0]?.hd || null}
           />
-          <Speed spd={flightInfo.trail[0].spd} />
+          <Speed spd={flightInfo.trail[0]?.spd || null} />
           <FlightData
-            hex={flightInfo.aircraft.hex}
-            lat={flightInfo.trail[0].lat}
-            lng={flightInfo.trail[0].lng}
-            airline={flightInfo.airline.code}
+            hex={flightInfo.aircraft?.hex || ''}
+            lat={flightInfo.trail[0]?.lat || null}
+            lng={flightInfo.trail[0]?.lng || null}
+            airline={flightInfo.airline?.code || {}}
           />
         </div>
         <FlightButton />

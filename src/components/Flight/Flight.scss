@@ -4,6 +4,7 @@
   left: 0;
   transition: 0.6s ease-in-out;
   max-height: 100vh;
+  z-index: 10;
 
   &-scroll-wrapper {
     width: 303px;

@@ -10,7 +10,7 @@ const Switcher = ({ isRegister, toggleIsRegister }: ISwitchProps): JSX.Element =
       className={`switcher ${isRegister ? 'isActive' : ''}`}
       onClick={() => toggleIsRegister(!isRegister)}
     >
-      <span className={switcherCircleClassName}></span>
+      <span className={switcherCircleClassName} />
     </button>
   );
 };

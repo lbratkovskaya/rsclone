@@ -6,11 +6,10 @@ import L, {
   PointExpression,
 } from 'leaflet';
 import { useMap } from 'react-leaflet';
+import { ContextMenuMap, ExtendedMarkerOptions } from 'leaflet-contextmenu';
 import { AirportType } from '../../types/AirportsLayerType';
 import { roundCoordinates } from '../../utils/apiUtils';
 import { AIRPORT_BLUE_PIN_HTML, ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
-import 'leaflet-contextmenu';
-import { ContextMenuMap, ExtendedMarkerOptions } from 'leaflet-contextmenu';
 
 function showCoordinates(coord: LatLng, marker: Marker) {
   marker.bindPopup(`<p>Latitude: ${coord.lat}</p><p>Longitude: ${coord.lng}</p>`).openPopup();

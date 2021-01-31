@@ -1,4 +1,4 @@
-.flight-aircraft-info{
+.flight-aircraft-info {
   border-bottom: none;
   border-top: 10px solid #327db6;
   box-sizing: border-box;
@@ -14,7 +14,11 @@
       border-bottom: 1px solid #fff;
     }
     & img {
-      margin-top: 3px;
+      margin-top: 5px;
+      max-width: 100px;
+    }
+    .first-column {
+      width: 120px !important;
     }
   }
 }

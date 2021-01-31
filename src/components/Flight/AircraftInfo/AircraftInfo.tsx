@@ -1,32 +1,31 @@
 import React from 'react';
 import Aircraft from '../SVGComponents/Aircraft';
+import { firstLogoUrl, secondLogoUrl, noLogoUrl } from '../../../utils/airportApiUtils';
 import '../Flight.scss';
 import './AircraftInfo.scss';
 
 interface AircraftInfoProps {
   model: {
-    code: string,
-    text: string,
+    code?: string | null,
+    text?: string | null,
   }
   registration: string,
   airline: {
-    iata: string,
-    icao: string,
+    iata?: string | null,
+    icao?: string | null,
   }
 }
 
 const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline }
 : AircraftInfoProps): JSX.Element => {
   const img = document.createElement('img');
-  let isLoadedFromFirst = false;
-  img.src = `https://cdn.flightradar24.com/assets/airlines/logotypes/${airline.iata}_${airline.icao}.png`;
-  img.onload = () => {
-    isLoadedFromFirst = true;
+  img.src = firstLogoUrl(airline.iata, airline.icao);
+  img.onerror = () => {
+    img.src = secondLogoUrl(airline.iata);
   };
-
-  if (!isLoadedFromFirst) {
-    img.src = `https://content.airhex.com/content/logos/airlines_${airline.iata}_60_20_r.png`;
-  }
+  img.onerror = () => {
+    img.src = noLogoUrl;
+  };
 
   return (
     <section className="flight-aircraft-info">
@@ -37,16 +36,16 @@ const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline
             AIRCRAFT TYPE
             {' ('}
             <span>
-              {model.code}
+              {model.code ? model.code : 'N/A'}
               {') '}
             </span>
           </p>
-          <p className="flight-aircraft-info__bold">{model.text}</p>
+          <p className="flight-aircraft-info__bold">{model.text || ''}</p>
         </div>
         <div className="row">
           <div className="first-column">
             <p>REGISTRATION</p>
-            <p className="flight-aircraft-info__bold">{registration}</p>
+            <p className="flight-aircraft-info__bold">{registration || ''}</p>
           </div>
           <div>
             <img src={img.src} alt="logo" />

@@ -72,7 +72,7 @@ apiRouter.route('/flights').get(async (req, res) => {
 
 apiRouter.route('/fly').get(async (req, res) => {
   await https.get(`https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=${req.query.flightCode}`, responseHandler(res))
-
+});
 
 app.use('/api', apiRouter);
 

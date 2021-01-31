@@ -17,11 +17,7 @@ const RecentFlights:React.FC<RecentFlightsProps> = ({ registration, history }
       <p onClick={collapseHandler} role="presentation" className="flight-recent__heading">
         <Calendar />
         <span className={openFlights ? 'reverse' : ''}>
-          Recent
-          {' '}
-          {registration}
-          {' '}
-          flights
+          {`Recent ${registration} flights`}
         </span>
         <Arrow />
       </p>
@@ -31,23 +27,23 @@ const RecentFlights:React.FC<RecentFlightsProps> = ({ registration, history }
           <span>FLIGHT/ROUTE</span>
         </h3>
         <>
-          { history.map((item: HistoryInfo) => (
+          {history && history.map((item: HistoryInfo) => (
             <div className="flight-recent__flight" key={item.identification.id}>
               <div className="flight-recent__flight-date">
-                {getDateHistory(item.time.real.departure)}
+                {item.time?.real?.departure && getDateHistory(item.time.real.departure)}
               </div>
               <div className="flight-recent__flight-number">
-                <p>{item.identification.number.default}</p>
+                <p>{item.identification?.number?.default || ''}</p>
                 <p className="flight-recent__flight-airport">
-                  <span>{item.airport.destination.position.region.city}</span>
+                  <span>{item.airport?.destination?.position?.region?.city || ''}</span>
                   {' ('}
-                  <span>{item.airport.destination.code.iata}</span>
+                  <span>{item.airport?.destination?.code?.iata || ''}</span>
                   {') '}
                 </p>
                 <p className="flight-recent__flight-airport">
-                  <span>{item.airport.origin.position.region.city}</span>
+                  <span>{item.airport?.origin?.position?.region?.city || ''}</span>
                   {' ('}
-                  <span>{item.airport.origin.code.iata}</span>
+                  <span>{item.airport?.origin?.code?.iata || ''}</span>
                   {') '}
                 </p>
               </div>
@@ -60,22 +56,10 @@ const RecentFlights:React.FC<RecentFlightsProps> = ({ registration, history }
           href={`https://www.flightradar24.com/data/aircraft/${registration.toLowerCase()}`}
         >
           <span className="airport-schedule__arrow-icon">
-            More
-            {' '}
-            {registration}
-            {' '}
-            flights
+            {`More ${registration} flights`}
             <Arrow />
           </span>
         </a>
-        {/* <p className="flight-recent__more">
-          MORE
-          {' '}
-          {registration}
-          {' '}
-          flights
-          <Arrow />
-        </p> */}
       </div>
     </section>
   );

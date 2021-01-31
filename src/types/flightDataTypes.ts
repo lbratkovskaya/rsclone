@@ -21,5 +21,12 @@ export type HistoryInfo = {
 
 export interface RecentFlightsProps {
   registration: string,
-  history: HistoryInfo[],
-};
+  history: HistoryInfo[] | null,
+}
+
+export interface HeaderFlightPanelProps {
+  number: string
+  callsign: string
+  airline: string
+  closeHandler: () => void
+}

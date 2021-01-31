@@ -1,12 +1,13 @@
 import React from 'react';
+// import { HeaderFlightPanelProps } from '../../../types/flightDataTypes';
 import './HeaderFlight.scss';
 import Close from '../SVGComponents/Close';
 
 interface HeaderFlightPanelProps {
-  number: string
-  callsign: string
-  airline: string
-  closeHandler: () => void
+  number: string,
+  callsign: string,
+  airline: string,
+  closeHandler: () => void,
 }
 
 const HeaderFlight:React.FC<HeaderFlightPanelProps> = ({
@@ -23,9 +24,7 @@ const HeaderFlight:React.FC<HeaderFlightPanelProps> = ({
     <h3 className="flight-header__name">
       <span>{number}</span>
       <span>
-        {' '}
-        /
-        {callsign}
+        { ` /${callsign}`}
       </span>
     </h3>
     <p>{airline}</p>
