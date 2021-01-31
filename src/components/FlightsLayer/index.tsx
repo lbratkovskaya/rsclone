@@ -20,7 +20,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   constructor(props: ComponentPropsWithoutRef<'object'>) {
     super(props);
     this.state = {
-      supressRequest: false,
+      suppressRequest: false,
       aircrafts: {},
       mapBounds: null,
       trackLatLngs: {},
@@ -193,28 +193,28 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     this.revealTrack(flightId, false, append, []);
   }
 
-  toggleSupressRequest = (): void => this.setState((state) => ({
-    supressRequest: !state.supressRequest,
+  toggleSuppressRequest = (): void => this.setState((state) => ({
+    suppressRequest: !state.suppressRequest,
   }));
 
   updateMapBounds = (map: Map): void => {
-    const { supressRequest } = this.state;
-    if (supressRequest) {
+    const { suppressRequest } = this.state;
+    if (suppressRequest) {
       return;
     }
 
-    setTimeout(() => this.toggleSupressRequest(), 5000);
+    setTimeout(() => this.toggleSuppressRequest(), 5000);
 
     this.setState((state) => {
       if (state.mapBounds === null
         || !map.getBounds().equals(state.mapBounds)) {
         return {
-          supressRequest: true,
+          suppressRequest: true,
           mapBounds: map.getBounds(),
         };
       }
       return {
-        supressRequest: true,
+        suppressRequest: true,
         mapBounds: state.mapBounds,
       };
     });
