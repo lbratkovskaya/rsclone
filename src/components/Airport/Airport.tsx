@@ -67,7 +67,7 @@ const Airport:React.FC<AirportProps> = ({
             <Weather airportInfo={airportInfo} />
             <Rating iata={airportInfo.code?.iata || ''} name={airportInfo.name || ''} />
             <ScheduledFlights schedule={schedule} />
-            <Runway satelliteImage={satelliteImageData || ''} runways={runwaysData} />
+            <Runway satelliteImage={satelliteImageData || ''} runways={runwaysData || null} />
           </div>
         </>
       )}

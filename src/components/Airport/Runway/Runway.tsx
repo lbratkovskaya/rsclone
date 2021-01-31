@@ -31,7 +31,7 @@ const Runway:React.FC<RunwayProps> = ({ satelliteImage, runways }: RunwayProps):
             </tr>
           </thead>
           <tbody>
-            {runways.map((item) => (
+            {runways && runways.map((item) => (
               <tr key={item.name}>
                 <td><span>{item.name}</span></td>
                 <td>

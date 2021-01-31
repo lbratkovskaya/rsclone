@@ -20,7 +20,7 @@ const Rating:React.FC<RatingProps> = ({ iata, name }:RatingProps) => {
       && (
       <div className="airport-rating">
         <p>
-          <span className="airport-rating__number">{ratingInfo.rating}</span>
+          <span className="airport-rating__number">{ratingInfo.rating || 'N/A'}</span>
           <span className="airport-rating__stars" />
         </p>
         <p>

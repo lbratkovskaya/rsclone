@@ -97,35 +97,35 @@ export type RatingInfo = {
 };
 
 export interface AirportPhotoProps {
-  airportInfo?: AirportInfo | null,
+  airportInfo: AirportInfo | null,
 }
 
 export interface ArrivalsProps {
-  airportCode?: string | null,
-  mode?: string | null,
+  airportCode: string,
+  mode: string,
 }
 
 export interface AirportProps {
-  code?: string | null,
-  openAirportPanel?: boolean | null,
+  code: string,
+  openAirportPanel: boolean,
 }
 
 export interface FlightHeaderProps {
-  mode?: string | null,
-  date?: string | null,
+  mode: string,
+  date: string,
 }
 
 export interface ScheduledFlightsProps {
-  schedule?: Schedule | null,
+  schedule: Schedule | null,
 }
 
 export interface RunwayProps {
-  satelliteImage?: string | null,
-  runways?: Runways[] | null,
+  satelliteImage: string | null,
+  runways: Runways[] | null,
 }
 
 export interface WeatherProps {
-  airportInfo?: AirportInfo | null,
+  airportInfo: AirportInfo | null,
 }
 
 export interface RatingProps {
@@ -174,4 +174,4 @@ export type Temp = {
   grnd_level?: number | null,
 };
 
-export type Wind= {speed: number, deg: number};
+export type Wind= {speed?: number | null, deg?: number | null};
