@@ -1,6 +1,8 @@
 import React from 'react';
+import FlightsMap from '../FlightsMap';
 import './index.scss';
 
 const App = (): JSX.Element => (
-  <h3>Hello World</h3>);
+  <FlightsMap />
+);
 export default App;
