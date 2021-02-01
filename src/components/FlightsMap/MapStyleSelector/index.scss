@@ -17,7 +17,7 @@
 
   svg {
     align-self: center;
-    fill: rgb(131, 130, 130);
+    fill: #838282;
   }
   .style-item {
     display: flex;
@@ -25,7 +25,7 @@
 
     &.style-item__selected {
       & .box {
-        outline: 2px solid rgb(68, 68, 170) !important;
+        outline: 2px solid #4444aa !important;
       }
     }
 

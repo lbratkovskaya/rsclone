@@ -7,6 +7,7 @@ const Switcher = ({ isRegister, toggleIsRegister }: ISwitchProps): JSX.Element =
 
   return (
     <button
+      type="button"
       className={`switcher ${isRegister ? 'isActive' : ''}`}
       onClick={() => toggleIsRegister(!isRegister)}
     >

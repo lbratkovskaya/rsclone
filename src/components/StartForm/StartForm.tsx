@@ -4,14 +4,16 @@ import Register from './Register';
 import Login from './Login';
 import Switcher from './Switcher';
 import './start-form.scss';
-import { IUser } from '../../types';
+import { StartFormProps } from '../../types/StartFormType';
 
-const StartForm = (props: {getCurrentUser: () => IUser}): JSX.Element => {
+const StartForm = (props: StartFormProps): JSX.Element => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [isRegister, toggleIsRegister] = useState(false);
+
+  const { getCurrentUser, onLoginRedirectHandler } = props;
 
   const register = () => {
     axios({
@@ -34,10 +36,12 @@ const StartForm = (props: {getCurrentUser: () => IUser}): JSX.Element => {
       },
       withCredentials: true,
       url: 'auth/login',
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      console.log(res);
+      onLoginRedirectHandler();
+    });
   };
 
-  const { getCurrentUser } = props;
   return (
     <div className="start-form-container">
       <Switcher
@@ -59,7 +63,7 @@ const StartForm = (props: {getCurrentUser: () => IUser}): JSX.Element => {
             login={login}
           />
         )}
-      <button className="btn" id="checkUser" onClick={getCurrentUser}>Check user authorization</button>
+      <button type="button" className="btn" id="checkUser" onClick={getCurrentUser}>Check user authorization</button>
     </div>
   );
 };

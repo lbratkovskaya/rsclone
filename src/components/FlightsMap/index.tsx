@@ -12,20 +12,19 @@ import FuncAirportsLayer from '../FuncAirportsLayer';
 import {
   FlightMapProps,
   FlightMapState,
-  FlightsMapStyle
 } from '../../types/FlightsMapType';
 import MapStyleSelector from './MapStyleSelector';
 import {
   getMapURL,
   readUserMapSettings,
-  saveUserMapSettings
+  saveUserMapSettings,
 } from '../../utils/apiUtils';
 import {
   EURASIAN_CENTER,
   MAP_ZOOM_DEFAULT,
   MAP_STYLE_DARK,
 } from '../../utils/constants';
-import { UserMapSettings } from '../../types';
+import { UserMapSettings, FlightsMapStyle } from '../../types';
 import './index.scss';
 
 class FlightsMap extends Component<FlightMapProps, FlightMapState> {
@@ -46,34 +45,50 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
     window.addEventListener('beforeunload', this.componentGracefulUnmount);
   }
 
+  componentDidUpdate(prevProps: FlightMapProps): void {
+    const { userData } = this.props;
+    const { userData: prevUserData } = prevProps;
+    if ((!prevUserData && userData)
+      || (prevUserData?.id !== userData?.id)) {
+      const userSettings: UserMapSettings = readUserMapSettings(userData?.username);
+      if (userSettings) {
+        this.tileLayerRef.current?.setUrl(getMapURL(userSettings.mapStyle));
+        this.setState({
+          mapStyle: userSettings.mapStyle,
+          mapZoom: userSettings.mapZoom,
+        });
+      }
+    }
+  }
+
   componentGracefulUnmount = (): void => {
     const { mapZoom, mapStyle } = this.state;
     const { userData } = this.props;
-    saveUserMapSettings(userData?.username, {mapZoom, mapStyle});
-  }
+    saveUserMapSettings(userData?.username, { mapZoom, mapStyle });
+  };
 
-  onMapStyleSelect = (key: FlightsMapStyle) => {
+  onMapStyleSelect = (key: FlightsMapStyle): void => {
     this.tileLayerRef.current?.setUrl(getMapURL(key));
     this.setState({ mapStyle: key });
-  }
+  };
 
-  setCurrentUserLocation = (map: Map) => {
-    const { mapZoom } =  this.state;
+  setCurrentUserLocation = (map: Map): void => {
+    const { mapZoom } = this.state;
     const { userData } = this.props;
     const userSettings: UserMapSettings = readUserMapSettings(userData?.username);
 
     const userZoom: number = userSettings ? userSettings.mapZoom : mapZoom;
     map.locate({ setView: true, maxZoom: userZoom });
-  }
+  };
 
-  onMapBoundsUpdate = (map: Map) => {
+  onMapBoundsUpdate = (map: Map): void => {
     const currentZoom = map.getZoom();
     this.setState({ mapZoom: currentZoom });
-  }
+  };
 
   render(): JSX.Element {
     const { geoPosition, mapZoom, mapStyle } = this.state;
-    const { onAirportIconClick } = this.props;
+    const { onAirportIconClick, showArrivals, showDepartures } = this.props;
     return (
       <MapContainer
         center={geoPosition}
@@ -85,8 +100,12 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
           ref={this.tileLayerRef}
           url={getMapURL(mapStyle)}
         />
-        <FlightsLayer onMapBoundsUpdate={this.onMapBoundsUpdate}/>
-        <FuncAirportsLayer onAirportIconClick={onAirportIconClick}/>
+        <FlightsLayer onMapBoundsUpdate={this.onMapBoundsUpdate} />
+        <FuncAirportsLayer
+          onAirportIconClick={onAirportIconClick}
+          showArrivals={showArrivals}
+          showDepartures={showDepartures}
+        />
         <MapStyleSelector currentSelection={mapStyle} onStyleSelect={this.onMapStyleSelect} />
       </MapContainer>
     );

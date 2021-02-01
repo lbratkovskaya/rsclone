@@ -9,6 +9,7 @@ declare module 'leaflet-contextmenu' {
   }
 
   export interface ExtendedMarkerOptions extends MarkerOptions {
+    airportCode: string,
     contextmenu: boolean,
     contextmenuItems: ({
       text: string,

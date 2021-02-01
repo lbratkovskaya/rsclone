@@ -6,7 +6,7 @@ const Login = ({ login, setLoginUsername, setLoginPassword }: ILoginProps): JSX.
     <h1>Login</h1>
     <input type="text" placeholder="Username" onChange={(event) => setLoginUsername(event.target.value)} />
     <input type="password" placeholder="Password" onChange={(event) => setLoginPassword(event.target.value)} />
-    <button className="btn" onClick={login}>Login</button>
+    <button type="button" className="btn" onClick={login}>Login</button>
   </div>
 );
 
