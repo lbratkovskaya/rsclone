@@ -40,13 +40,16 @@ class App extends Component<ComponentProps<'object'>, AppState> {
       withCredentials: true,
       url: 'auth/current_user',
     }).then((res) => {
-      console.log(res.data);
       this.setState({ userData: res.data });
       return res.data;
     });
     return null;
   };
 
+  onLoginRedirectHandler = (): void => {
+    this.history.push('/');
+    this.getCurrentUser();
+  }
   showArrivals = (airportCode: string): void => {
     this.showAirportPanelTab(airportCode, AIRPORT_TAB_BUTTONS.Arrivals.num);
   };
@@ -117,10 +120,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           render={() => (
             <StartForm
               getCurrentUser={this.getCurrentUser}
-              onLoginRedirectHandler={() => {
-                this.history.push('/');
-                this.getCurrentUser();
-              }}
+              onLoginRedirectHandler={this.onLoginRedirectHandler}
             />
           )}
         />

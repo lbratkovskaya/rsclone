@@ -13,8 +13,8 @@ const MapStyleSelector = ({
     const selectedStyle = currentSelection === key ? ' style-item__selected' : '';
     return (
       <div
-        className={`style-item${selectedStyle}`}
         key={key}
+        className={`style-item${selectedStyle}`}
         onClick={() => onStyleSelect(key)}
       >
         <span className="box" style={{ backgroundColor: `${color}` }} />

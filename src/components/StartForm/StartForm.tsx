@@ -24,7 +24,9 @@ const StartForm = (props: StartFormProps): JSX.Element => {
       },
       withCredentials: true,
       url: 'auth/register',
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      onLoginRedirectHandler();
+    });
   };
 
   const login = () => {
@@ -37,7 +39,6 @@ const StartForm = (props: StartFormProps): JSX.Element => {
       withCredentials: true,
       url: 'auth/login',
     }).then((res) => {
-      console.log(res);
       onLoginRedirectHandler();
     });
   };

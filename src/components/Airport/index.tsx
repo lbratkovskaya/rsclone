@@ -104,7 +104,7 @@ class Airport extends Component<AirportProps, AirportState> {
         {checkTab3 && <ArrivalsAndDepartures airportCode={airportInfo.code.iata} mode="departures" />}
         {Object.values(AIRPORT_TAB_BUTTONS).map((button) => (
           <Button
-            key={button.num}
+            key={button.num.toString()}
             num={button.num}
             name={button.name}
             active={activeTab}
