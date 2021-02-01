@@ -1,6 +1,8 @@
 import React, { Component, ComponentPropsWithoutRef } from 'react';
 import { Marker } from 'react-leaflet';
 import L, { PointExpression } from 'leaflet';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 import { AirportsLayerState, AirportType } from '../../types/AirportsLayerType';
 import { roundCoordinates } from '../../utils/apiUtils';
 import { ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
@@ -17,37 +19,37 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
   }
 
   componentDidMount(): void {
-    this.getAirports();
+    this.props.getAirports();
   }
 
-  getAirports(): void {
-    const fetchStr = '/api/allAirports';
+  // getAirports(): void {
+  //   const fetchStr = '/api/allAirports';
 
-    fetch(fetchStr, { method: 'GET' })
-      .then((resp) => resp.json())
-      .then((json) => {
-        if (!json) {
-          return;
-        }
-        const { airportsMap } = this.state;
+  //   fetch(fetchStr, { method: 'GET' })
+  //     .then((resp) => resp.json())
+  //     .then((json) => {
+  //       if (!json) {
+  //         return;
+  //       }
+  //       const { airportsMap } = this.state;
 
-        const newState = { airportsMap };
+  //       const newState = { airportsMap };
 
-        if (airportsMap) {
-          if (json.version > airportsMap.version) {
-            // should update to fresh version
-            Object.assign(newState, {
-              airportsMap: {
-                version: json.version,
-                airports: [...json.rows],
-              },
-            });
-          }
-        }
+  //       if (airportsMap) {
+  //         if (json.version > airportsMap.version) {
+  //           // should update to fresh version
+  //           Object.assign(newState, {
+  //             airportsMap: {
+  //               version: json.version,
+  //               airports: [...json.rows],
+  //             },
+  //           });
+  //         }
+  //       }
 
-        this.setState(newState);
-      });
-  }
+  //       this.setState(newState);
+  //     });
+  // }
 
   getMarkers(): JSX.Element[] {
     const { airportsMap } = this.state;
@@ -80,4 +82,13 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
     );
   }
 }
-export default AirportsLayer;
+
+const mapStateToProps = (state: any) => ({
+  airports: state.airports,
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  getAirports: () => dispatch({ type: 'ALL_AIRPORTS' }),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AirportsLayer);
