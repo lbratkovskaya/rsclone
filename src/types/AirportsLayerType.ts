@@ -1,7 +1,7 @@
 export interface AirportsLayerState {
   airportsMap: AirportMap,
 }
-interface AirportMap {
+export interface AirportMap {
   version: number,
   airports: AirportType[],
 }

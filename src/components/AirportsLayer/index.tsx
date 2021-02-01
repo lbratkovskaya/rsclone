@@ -8,15 +8,15 @@ import { roundCoordinates } from '../../utils/apiUtils';
 import { ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
 
 class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, AirportsLayerState> {
-  constructor(props: ComponentPropsWithoutRef<'object'>) {
-    super(props);
-    this.state = {
-      airportsMap: {
-        version: 0,
-        airports: [],
-      },
-    };
-  }
+  // constructor(props: ComponentPropsWithoutRef<'object'>) {
+  //   super(props);
+  //   this.state = {
+  //     airportsMap: {
+  //       version: 0,
+  //       airports: [],
+  //     },
+  //   };
+  // }
 
   componentDidMount(): void {
     this.props.getAirports();
@@ -52,7 +52,8 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
   // }
 
   getMarkers(): JSX.Element[] {
-    const { airportsMap } = this.state;
+    // const { airportsMap } = this.state;
+    const { airportsMap } = this.props;
 
     return airportsMap.airports.map((airport: AirportType) => {
       const longitude: number = roundCoordinates(airport.lon);
@@ -83,8 +84,8 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
   }
 }
 
-const mapStateToProps = (state: any) => ({
-  airports: state.airports,
+const mapStateToProps = (store: any) => ({
+  airportsMap: store.airportsMap,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

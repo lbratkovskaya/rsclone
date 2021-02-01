@@ -1,16 +1,10 @@
-interface IStore {
-  airports: any[];
-}
+import { AirportMap } from '../types/AirportsLayerType';
 
-const initialStore: IStore = {
-  airports: [],
-};
-
-const reducer = (store = initialStore, action: { type: string; allAirports: any; }) => {
+const reducer = (store: any, action: { type: string; airportsMap: AirportMap; }) => {
   if (action.type === 'ALL_AIRPORTS') {
     return {
       ...store,
-      airports: action.allAirports,
+      airportsMap: action.airportsMap,
     };
   }
   return store;

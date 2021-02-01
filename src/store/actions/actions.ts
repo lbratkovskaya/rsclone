@@ -1,8 +1,9 @@
 import { Dispatch } from 'redux';
+import { AirportMap } from '../../types/AirportsLayerType';
 
-const saveAirports = (airports: any) => ({
+const saveAirports = (newAirportMap: AirportMap) => ({
   type: 'ALL_AIRPORTS',
-  allAirports: airports,
+  airportsMap: newAirportMap,
 });
 
 const airports = () => (dispatch: Dispatch) => {
@@ -15,7 +16,12 @@ const airports = () => (dispatch: Dispatch) => {
         return;
       }
 
-      dispatch(saveAirports(json.rows));
+      const newAirportMap: AirportMap = {
+        version: json.version,
+        airports: json.rows,
+      };
+
+      dispatch(saveAirports(newAirportMap));
       // const { airportsMap } = this.state;
 
       // const newState = { airportsMap };
