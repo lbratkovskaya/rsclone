@@ -48,8 +48,8 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
   componentDidUpdate(prevProps: FlightMapProps): void {
     const { userData } = this.props;
     const { userData: prevUserData } = prevProps;
-    if ((!prevUserData && userData)
-      || (prevUserData?.id !== userData?.id)) {
+    const needUpdateState = (!prevUserData && userData) || (prevUserData?.id !== userData?.id);
+    if (needUpdateState) {
       const userSettings: UserMapSettings = readUserMapSettings(userData?.username);
       if (userSettings) {
         this.tileLayerRef.current?.setUrl(getMapURL(userSettings.mapStyle));
