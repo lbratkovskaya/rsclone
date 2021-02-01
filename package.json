@@ -25,6 +25,7 @@
     "@material-ui/icons": "^4.11.2",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
+    "history": "^5.0.0",
     "leaflet": "^1.7.1",
     "leaflet-contextmenu": "^1.4.0",
     "react": "^17.0.1",

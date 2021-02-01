@@ -1,5 +1,3 @@
-import { FlightsMapStyle } from "./FlightsMapType";
-
 export interface AircraftPosition {
   latitude: number,
   longitude: number,
@@ -49,30 +47,29 @@ export interface UserMapSettings {
   mapZoom: number,
 }
 
-export interface IUser{
+export type FlightsMapStyle = 'dark' | 'light' | 'natural';
+
+export interface FavoritiesItem {
+  addedToFavorites: Date,
+  codeName: string,
+  arrivalAirport: UserAirport,
+  departureAirport: UserAirport,
+}
+
+export interface UserAirport {
+  name: string,
+  code: string,
+  position: GeoPosition,
+}
+
+export interface GeoPosition {
+  latitude: number,
+  longitude: number,
+}
+
+export interface IUser {
   id: string,
   username: string,
   lastSessionEndedDate?: Date,
-  favorites?: [
-    {
-      addedToFavorites: Date,
-      codeName: string,
-      arrivalAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-      departureAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-    },
-  ]
+  favorites?: FavoritiesItem[],
 }

@@ -1,11 +1,12 @@
 import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
-
-export type FlightsMapStyle = 'dark' | 'light' | 'natural';
+import { FlightsMapStyle, IUser } from './';
 
 export interface FlightMapProps {
   userData: IUser,
   onAircraftIconClick: () => void,
-  onAirportIconClick: () => void,
+  onAirportIconClick: (event: LeafletMouseEvent) => void,
+  showDepartures: (airportCode: string) => void,
+  showArrivals: (airportCode: string) => void,
 }
 
 export interface FlightMapState {
@@ -25,4 +26,6 @@ export interface MapStyleSelectorProps {
 
 export interface FuncAirportsLayerProps {
   onAirportIconClick: (event: LeafletMouseEvent) => void,
+  showDepartures: (airportCode: string) => void,
+  showArrivals: (airportCode: string) => void,
 }

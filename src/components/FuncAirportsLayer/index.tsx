@@ -5,15 +5,14 @@ import L, {
   Marker,
   PointExpression,
   LeafletMouseEvent,
-  LeafletMouseEventHandlerFn,
 } from 'leaflet';
 import { useMap } from 'react-leaflet';
+import { ContextMenuMap, ExtendedMarkerOptions } from 'leaflet-contextmenu';
+import 'leaflet-contextmenu';
 import { AirportType } from '../../types/AirportsLayerType';
+import { FuncAirportsLayerProps } from '../../types/FlightsMapType';
 import { roundCoordinates } from '../../utils/apiUtils';
 import { AIRPORT_BLUE_PIN_HTML, ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
-import 'leaflet-contextmenu';
-import { ContextMenuMap, ExtendedMarkerOptions } from 'leaflet-contextmenu';
-import { FuncAirportsLayerProps } from '../../types/FlightsMapType';
 
 function showCoordinates(coord: LatLng, marker: Marker) {
   marker.bindPopup(`<p>Latitude: ${coord.lat}</p><p>Longitude: ${coord.lng}</p>`).openPopup();
@@ -51,7 +50,6 @@ export default function FuncAirportsLayer(props: FuncAirportsLayerProps): JSX.El
     }
   });
 
-
   fetchAirports(version, setAirports, setVersion);
 
   airports.forEach((airport: AirportType) => {
@@ -64,6 +62,7 @@ export default function FuncAirportsLayer(props: FuncAirportsLayerProps): JSX.El
     });
 
     const marker: Marker = L.marker([latitude, longitude], {
+      airportCode: airport.iata,
       icon,
       contextmenu: true,
       contextmenuInheritItems: false,
@@ -75,13 +74,13 @@ export default function FuncAirportsLayer(props: FuncAirportsLayerProps): JSX.El
         '-',
         {
           text: 'Departures',
-          // TODO callback: showDepartures
+          callback: () => props.showDepartures(airport.iata),
         }, {
           text: 'Arrivals',
-          // TODO callback: showArrivals
+          callback: () => props.showArrivals(airport.iata),
         },
       ],
-    } as ExtendedMarkerOptions).addTo(map).on('click', (event) => props.onAirportIconClick(event as LeafletMouseEvent) );
+    } as ExtendedMarkerOptions).addTo(map).on('click', (event) => props.onAirportIconClick(event as LeafletMouseEvent));
   });
 
   return null;

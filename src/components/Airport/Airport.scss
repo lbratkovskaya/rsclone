@@ -6,11 +6,11 @@
   transition: 0.6s ease-in-out;
   z-index: 10;
 
-  .opened {
+  &.opened {
     transform: translateX(0);
   }
 
-  .closed {
+  &.closed {
     transform: translateX(-100vw);
   }
 }

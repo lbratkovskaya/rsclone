@@ -1,5 +1,5 @@
 import { LatLngExpression, latLng } from 'leaflet';
-import { FlightsMapStyle } from '../types/FlightsMapType';
+import { FlightsMapStyle } from '../types';
 
 export const mapCenterCoordinates: LatLngExpression = [56.852, 60.612];
 
@@ -30,7 +30,8 @@ const colors = {
   dark: '#545454',
   light: '#e3e3e3',
   natural: '#9cc587',
-}
+};
+
 export const MAP_STYLES = [
   {
     title: 'Dark Map Style',

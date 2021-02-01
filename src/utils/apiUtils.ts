@@ -1,6 +1,6 @@
 import { LatLngExpression } from 'leaflet';
 import aircraftIcons from '../airplane_icons.json';
-import { FlightsMapStyle } from '../types/FlightsMapType';
+import { FlightsMapStyle } from '../types';
 import {
   AircraftIcon,
   AircraftIconGroup,
@@ -19,7 +19,7 @@ const getMapStyleId = (mapStyle: FlightsMapStyle): string => {
     case 'natural': return naturalMapStyleId;
     default: return darkMapStyleId;
   }
-}
+};
 
 export const getMapURL = (mapStyle: FlightsMapStyle): string => {
   const baseUrl = 'https://api.mapbox.com';
@@ -81,9 +81,7 @@ const parseJSON = (jsonString: string) => {
 
 const USER_SETTINGS_KEY = 'mapUserSettings';
 
-const getUserMapSettingsKey = (userKey: string) => {
-  return `${USER_SETTINGS_KEY}${userKey ? `_${userKey}` : ''}`
-}
+const getUserMapSettingsKey = (userKey: string) => `${USER_SETTINGS_KEY}${userKey ? '_' : ''}${userKey}`;
 
 export const readUserMapSettings = (userKey: string): UserMapSettings | null => {
   const userSettingsKey = getUserMapSettingsKey(userKey);
@@ -101,4 +99,4 @@ export const saveUserMapSettings = (
   const json = JSON.stringify(mapSettings);
   const userSettingsKey = getUserMapSettingsKey(userKey);
   localStorage.setItem(userSettingsKey, json);
-}
+};

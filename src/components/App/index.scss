@@ -21,5 +21,14 @@ body {
 .login-form {
   position: absolute;
   right: 0;
+  padding: 10px;
   z-index: 1000;
+  background-color: #707070;
+
+  a {
+    display: flex;
+    text-decoration: none;
+    color: #838282;
+  }
+  
 }
