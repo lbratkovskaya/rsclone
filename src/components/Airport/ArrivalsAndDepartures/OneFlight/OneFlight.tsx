@@ -16,13 +16,44 @@ const OneFlight:React.FC<OneFlightProps> = ({
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
   const img = document.createElement('img');
+  let isLoadedFromFirst = false;
   img.src = firstLogoUrl(airlineCodeIata, airlineCodeIcao);
-  img.onerror = () => {
-    img.src = secondLogoUrl(airlineCodeIata);
+  img.onload = () => {
+    console.log(1)
+    isLoadedFromFirst = true;
+    // mainContent.style.backgroundImage = url(${urlString});
   };
-  img.onerror = () => {
-    img.src = noLogoUrl;
-  };
+
+  setTimeout(() => {
+    if (!isLoadedFromFirst) {
+      console.log(5)
+      img.src = secondLogoUrl(airlineCodeIata);
+      img.onload = () => {
+        isLoadedFromFirst = true;
+      };
+    }
+  }, 500);
+
+  setTimeout(() => {
+    if (!isLoadedFromFirst) {
+      console.log(6)
+      img.src = noLogoUrl;
+    }
+  }, 500);
+
+  // img.onerror = () => {
+  //   console.log(7)
+  //   img.src = secondLogoUrl(airlineCodeIata);
+  //   img.onload = () => {
+  //     console.log(1)
+  //     isLoadedFromFirst = true;
+  //   };
+  // };
+  // img.onerror = () => {
+  //   console.log(8)
+  //   img.src = noLogoUrl;
+  //   isLoadedFromFirst = true;
+  // };
 
   return (
     <div className="airport-flight">
