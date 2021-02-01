@@ -1,17 +1,8 @@
 import React from 'react';
 import Radar from '../SVGComponents/Radar';
+import { FlightDataProps } from '../../../types/flightDataTypes';
 import '../Flight.scss';
 import './FlightData.scss';
-
-interface FlightDataProps {
-  hex: string,
-  lat: number | null,
-  lng: number | null,
-  airline: {
-    iata?: string | null,
-    icao?: string | null,
-  },
-}
 
 const FlightData:React.FC<FlightDataProps> = ({
   hex, lat, lng, airline,

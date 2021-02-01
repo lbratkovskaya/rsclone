@@ -1,19 +1,9 @@
 import React from 'react';
 import Airborne from '../SVGComponents/Airborne';
-import './FlightInfo.scss';
-import { Timezone, FlightTime } from '../../../types/types';
+import { FlightInfoProps } from '../../../types/flightDataTypes';
 import addPlusMinusUTCTime from '../../../utils/addPlusMinusUTCTime';
 import getLocalData from '../../../utils/getLocalData';
-
-interface FlightInfoProps {
-  timezoneOrigin: Timezone | null,
-  timezoneDestination: Timezone | null,
-  iataOrigin: string,
-  cityOrigin: string,
-  time: FlightTime | null,
-  iataDestination: string,
-  cityDestination: string,
-}
+import './FlightInfo.scss';
 
 const FlightInfo:React.FC<FlightInfoProps> = ({
   timezoneOrigin,

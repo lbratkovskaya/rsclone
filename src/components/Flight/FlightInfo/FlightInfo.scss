@@ -1,4 +1,5 @@
 .flight-info {
+  width: 303px;
   display: flex;
   background: #efeff4;
   font-size: 10px;
@@ -8,9 +9,9 @@
     padding-top: 5px;
     border-bottom: 1px solid #fff;
     text-align: center;
+    width: 150px;
 
     &:first-child {
-      width: 150px;
       border-right: 3px solid #fff;
     }
   }

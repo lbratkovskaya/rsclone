@@ -8,7 +8,7 @@ import './index.scss';
 const App:React.FC = (): JSX.Element => {
   const [openFlightPanel] = useState(true);
   const [openAirportPanel] = useState(false);
-  const hexCode = '26b69140';
+  const hexCode = '26b7e0b3';
   const code = 'MSQ';
 
   return (

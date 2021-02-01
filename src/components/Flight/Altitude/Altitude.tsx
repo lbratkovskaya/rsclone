@@ -1,14 +1,10 @@
 import React from 'react';
 import AltitudeIcon from '../SVGComponents/AltitudeIcon';
+import { AltitudeProps } from '../../../types/flightDataTypes';
 import '../Flight.scss';
 import './Altitude.scss';
 
-interface AltitueProps {
-  alt: number | null,
-  hd: number | null,
-}
-
-const Altitude:React.FC<AltitueProps> = ({ alt, hd }: AltitueProps): JSX.Element => (
+const Altitude:React.FC<AltitudeProps> = ({ alt, hd }: AltitudeProps): JSX.Element => (
   <section className="flight-altitude">
     <div className="flight-altitude__icon"><AltitudeIcon /></div>
     <div className="flex-wrapper">

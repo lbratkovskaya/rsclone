@@ -1,20 +1,9 @@
 import React from 'react';
 import Aircraft from '../SVGComponents/Aircraft';
 import { firstLogoUrl, secondLogoUrl, noLogoUrl } from '../../../utils/airportApiUtils';
+import { AircraftInfoProps } from '../../../types/flightDataTypes';
 import '../Flight.scss';
 import './AircraftInfo.scss';
-
-interface AircraftInfoProps {
-  model: {
-    code?: string | null,
-    text?: string | null,
-  }
-  registration: string,
-  airline: {
-    iata?: string | null,
-    icao?: string | null,
-  }
-}
 
 const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline }
 : AircraftInfoProps): JSX.Element => {
@@ -34,10 +23,8 @@ const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline
         <div className="row-no-flex">
           <p>
             AIRCRAFT TYPE
-            {' ('}
             <span>
-              {model.code ? model.code : 'N/A'}
-              {') '}
+              {` (${model.code ? model.code : 'N/A'}) `}
             </span>
           </p>
           <p className="flight-aircraft-info__bold">{model.text || ''}</p>

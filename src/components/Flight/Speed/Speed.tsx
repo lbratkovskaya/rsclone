@@ -1,10 +1,7 @@
 import React from 'react';
 import Speedmeter from '../SVGComponents/Speedmeter';
+import { SpeedProps } from '../../../types/flightDataTypes';
 import './Speed.scss';
-
-interface SpeedProps {
-  spd: number | null,
-}
 
 const Speed:React.FC<SpeedProps> = ({ spd }: SpeedProps): JSX.Element => {
   const km = spd && spd * 1.85;

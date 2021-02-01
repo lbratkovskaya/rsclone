@@ -9,27 +9,16 @@ import Altitude from './Altitude/Altitude';
 import Speed from './Speed/Speed';
 import FlightData from './FlightData/FlightData';
 import FlightButton from './FlightButton/FlightButton';
+import { FlightPanelProps } from '../../types/flightDataTypes';
 import './Flight.scss';
-import { transformFile } from '@babel/core';
 
-interface FlightPanelProps {
-  hexCode: string
-  openFlightPanel: boolean,
-}
-
-const FlightPanel = ({ hexCode, openFlightPanel }:FlightPanelProps):JSX.Element => {
+const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Element => {
   const [flightInfo, setFlightInfo] = useState<any>(null);
   const [openPanel, setOpenPanel] = useState(openFlightPanel);
 
   const closeHandler = () => {
     setOpenPanel(false);
   };
-
-  useEffect(() => {
-    fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
-      .then((response) => response.json())
-      .then((data) => console.log(data));
-  }, [hexCode]);
 
   useEffect(() => {
     fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
@@ -68,6 +57,7 @@ const FlightPanel = ({ hexCode, openFlightPanel }:FlightPanelProps):JSX.Element 
             currentTime={flightInfo.trail[0].ts || null}
             startTime={flightInfo.time.real.departure || null}
             endTime={flightInfo.time.estimated.arrival || null}
+            hexCode={hexCode}
           />
           <AircraftInfo
             model={flightInfo.aircraft?.model || {}}
