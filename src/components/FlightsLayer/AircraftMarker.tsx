@@ -50,11 +50,17 @@ class AircraftMarker extends Component<AircraftMarkerProps> {
    * Needed for smooth movement of icons
   */
   UNSAFE_componentWillReceiveProps = (newProps: AircraftMarkerProps): void => {
-    if (newProps.position !== this.props.position) {
+    const { position } = this.props;
+    const { position: newPosition } = newProps;
+    if (newPosition !== position) {
       this.markerRef.current?.setLatLng(newProps.position);
     }
-    if ((newProps.trackAngle !== this.props.trackAngle)
-      || (newProps.withTrack !== this.props.withTrack)) {
+    const { trackAngle } = this.props;
+    const { trackAngle: newTrackAngle } = newProps;
+    const { withTrack } = this.props;
+    const { withTrack: newWithTrack } = newProps;
+    if ((newTrackAngle !== trackAngle)
+      || (newWithTrack !== withTrack)) {
       this.markerRef.current?.setIcon(this.getIcon(
         newProps.aircraftType,
         newProps.trackAngle,

@@ -15,15 +15,17 @@ import {
 } from '../../types/airportDataTypes';
 import './Airport.scss';
 
-const Airport:React.FC<AirportProps> = ({
-  code, openAirportPanel,
-}:AirportProps) => {
-  const [airportInfo, setAirportInfo] = useState< AirportInfo | null>(null);
-  const [schedule, setSchedule] = useState< Schedule | null>(null);
-  const [runwaysData, setRunways] = useState< Runways[] | null>(null);
+const Airport: React.FC<AirportProps> = ({
+  code,
+  openAirportPanel,
+  setOpenPanel,
+}: AirportProps) => {
+  const [airportInfo, setAirportInfo] = useState<AirportInfo | null>(null);
+  const [schedule, setSchedule] = useState<Schedule | null>(null);
+  const [runwaysData, setRunways] = useState<Runways[] | null>(null);
   const [satelliteImageData, setSatelliteImage] = useState('');
   const [activeTab, setActiveTab] = useState(1);
-  const [openPanel, setOpenPanel] = useState(openAirportPanel);
+  // const [openPanel, setOpenPanel] = useState(openAirportPanel);
 
   const changeTabHandler = (num: number): void => {
     setActiveTab(num);
@@ -58,7 +60,7 @@ const Airport:React.FC<AirportProps> = ({
   const checkTab3 = activeTab === 3 && airportInfo;
 
   return (
-    <div id="airport" className={openPanel ? 'opened' : 'closed'}>
+    <div id="airport" className={openAirportPanel ? 'opened' : 'closed'}>
       {!!airportInfo && <Header airportInfo={airportInfo} closeHandler={closeHandler} />}
       {checkTab1 && (
         <>

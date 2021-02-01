@@ -1,9 +1,9 @@
-import React, { Component, ComponentPropsWithoutRef } from 'react';
+import React, { Component } from 'react';
 import { Polyline } from 'react-leaflet';
 import { Map } from 'leaflet';
 import {
   FlightsLayerProps,
-  FlightsLayerState
+  FlightsLayerState,
 } from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
 import { AircraftPosition, AircraftState } from '../../types';
@@ -60,7 +60,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
           return;
         }
         const { aircrafts: aircraftMap, trackShowingAircrafts, trackLatLngs } = this.state;
-        let latLngs = { ...trackLatLngs };
+        const latLngs = { ...trackLatLngs };
         const newAircraftsMap = { ...aircraftMap };
 
         const filteredResponseKeys = Object.keys(json).filter((key) => !['full_count', 'version'].includes(key));
@@ -132,30 +132,33 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       const latitude = roundCoordinates(aircraft.positions[0].latitude
         || aircraft.currentPosition.latitude);
       return (
-      <AircraftMarker
-        key={flightId}
-        position={[latitude, longitude]}
-        altitude={aircraft.positions[0].altitude}
-        trackAngle={aircraft.positions[0].true_track}
-        callsign={aircraft.callsign}
-        aircraftType={aircraft.aircraft_type}
-        withTrack={trackShowingAircrafts.includes(flightId)}
-        onIconClick={(event) => this.aircraftIconClickHandler(
-          flightId,
-          event.originalEvent.ctrlKey,
-        )}
-      />);
+        <AircraftMarker
+          key={flightId}
+          position={[latitude, longitude]}
+          altitude={aircraft.positions[0].altitude}
+          trackAngle={aircraft.positions[0].true_track}
+          callsign={aircraft.callsign}
+          aircraftType={aircraft.aircraft_type}
+          withTrack={trackShowingAircrafts.includes(flightId)}
+          onIconClick={(event) => this.aircraftIconClickHandler(
+            flightId,
+            event.originalEvent.ctrlKey,
+          )}
+        />
+      );
     });
   }
 
   getTracks(): JSX.Element[] {
     const { trackLatLngs } = this.state;
 
-    return Object.entries(trackLatLngs).map(([flightId, track]) => (<Polyline
-      key={flightId}
-      positions={track}
-      pathOptions={{ color: 'lime' }}
-    />));
+    return Object.entries(trackLatLngs).map(([flightId, track]) => (
+      <Polyline
+        key={flightId}
+        positions={track}
+        pathOptions={{ color: 'lime' }}
+      />
+    ));
   }
 
   aircraftIconClickHandler = (flightId: string, append: boolean): void => {
@@ -166,35 +169,6 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       this.showTrack(flightId, append);
     }
   };
-
-  showTrack(flightId: string, append: boolean): void {
-    const { trackShowingAircrafts } = this.state;
-    if (!trackShowingAircrafts.includes(flightId)) {
-      const fetchStr = `/api/flightStatus?flightId=${flightId}`;
-      fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
-        .then((resp) => resp.json())
-        .then((json) => {
-          const historicTrail = json.trail.map((itm: {
-            lat: number,
-            lng: number,
-            alt: number,
-            spd: number,
-            ts: number,
-            hd: number
-          }) => ({
-            longitude: itm.lng,
-            latitude: itm.lat,
-            true_track: itm.hd,
-            altitude: itm.alt,
-            velocity: itm.spd,
-            time_position: itm.ts,
-          }));
-
-          this.revealTrack(flightId, true, append, historicTrail);
-        });
-    }
-    this.revealTrack(flightId, false, append, []);
-  }
 
   toggleSuppressRequest = (): void => this.setState((state) => ({
     suppressRequest: !state.suppressRequest,
@@ -272,6 +246,35 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       return { trackLatLngs, trackShowingAircrafts };
     });
   };
+
+  showTrack(flightId: string, append: boolean): void {
+    const { trackShowingAircrafts } = this.state;
+    if (!trackShowingAircrafts.includes(flightId)) {
+      const fetchStr = `/api/flightStatus?flightId=${flightId}`;
+      fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
+        .then((resp) => resp.json())
+        .then((json) => {
+          const historicTrail = json.trail.map((itm: {
+            lat: number,
+            lng: number,
+            alt: number,
+            spd: number,
+            ts: number,
+            hd: number
+          }) => ({
+            longitude: itm.lng,
+            latitude: itm.lat,
+            true_track: itm.hd,
+            altitude: itm.alt,
+            velocity: itm.spd,
+            time_position: itm.ts,
+          }));
+
+          this.revealTrack(flightId, true, append, historicTrail);
+        });
+    }
+    this.revealTrack(flightId, false, append, []);
+  }
 
   render(): JSX.Element {
     const markers = this.getMarkers();

@@ -1,6 +1,6 @@
 declare module 'leaflet-contextmenu' {
-  import { Map, MarkerOptions } from "leaflet";
-  
+  import { Map, MarkerOptions } from 'leaflet';
+
   export interface ContextMenuMap extends Map {
     contextmenu: {
       isVisible: () => boolean,
@@ -9,6 +9,7 @@ declare module 'leaflet-contextmenu' {
   }
 
   export interface ExtendedMarkerOptions extends MarkerOptions {
+    airportCode: string,
     contextmenu: boolean,
     contextmenuItems: ({
       text: string,

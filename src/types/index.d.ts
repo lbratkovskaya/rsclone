@@ -1,5 +1,3 @@
-import { FlightsMapStyle } from "./FlightsMapType";
-
 export interface AircraftPosition {
   latitude: number,
   longitude: number,
@@ -49,7 +47,9 @@ export interface UserMapSettings {
   mapZoom: number,
 }
 
-export interface IUser{
+export type FlightsMapStyle = 'dark' | 'light' | 'natural';
+
+export interface IUser {
   id: string,
   username: string,
   lastSessionEndedDate?: Date,
