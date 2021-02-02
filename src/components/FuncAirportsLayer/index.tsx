@@ -13,6 +13,7 @@ import { AirportType } from '../../types/AirportsLayerType';
 import { FuncAirportsLayerProps } from '../../types/FlightsMapType';
 import { roundCoordinates } from '../../utils/apiUtils';
 import { AIRPORT_BLUE_PIN_HTML, ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
+import API from '../../utils/API';
 
 function showCoordinates(coord: LatLng, marker: Marker) {
   marker.bindPopup(`<p>Latitude: ${coord.lat}</p><p>Longitude: ${coord.lng}</p>`).openPopup();
@@ -23,10 +24,10 @@ function fetchAirports(
   setAirports: (arr: AirportType[]) => void,
   setVersion: (version: number) => void,
 ): void {
-  const fetchStr = '/api/allAirports';
+  const fetchStr = './api/allAirports';
 
-  fetch(fetchStr, { method: 'GET' })
-    .then((resp) => resp.json())
+  API.get(fetchStr, { method: 'GET' })
+    .then((resp) => resp.data)
     .then((json) => {
       if (!json) {
         return;

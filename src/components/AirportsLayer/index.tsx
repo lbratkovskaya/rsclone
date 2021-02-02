@@ -4,6 +4,7 @@ import L, { PointExpression } from 'leaflet';
 import { AirportsLayerState, AirportType } from '../../types/AirportsLayerType';
 import { roundCoordinates } from '../../utils/apiUtils';
 import { ICON_ANCHOR_SIZE, ICON_SIZE } from '../../utils/constants';
+import API from '../../utils/API';
 
 class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, AirportsLayerState> {
   constructor(props: ComponentPropsWithoutRef<'object'>) {
@@ -21,10 +22,10 @@ class AirportsLayer extends Component<ComponentPropsWithoutRef<'object'>, Airpor
   }
 
   getAirports(): void {
-    const fetchStr = '/api/allAirports';
+    const fetchStr = './api/allAirports';
 
-    fetch(fetchStr, { method: 'GET' })
-      .then((resp) => resp.json())
+    API.get(fetchStr, { method: 'GET' })
+      .then((resp) => resp.data)
       .then((json) => {
         if (!json) {
           return;

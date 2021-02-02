@@ -6,7 +6,7 @@ import './Header.scss';
 
 const Header:React.FC<HeaderProps> = ({ airportInfo, closeHandler } :HeaderProps) => {
   const flagUrl = `https://www.countryflags.io/${airportInfo.position.country.code}/flat/64.png`;
-  // const flagUrl = `/api/flag?countryCode=${airportInfo.position.country.code}`;
+  // const flagUrl = `./api/flag?countryCode=${airportInfo.position.country.code}`;
 
   const localTime = getLocalData((new Date().getTime()) / 1000,
     airportInfo?.timezone?.offset).toString();

@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -12,7 +13,6 @@ module.exports = (env, options) => {
     devtool: isProduction ? false : 'source-map',
     watch: !isProduction,
     entry: './src/index.js',
-
     output: {
       path: path.resolve(__dirname, 'build'),
       filename: 'bundle.js',
@@ -71,7 +71,7 @@ module.exports = (env, options) => {
               options: {
                 name: "[name].[ext]",
                 outputPath: "img/",
-                options: { publicPath: '' }
+                publicPath: 'rsclone/clone',
               },
             },
           ],

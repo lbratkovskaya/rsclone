@@ -16,11 +16,13 @@ import TeamFooter from './TeamFooter';
 import RSSchoolLogo from './RSSchoolLogo';
 import { IUser } from '../../types';
 import { AppState } from '../../types/ApplicationType';
+import API from '../../utils/API';
 import {
   AIRPORT_TAB_BUTTONS,
   DEFAULT_AIRPORT_CODE,
 } from '../../utils/airportConstants';
 import './index.scss';
+
 
 class App extends Component<ComponentProps<'object'>, AppState> {
   history: History;
@@ -37,10 +39,9 @@ class App extends Component<ComponentProps<'object'>, AppState> {
   }
 
   getCurrentUser = (): null | IUser => {
-    axios({
+    API.get('auth/current_user', {
       method: 'get',
       withCredentials: true,
-      url: 'auth/current_user',
     }).then((res) => {
       this.setState({ userData: res.data });
       return res.data;
@@ -96,13 +97,17 @@ class App extends Component<ComponentProps<'object'>, AppState> {
       userData,
     } = this.state;
     return (
-      <BrowserRouter>
-        <div className="login-form">
-          <Link to="./login">
-            <PermIdentity />
+      <>
+        {!userData &&
+          (
+            <div className="login-form">
+              <Link to="./login">
+                <PermIdentity />
             Login
           </Link>
-        </div>
+            </div>
+          )
+        }
         <Route
           exact
           path="/"
@@ -117,8 +122,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           )}
         />
         <Route
-          exact
-          path="./login"
+          path="/login"
           render={(props) => {
             const { history } = props;
             return (
@@ -139,7 +143,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           <TeamFooter />
           <RSSchoolLogo />
         </footer>
-      </BrowserRouter>
+      </>
     );
   }
 }

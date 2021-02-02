@@ -6,7 +6,8 @@ import {
   FlightsLayerState,
 } from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
-import { AircraftPosition, AircraftState, FavoritiesItem } from '../../types';
+import { AircraftPosition, AircraftState } from '../../types';
+import API from '../../utils/API';
 import AircraftMarker from './AircraftMarker';
 import {
   joinTracks,
@@ -53,8 +54,8 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
     const se = mapBounds.getSouthEast();
 
     const fetchStr = `/api/flights?bounds=${nw.lat},${se.lat},${nw.lng},${se.lng}`;
-    fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
-      .then((resp) => resp.json())
+    API.get(fetchStr, { method: 'GET'})
+      .then((resp) => resp.data)
       .then((json) => {
         if (!json) {
           return;
@@ -248,11 +249,12 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
   };
 
   showTrack(flightId: string, append: boolean): void {
+    // const apiDomain = API_DOMAIN;
     const { trackShowingAircrafts } = this.state;
     if (!trackShowingAircrafts.includes(flightId)) {
       const fetchStr = `/api/flightStatus?flightId=${flightId}`;
-      fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
-        .then((resp) => resp.json())
+      API.get(fetchStr, { method: 'GET' })
+        .then((resp) => resp.data)
         .then((json) => {
           const historicTrail = json.trail.map((itm: {
             lat: number,

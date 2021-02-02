@@ -3,8 +3,9 @@ import axios from 'axios';
 import Register from './Register';
 import Login from './Login';
 import Switcher from './Switcher';
-import './start-form.scss';
 import { StartFormProps } from '../../types/StartFormType';
+import API from '../../utils/API';
+import './start-form.scss';
 
 const StartForm = (props: StartFormProps): JSX.Element => {
   const [registerUsername, setRegisterUsername] = useState('');
@@ -16,28 +17,26 @@ const StartForm = (props: StartFormProps): JSX.Element => {
   const { getCurrentUser, onLoginRedirectHandler } = props;
 
   const register = () => {
-    axios({
+    API.post('auth/register', {
       method: 'post',
       data: {
         username: registerUsername,
         password: registerPassword,
       },
       withCredentials: true,
-      url: 'auth/register',
     }).then((res) => {
       onLoginRedirectHandler();
     });
   };
 
   const login = () => {
-    axios({
+    API.post('auth/login',{
       method: 'post',
       data: {
         username: loginUsername,
         password: loginPassword,
       },
       withCredentials: true,
-      url: 'auth/login',
     }).then((res) => {
       onLoginRedirectHandler();
     });
