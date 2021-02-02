@@ -88,7 +88,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
       userData,
     } = this.state;
     return (
-      <BrowserRouter>
+      <>
         <div className="login-form">
           <Link to="./login">
             <PermIdentity />
@@ -109,8 +109,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           )}
         />
         <Route
-          exact
-          path="./login"
+          path="/login"
           render={(props) => {
             const { history } = props;
             return (
@@ -131,7 +130,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           <TeamFooter />
           <RSSchoolLogo />
         </footer>
-      </BrowserRouter>
+      </>
     );
   }
 }

@@ -7,6 +7,7 @@ import Runway from './Runway/Runway';
 import Button from './Button/Button';
 import ScheduledFlights from './ScheduledFlights/ScheduledFlights';
 import ArrivalsAndDepartures from './ArrivalsAndDepartures/ArrivalsAndDepartures';
+import API from '../../utils/API';
 import {
   AirportProps,
   AirportState,
@@ -56,8 +57,8 @@ class Airport extends Component<AirportProps, AirportState> {
   };
 
   fetchAirportData = (code: string): void => {
-    fetch(`/api/airport?airportCode=${code}`, { method: 'GET', mode: 'no-cors' })
-      .then((response) => response.json())
+    API.get(`./api/airport?airportCode=${code}`, { method: 'GET'})
+      .then((response) => response.data)
       .then((data) => {
         const {
           details, scheduledRoutesStatistics, runways, satelliteImage,
