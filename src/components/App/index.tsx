@@ -2,7 +2,7 @@ import React, { Component, ComponentProps } from 'react';
 import axios from 'axios';
 import {
   Link,
-  Router,
+  BrowserRouter,
   Route,
 } from 'react-router-dom';
 import { LeafletMouseEvent, Marker } from 'leaflet';
@@ -12,6 +12,8 @@ import { PermIdentity } from '@material-ui/icons';
 import StartForm from '../StartForm/StartForm';
 import FlightsMap from '../FlightsMap';
 import Airport from '../Airport';
+import TeamFooter from './TeamFooter';
+import RSSchoolLogo from './RSSchoolLogo';
 import { IUser } from '../../types';
 import { AppState } from '../../types/ApplicationType';
 import {
@@ -94,9 +96,9 @@ class App extends Component<ComponentProps<'object'>, AppState> {
       userData,
     } = this.state;
     return (
-      <Router history={this.history}>
+      <BrowserRouter>
         <div className="login-form">
-          <Link to="/login">
+          <Link to="./login">
             <PermIdentity />
             Login
           </Link>
@@ -116,13 +118,16 @@ class App extends Component<ComponentProps<'object'>, AppState> {
         />
         <Route
           exact
-          path="/login"
-          render={() => (
-            <StartForm
-              getCurrentUser={this.getCurrentUser}
-              onLoginRedirectHandler={this.onLoginRedirectHandler}
-            />
-          )}
+          path="./login"
+          render={(props) => {
+            const { history } = props;
+            return (
+              <StartForm
+                history={history}
+                getCurrentUser={this.getCurrentUser}
+              />
+            );
+          }}
         />
         <Airport
           code={currentAirportCode}
@@ -130,7 +135,11 @@ class App extends Component<ComponentProps<'object'>, AppState> {
           activeTab={airportPanelTab}
           setOpenPanel={this.setOpenAirportPanel}
         />
-      </Router>
+        <footer className="footer">
+          <TeamFooter />
+          <RSSchoolLogo />
+        </footer>
+      </BrowserRouter>
     );
   }
 }

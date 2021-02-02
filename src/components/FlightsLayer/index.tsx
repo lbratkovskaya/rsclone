@@ -6,7 +6,7 @@ import {
   FlightsLayerState,
 } from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
-import { AircraftPosition, AircraftState } from '../../types';
+import { AircraftPosition, AircraftState, FavoritiesItem } from '../../types';
 import AircraftMarker from './AircraftMarker';
 import {
   joinTracks,
@@ -276,6 +276,13 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
     this.revealTrack(flightId, false, append, []);
   }
 
+  showFavoritiesTacks = () => {
+    const { userFavorities } = this.props;
+    userFavorities.forEach((userFav) => {
+      this.showTrack(userFav.flightId, true);
+    });
+  }
+
   render(): JSX.Element {
     const markers = this.getMarkers();
     const tracks = this.getTracks();
@@ -283,7 +290,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       <>
         <FlightLayerUpdater
           updateMapBounds={this.updateMapBounds}
-          showFavoritiesTacks={() => { /* TODO */ }}
+          showFavoritiesTacks={this.showFavoritiesTacks}
         />
         {markers}
         {tracks}

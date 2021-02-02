@@ -25,8 +25,7 @@ FlightLayerUpdaterProps): JSX.Element {
           case 'ArrowRight':
             map.panBy([CTLR_MAP_PAN_INTERVAL, 0]);
             break;
-          case 'KeyT':
-            // TODO
+          case 'KeyI':
             showFavoritiesTacks();
             break;
           default: break;
