@@ -51,6 +51,7 @@ export type FlightsMapStyle = 'dark' | 'light' | 'natural';
 
 export interface FavoritiesItem {
   addedToFavorites: Date,
+  flightId: string,
   codeName: string,
   arrivalAirport: UserAirport,
   departureAirport: UserAirport,
