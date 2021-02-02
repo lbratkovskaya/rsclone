@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import Follow from '../SVGComponents/Follow';
+import { FlightButtonProps } from '../../../types/flightDataTypes';
 import './FlightButton.scss';
 
-const FlightButton = (): JSX.Element => {
-  const [clicked, setClicked] = useState(false);
+const FlightButton:React.FC<FlightButtonProps> = ({ toggleSelectedFlights, isFollowed }
+: FlightButtonProps): JSX.Element => {
+  const [clicked, setClicked] = useState(isFollowed);
   const handleTab = () => {
     setClicked(!clicked);
+    toggleSelectedFlights(!clicked);
   };
 
   return (

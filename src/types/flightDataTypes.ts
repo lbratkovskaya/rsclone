@@ -161,3 +161,31 @@ export interface FlightPanelProps {
   hexCode: string
   openFlightPanel: boolean,
 }
+
+export interface FlightButtonProps {
+  toggleSelectedFlights: (clicked: boolean) => void,
+  isFollowed: boolean,
+}
+
+export interface FollowedFlight {
+  addedToFavorites: Date,
+  flightId: string,
+  registration: string,
+  arrivalAirport: {
+    name: string,
+    code: string,
+    position: {
+      latitude: string,
+      longitude: string
+    }
+  },
+  departureAirport: {
+    name: string,
+    code: string,
+    position: {
+      latitude: string,
+      longitude: string
+    }
+  },
+}
+

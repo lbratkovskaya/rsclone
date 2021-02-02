@@ -9,16 +9,62 @@ import Altitude from './Altitude/Altitude';
 import Speed from './Speed/Speed';
 import FlightData from './FlightData/FlightData';
 import FlightButton from './FlightButton/FlightButton';
-import { FlightPanelProps } from '../../types/flightDataTypes';
+import { FlightPanelProps, FollowedFlight } from '../../types/flightDataTypes';
 import './Flight.scss';
 
 const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Element => {
   const [flightInfo, setFlightInfo] = useState<any>(null);
   const [openPanel, setOpenPanel] = useState(openFlightPanel);
+  const selectedFlights:Array<FollowedFlight> = [];
+  let isFollowed = false;
 
   const closeHandler = () => {
     setOpenPanel(false);
   };
+
+  const toggleSelectedFlights = (clicked: boolean): void => {
+    if (clicked) {
+      for (let i = 0; i < selectedFlights.length; i += 1) {
+        if (selectedFlights[i].flightId === hexCode) {
+          return;
+        }
+      }
+      isFollowed = true;
+      selectedFlights.push({
+        addedToFavorites: new Date(),
+        flightId: hexCode,
+        registration: flightInfo.aircraft?.registration,
+        arrivalAirport: {
+          name: flightInfo.airport?.destination?.name,
+          code: flightInfo.airport?.destination?.code?.iata,
+          position: {
+            latitude: flightInfo.airport?.destination?.position?.latitude,
+            longitude: flightInfo.airport?.destination?.position?.longitude,
+          },
+        },
+        departureAirport: {
+          name: flightInfo.airport?.origin?.name,
+          code: flightInfo.airport?.origin?.code?.iata,
+          position: {
+            latitude: flightInfo.airport?.origin?.position?.latitude,
+            longitude: flightInfo.airport?.origin?.position?.longitude,
+          },
+        },
+      });
+    } else {
+      const targetFligth = selectedFlights.find((el) => el.flightId === hexCode);
+      const index = selectedFlights.indexOf(targetFligth);
+      selectedFlights.splice(index, 1);
+      isFollowed = false;
+    }
+    console.log(selectedFlights);
+  };
+
+  for (let i = 0; i < selectedFlights.length; i += 1) {
+    if (selectedFlights[i].flightId === hexCode) {
+      isFollowed = true;
+    }
+  }
 
   useEffect(() => {
     fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
@@ -80,7 +126,7 @@ const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Elemen
             airline={flightInfo.airline?.code || {}}
           />
         </div>
-        <FlightButton />
+        <FlightButton toggleSelectedFlights={toggleSelectedFlights} isFollowed={isFollowed} />
       </>
       )}
     </div>
