@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState} from 'react';
 import Aircraft from '../SVGComponents/Aircraft';
 import { firstLogoUrl, secondLogoUrl, noLogoUrl } from '../../../utils/airportApiUtils';
 import { AircraftInfoProps } from '../../../types/flightDataTypes';
@@ -7,13 +7,22 @@ import './AircraftInfo.scss';
 
 const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline }
 : AircraftInfoProps): JSX.Element => {
-  const img = document.createElement('img');
-  img.src = firstLogoUrl(airline.iata, airline.icao);
-  img.onerror = () => {
-    img.src = secondLogoUrl(airline.iata);
-  };
-  img.onerror = () => {
-    img.src = noLogoUrl;
+  let firstUrl: string;
+  if (airline.iata && airline.icao) {
+    firstUrl = firstLogoUrl(airline.iata, airline.icao);
+  } else if (airline.iata) {
+    firstUrl = secondLogoUrl(airline.iata);
+  } else {
+    firstUrl = noLogoUrl;
+  }
+  const [logoUrl, setLogoUrl] = useState(firstUrl);
+  const handleError = () => {
+    if (logoUrl === firstUrl) {
+      const secondUrl = secondLogoUrl(airline.iata);
+      setLogoUrl(secondUrl);
+    } else {
+      setLogoUrl(noLogoUrl);
+    }
   };
 
   return (
@@ -35,7 +44,7 @@ const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline
             <p className="flight-aircraft-info__bold">{registration || ''}</p>
           </div>
           <div>
-            <img src={img.src} alt="logo" />
+            <img src={logoUrl} onError={handleError} alt="logo" />
           </div>
         </div>
       </div>

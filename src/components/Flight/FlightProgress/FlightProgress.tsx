@@ -13,7 +13,6 @@ const FlightProgress = ({
   const [finalTime, setFinalTime] = useState(endTime);
   const [nowPoint, setNowPoint] = useState(currentPoint);
   const [finalPoint, setFinalPoint] = useState(endPoint);
-  // const [behindDistance, setBehindDistance] = useState('');
   const coorBool = startPoint && nowPoint && endPoint;
   const timeBool = nowTime && startTime && finalTime;
   let behindDistance;
@@ -51,16 +50,8 @@ const FlightProgress = ({
           setNowPoint(data.trail[0]);
           setFinalPoint(data.airport.destination.position);
         });
-    }, 20000);
+    }, 15000);
   }, [hexCode]);
-
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     const averageSpd = +behindDistance / (nowTime - startTime);
-  //     const newPoint = behindDistance + averageSpd * 6;
-  //     setBehindDistance(newPoint.toString());
-  //   }, 6000);
-  // }, [hexCode]);
 
   return (
     <section className="flight-progress">
