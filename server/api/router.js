@@ -1,45 +1,26 @@
 const express = require('express');
-const cors = require('cors');
 const https = require('https');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const bodyParser = require('body-parser');
-const authRouter = require('./auth/router');
-const CORS = require('./utils');
-const DB = require('./db');
 
-const app = express();
+function responseHandler(res) {
+  return (resp) => {
+    let data = '';
 
-mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
-  if (err) {
-    throw err;
-  } 
+    // A chunk of data has been received.
+    resp.on('data', (chunk) => {
+      data += chunk;
+    });
 
-  console.log('MongoDB is connected');
-});
-
-app
-  .use(cors(CORS))
-  .use(bodyParser.json())
-  .use(bodyParser.urlencoded({extended: true}))
-  .use(session({
-    secret: "rsclone",
-    resave: true,
-    saveUninitialized: true,
-  }))
-  .use(cookieParser("rsclone"))
-  .use(passport.initialize())
-  .use(passport.session())
-  .use('/auth', authRouter);
-
-require('./passportConfig')(passport);
+    // The whole response has been received. Print out the result.
+    resp.on('end', () => {
+      res.send(data);
+    });
+  };
+}
 
 const apiRouter = express.Router();
 
 apiRouter.route('/flights').get( async (req, res) => {
-    await https.get(`https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${req.query.bounds}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`, responseHandler(res))
+  await https.get(`https://data-live.flightradar24.com/zones/fcgi/feed.js?bounds=${req.query.bounds}&faa=1&satellite=1&mlat=1&flarm=1&adsb=1&gnd=0&air=1&vehicles=1&estimated=1&maxage=14400`, responseHandler(res))
 });
 
 apiRouter.route('/allAirports').get( async (req, res) => {
@@ -74,28 +55,4 @@ apiRouter.route('/fly').get(async (req, res) => {
   await https.get(`https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=${req.query.flightCode}`, responseHandler(res))
 });
 
-apiRouter.route('/firstUrl').get(async (req, res) => {
-  await https.get(`https://cdn.flightradar24.com/assets/airlines/logotypes/${req.query.iata}_${req.query.icao}.png`, responseHandler(res))
-});
-
-app.use('/api', apiRouter);
-
-app.listen(3000, () => {
-    console.log('used 3000 port for server');
-})
-
-function responseHandler(res) {
-  return (resp) => {
-    let data = '';
-
-    // A chunk of data has been received.
-    resp.on('data', (chunk) => {
-      data += chunk;
-    });
-
-    // The whole response has been received. Print out the result.
-    resp.on('end', () => {
-      res.send(data);
-    });
-  };
-}
+module.exports = apiRouter;
