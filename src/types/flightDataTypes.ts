@@ -1,10 +1,3 @@
-type Photo = {
-  copyright: string,
-  link: string,
-  source: string,
-  src: string,
-};
-
 export type Flight = {
   flight : {
     aircraft: any,

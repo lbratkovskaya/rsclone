@@ -74,6 +74,10 @@ apiRouter.route('/fly').get(async (req, res) => {
   await https.get(`https://data-live.flightradar24.com/clickhandler/?version=1.5&flight=${req.query.flightCode}`, responseHandler(res))
 });
 
+apiRouter.route('/firstUrl').get(async (req, res) => {
+  await https.get(`https://cdn.flightradar24.com/assets/airlines/logotypes/${req.query.iata}_${req.query.icao}.png`, responseHandler(res))
+});
+
 app.use('/api', apiRouter);
 
 app.listen(3000, () => {
