@@ -16,6 +16,7 @@ const OneFlight:React.FC<OneFlightProps> = ({
 }:OneFlightProps): JSX.Element => {
   const date = getLocalData(time, offset).toString();
   let firstUrl: string;
+  
   if (airlineCodeIata && airlineCodeIcao) {
     firstUrl = firstLogoUrl(airlineCodeIata, airlineCodeIcao);
   } else if (airlineCodeIata) {

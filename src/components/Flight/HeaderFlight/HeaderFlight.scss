@@ -1,13 +1,13 @@
 .flight-header {
   width: 303px;
   background: #333;
-  color: white;
+  color:#fff;
   font-size: 12px;
   box-sizing: border-box;
   padding: 5px 10px;
 
   h3 {
-    color: #f8C023;
+    color: #f8c023;
     margin: 0;
 
     span:first-child {
@@ -30,7 +30,7 @@
     }
   
     polygon {
-      fill: white;
+      fill: #fff;
     }
   }
 }

@@ -1,15 +1,15 @@
 import React from 'react';
 import { HeaderFlightPanelProps } from '../../../types/flightDataTypes';
-import './HeaderFlight.scss';
 import Close from '../SVGComponents/Close';
+import './HeaderFlight.scss';
 
 const HeaderFlight:React.FC<HeaderFlightPanelProps> = ({
   number,
   callsign,
   airline,
   closeHandler,
-}:HeaderFlightPanelProps)
-:JSX.Element => (
+}: HeaderFlightPanelProps)
+: JSX.Element => (
   <div className="flight-header">
     <div className="panel-close" onClick={closeHandler} aria-hidden="true">
       <Close />

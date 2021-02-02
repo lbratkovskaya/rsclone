@@ -6,7 +6,9 @@ import './Altitude.scss';
 
 const Altitude:React.FC<AltitudeProps> = ({ alt, hd }: AltitudeProps): JSX.Element => (
   <section className="flight-altitude">
-    <div className="flight-altitude__icon"><AltitudeIcon /></div>
+    <div className="flight-altitude__icon">
+      <AltitudeIcon />
+    </div>
     <div className="flex-wrapper">
       <div className="first-column">
         <p>CALIBRATED ALTITUDE</p>

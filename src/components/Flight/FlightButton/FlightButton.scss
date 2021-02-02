@@ -1,7 +1,7 @@
 .flight-button {
   background: #333;
   width: 303px;
-  color: white;
+  color: #fff;
   border: none;
   padding: 5px 10px;
   outline: none;
@@ -16,14 +16,14 @@
   }
 
   path {
-    fill: white;
+    fill: #fff;
   }
 
   &:hover,
   &_active {
-    color: #f8C023;
+    color: #f8c023;
     path {
-      fill:#f8C023;
+      fill: #f8c023;
     }
   }
 }

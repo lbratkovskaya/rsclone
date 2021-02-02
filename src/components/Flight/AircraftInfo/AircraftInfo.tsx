@@ -8,6 +8,7 @@ import './AircraftInfo.scss';
 const AircraftInfo:React.FC<AircraftInfoProps> = ({ model, registration, airline }
 : AircraftInfoProps): JSX.Element => {
   let firstUrl: string;
+
   if (airline.iata && airline.icao) {
     firstUrl = firstLogoUrl(airline.iata, airline.icao);
   } else if (airline.iata) {

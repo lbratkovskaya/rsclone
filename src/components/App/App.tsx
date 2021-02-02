@@ -17,7 +17,6 @@ const App:React.FC = (): JSX.Element => {
       <StartForm />
       <FlightsMap />
       <Airport code={code} openAirportPanel={openAirportPanel} />
-
     </>
   );
 };
