@@ -6,16 +6,16 @@ import Airport from '../Airport/Airport';
 import './index.scss';
 
 const App:React.FC = (): JSX.Element => {
-  const [openFlightPanel] = useState(true);
-  const [openAirportPanel] = useState(false);
+  const [openFlightPanel] = useState(false);
+  const [openAirportPanel] = useState(true);
   const hexCode = '26b92eb6';
-  const code = 'SVX';
+  const code = 'AAH';
 
   return (
     <>
       <Flight hexCode={hexCode} openFlightPanel={openFlightPanel} />
       <StartForm />
-      <FlightsMap />
+      {/* <FlightsMap /> */}
       <Airport code={code} openAirportPanel={openAirportPanel} />
     </>
   );

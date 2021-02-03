@@ -7,7 +7,7 @@ import futurePeriod from '../../../utils/airportConstants';
 
 const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: ScheduledFlightsProps)
 : JSX.Element => {
-  const link = `https://www.flightradar24.com/data/airports/${schedule.topRoute.from.toLowerCase()}/routes`;
+  const link = `https://www.flightradar24.com/data/airports/${schedule.topRoute?.from.toLowerCase()}/routes`;
 
   return (
     <div className="airport-schedule">
