@@ -69,6 +69,9 @@ const StartForm = (): JSX.Element => {
     axios({
       method: 'get',
       withCredentials: true,
+      data: {
+        username: loginUsername,
+      },
       url: 'auth/current_user',
     }).then((res) => {
       console.log(res.data);
@@ -76,25 +79,39 @@ const StartForm = (): JSX.Element => {
     });
   };
 
+  const saveFavorites = () => {
+    axios({
+      method: 'put',
+      data: { ...userData },
+      withCredentials: true,
+      url: 'auth/save_favorites',
+    }).then(() => {
+      console.log('something');
+    });
+  };
+
   return (
-    <div className='start-form-container'>
+    <div className="start-form-container">
       <Switcher
         isRegister={isRegister}
         toggleIsRegister={toggleIsRegister}
       />
       {isRegister
-        ? <Register
-          setRegisterUsername={setRegisterUsername}
-          setRegisterPassword={setRegisterPassword}
-          register={register}
-        />
-        : <Login
-          setLoginUsername={setLoginUsername}
-          setLoginPassword={setLoginPassword}
-          login={login}
-        />
-      }
-      <button className='btn' id='checkUser' onClick={getCurrentUser}>Check user authorization</button>
+        ? (
+          <Register
+            setRegisterUsername={setRegisterUsername}
+            setRegisterPassword={setRegisterPassword}
+            register={register}
+          />
+        )
+        : (
+          <Login
+            setLoginUsername={setLoginUsername}
+            setLoginPassword={setLoginPassword}
+            login={login}
+          />
+        )}
+      <button type="submit" className="btn" onClick={getCurrentUser}>Check user authorization</button>
     </div>
   );
 };
