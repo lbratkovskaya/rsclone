@@ -7,13 +7,8 @@ const AirportPhoto:React.FC<AirportPhotoProps> = ({ airportInfo }: AirportPhotoP
 : JSX.Element => {
   let { src, link } = airportInfo?.airportImages?.large[0] || {};
 
-  if (!src) {
-    src = 'https://www.flightradar24.com/static/images/no-ap-img.jpg';
-  }
-
-  if (!link) {
-    link = 'https://www.jetphotos.com/';
-  }
+  src = src || 'https://www.flightradar24.com/static/images/no-ap-img.jpg';
+  link = link || 'https://www.jetphotos.com/';
 
   return (
     <div className="airport-photo">
