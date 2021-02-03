@@ -57,7 +57,6 @@ const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Elemen
       selectedFlights.splice(index, 1);
       isFollowed = false;
     }
-    console.log(selectedFlights);
   };
 
   for (let i = 0; i < selectedFlights.length; i += 1) {
@@ -83,8 +82,11 @@ const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Elemen
           closeHandler={closeHandler}
         />
         <AircraftPhoto
-          photo={flightInfo.aircraft?.images?.large[0]?.src || null}
-          photoLink={flightInfo.aircraft?.images?.large[0]?.link || null}
+          photo={flightInfo.aircraft?.images?.large && flightInfo.aircraft?.images?.large[0]?.src
+            ? flightInfo.aircraft?.images?.large[0]?.src : null}
+          photoLink={flightInfo.aircraft?.images?.large
+            && flightInfo.aircraft?.images?.large[0]?.src
+            ? flightInfo.aircraft?.images?.large[0]?.link : null}
         />
         <div className="flight-scroll-wrapper">
           <FlightInfo
@@ -98,9 +100,9 @@ const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Elemen
           />
           <FlightProgress
             startPoint={flightInfo.trail[flightInfo.trail.length - 1] || null}
-            currentPoint={flightInfo.trail[0] || null}
-            endPoint={flightInfo.airport.destination.position || null}
-            currentTime={flightInfo.trail[0].ts || null}
+            currentPoint={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0] : null}
+            endPoint={flightInfo.airport?.destination?.position || null}
+            currentTime={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0].ts : null}
             startTime={flightInfo.time.real.departure || null}
             endTime={flightInfo.time.estimated.arrival || null}
             hexCode={hexCode}
@@ -115,14 +117,14 @@ const FlightPanel = ({ hexCode, openFlightPanel }: FlightPanelProps): JSX.Elemen
             history={flightInfo.flightHistory?.aircraft || null}
           />
           <Altitude
-            alt={flightInfo.trail[0]?.alt || null}
-            hd={flightInfo.trail[0]?.hd || null}
+            alt={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0]?.alt : null}
+            hd={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0]?.hd : null}
           />
-          <Speed spd={flightInfo.trail[0]?.spd || null} />
+          <Speed spd={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0]?.spd : null} />
           <FlightData
             hex={flightInfo.aircraft?.hex || ''}
-            lat={flightInfo.trail[0]?.lat || null}
-            lng={flightInfo.trail[0]?.lng || null}
+            lat={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0]?.lat : null}
+            lng={flightInfo.trail && flightInfo.trail[0] ? flightInfo.trail[0]?.lng : null}
             airline={flightInfo.airline?.code || {}}
           />
         </div>

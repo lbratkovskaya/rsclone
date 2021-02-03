@@ -5,10 +5,19 @@ import './AirportPhoto.scss';
 
 const AirportPhoto:React.FC<AirportPhotoProps> = ({ airportInfo }: AirportPhotoProps)
 : JSX.Element => {
-  const { src, link } = airportInfo?.airportImages?.large[0] || {};
+  let { src, link } = airportInfo?.airportImages?.large[0] || {};
+
+  if (!src) {
+    src = 'https://www.flightradar24.com/static/images/no-ap-img.jpg';
+  }
+
+  if (!link) {
+    link = 'https://www.jetphotos.com/';
+  }
+
   return (
     <div className="airport-photo">
-      {src && <img src={src} alt="airport" />}
+      <img src={src} alt="airport" />
       {link && (
       <a target="_blank" href={link} rel="noreferrer">
         <GoTo />
