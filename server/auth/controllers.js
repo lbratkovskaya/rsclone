@@ -2,10 +2,8 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const User = require('../user');
 
-const registerController = async (req, res) => {
-  const { username, password } = req.body;
-
-  const userFound = await User.findOne({ username }, (err, doc) => {
+const getUser = async (username) => {
+  const user = await User.findOne({ username }, (err, doc) => {
     if (err) {
       throw err;
     }
@@ -13,7 +11,15 @@ const registerController = async (req, res) => {
     return doc;
   });
 
-  if (userFound) {
+  return user;
+}
+
+const registerController = async (req, res) => {
+  const { username, password } = req.body;
+
+  const user = await getUser(username);
+
+  if (user) {
     res.send(`User ${username} already exists`);
   } else {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -61,8 +67,10 @@ const loginController = (req, res, next) => {
   })(req, res, next);
 };
 
-const currentUserController = (req, res) => {
-  res.json(req.user);
+const currentUserController = async (req, res) => {
+  const { username } = req.body;
+  const user = await getUser(username);
+  res.send(user);
 };
 
 const saveFavorites = (req, res) => {

@@ -69,6 +69,9 @@ const StartForm = (): JSX.Element => {
     axios({
       method: 'get',
       withCredentials: true,
+      data: {
+        username: loginUsername,
+      },
       url: 'auth/current_user',
     }).then((res) => {
       console.log(res.data);
@@ -108,7 +111,7 @@ const StartForm = (): JSX.Element => {
             login={login}
           />
         )}
-      <button type="submit" id="checkUser" className="btn" onClick={getCurrentUser}>Check user authorization</button>
+      <button type="submit" className="btn" onClick={getCurrentUser}>Check user authorization</button>
     </div>
   );
 };
