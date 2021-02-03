@@ -1,3 +1,5 @@
+import { TypeWithPanelOpening } from ".";
+
 type Photo = {
   copyright: string,
   link: string,
@@ -109,11 +111,9 @@ export interface ArrivalsProps {
   mode: string,
 }
 
-export interface AirportProps {
+export interface AirportProps extends TypeWithPanelOpening {
   code: string,
   activeTab?: number,
-  openAirportPanel: boolean,
-  setOpenPanel: (setOpen: boolean) => void,
 }
 
 export interface AirportState {

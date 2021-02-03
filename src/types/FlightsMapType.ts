@@ -3,7 +3,7 @@ import { FlightsMapStyle, IUser } from './';
 
 export interface FlightMapProps {
   userData: IUser,
-  onAircraftIconClick: () => void,
+  onAircraftIconClick: (flightId: string, isShowing: boolean) => void,
   onAirportIconClick: (event: LeafletMouseEvent) => void,
   showDepartures: (airportCode: string) => void,
   showArrivals: (airportCode: string) => void,

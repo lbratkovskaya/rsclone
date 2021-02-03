@@ -1,10 +1,10 @@
 import { LatLngExpression } from 'leaflet';
 import aircraftIcons from '../airplane_icons.json';
-import { FlightsMapStyle } from '../types/FlightsMapType';
 import {
   AircraftIcon,
   AircraftIconGroup,
   AircraftPosition,
+  FlightsMapStyle,
   UserMapSettings,
 } from '../types';
 

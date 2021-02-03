@@ -74,3 +74,8 @@ export interface IUser {
   lastSessionEndedDate?: Date,
   favorites?: FavoritiesItem[],
 }
+
+export interface TypeWithPanelOpening {
+  isPanelOpen: boolean,
+  setOpenPanel: (setOpen: boolean) => void,
+}

@@ -88,7 +88,7 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
 
   render(): JSX.Element {
     const { geoPosition, mapZoom, mapStyle } = this.state;
-    const { userData, onAirportIconClick, showArrivals, showDepartures } = this.props;
+    const { userData, onAirportIconClick, onAircraftIconClick, showArrivals, showDepartures } = this.props;
     return (
       <MapContainer
         center={geoPosition}
@@ -100,7 +100,11 @@ class FlightsMap extends Component<FlightMapProps, FlightMapState> {
           ref={this.tileLayerRef}
           url={getMapURL(mapStyle)}
         />
-        <FlightsLayer onMapBoundsUpdate={this.onMapBoundsUpdate} userFavorities={userData?.favorites}/>
+        <FlightsLayer
+          onMapBoundsUpdate={this.onMapBoundsUpdate}
+          userFavorities={userData?.favorites}
+          onAircraftIconClickHandler={onAircraftIconClick}
+        />
         <FuncAirportsLayer
           onAirportIconClick={onAirportIconClick}
           showArrivals={showArrivals}

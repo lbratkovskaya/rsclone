@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './components/App';
 
 render((
-  <BrowserRouter basename="/rsclone/clone">
+  <BrowserRouter basename="/">
     <App />
   </BrowserRouter>
 ), document.getElementById('root'));

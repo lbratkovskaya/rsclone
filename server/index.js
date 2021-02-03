@@ -12,7 +12,7 @@ const DB = require('./db');
 
 const app = express();
 
-mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+mongoose.connect(DB, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, (err) => {
   if (err) {
     throw err;
   } 

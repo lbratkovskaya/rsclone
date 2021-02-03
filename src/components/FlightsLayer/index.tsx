@@ -17,6 +17,8 @@ import {
 import './index.scss';
 
 class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
+  intervalId: NodeJS.Timeout;
+
   timerId: NodeJS.Timeout;
 
   angleStep: number;
@@ -34,14 +36,15 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
   }
 
   componentDidMount(): void {
-    this.timerId = setInterval(
+    this.intervalId = setInterval(
       () => this.getAircrafts(),
       3000,
     );
   }
 
   componentWillUnmount(): void {
-    clearInterval(this.timerId);
+    clearTimeout(this.intervalId);
+    clearTimeout(this.timerId);
   }
 
   getAircrafts(): void {
@@ -54,7 +57,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
     const se = mapBounds.getSouthEast();
 
     const fetchStr = `/api/flights?bounds=${nw.lat},${se.lat},${nw.lng},${se.lng}`;
-    API.get(fetchStr, { method: 'GET'})
+    API.get(fetchStr, { method: 'GET' })
       .then((resp) => resp.data)
       .then((json) => {
         if (!json) {
@@ -135,6 +138,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       return (
         <AircraftMarker
           key={flightId}
+          flightId={flightId}
           position={[latitude, longitude]}
           altitude={aircraft.positions[0].altitude}
           trackAngle={aircraft.positions[0].true_track}
@@ -163,12 +167,16 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
   }
 
   aircraftIconClickHandler = (flightId: string, append: boolean): void => {
+    const { onAircraftIconClickHandler: upperLevelHandler } = this.props;
     const { trackShowingAircrafts } = this.state;
-    if (trackShowingAircrafts.includes(flightId)) {
+    const isShowing = trackShowingAircrafts.includes(flightId);
+    if (isShowing) {
       this.hideTrack(flightId);
     } else {
       this.showTrack(flightId, append);
     }
+
+    upperLevelHandler(flightId, isShowing);
   };
 
   toggleSuppressRequest = (): void => this.setState((state) => ({
@@ -182,7 +190,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
       return;
     }
 
-    setTimeout(() => this.toggleSuppressRequest(), 5000);
+    this.timerId = setTimeout(() => this.toggleSuppressRequest(), 5000);
 
     onMapBoundsUpdate(map);
 
@@ -280,7 +288,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
 
   showFavoritiesTacks = () => {
     const { userFavorities } = this.props;
-    userFavorities.forEach((userFav) => {
+    userFavorities?.forEach((userFav) => {
       this.showTrack(userFav.flightId, true);
     });
   }

@@ -10,6 +10,7 @@
   align-items: center;
   font-size: 10px;
   font-weight: 600;
+  cursor: pointer;
 
   & svg {
     width: 20px;
@@ -19,11 +20,17 @@
     fill: #fff;
   }
 
-  &:hover,
-  &_active {
+  &:hover{
     color: #f8c023;
     path {
       fill: #f8c023;
+    }
+  }
+
+  &_active {
+    color: #f58020;
+    path {
+      fill: #f58020;
     }
   }
 }

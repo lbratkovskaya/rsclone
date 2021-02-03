@@ -1,5 +1,7 @@
+import { GeoPosition, TypeWithPanelOpening } from ".";
+
 export type Flight = {
-  flight : {
+  flight: {
     aircraft: any,
     airline: {
       code: {
@@ -33,7 +35,8 @@ export type Timezone = {
 export type FlightTime = {
   estimated: {
     departure: number | null,
-    arrival: number | null},
+    arrival: number | null
+  },
   historical: {
     flighttime: string,
     delay: string,
@@ -43,7 +46,8 @@ export type FlightTime = {
     updated: number | null,
   }
   real:
-  {departure: number | null,
+  {
+    departure: number | null,
     arrival: number | null,
   }
   scheduled: {
@@ -157,9 +161,10 @@ export interface SpeedProps {
   spd: number | null,
 }
 
-export interface FlightPanelProps {
+export interface FlightPanelProps extends TypeWithPanelOpening {
   hexCode: string
-  openFlightPanel: boolean,
+  isFollowed: boolean,
+  addToFavoritiesHandler: (flightData: FlightDataType, toAdd: boolean) => void,
 }
 
 export interface FlightButtonProps {
@@ -167,25 +172,36 @@ export interface FlightButtonProps {
   isFollowed: boolean,
 }
 
-export interface FollowedFlight {
-  addedToFavorites: Date,
-  flightId: string,
-  registration: string,
-  arrivalAirport: {
-    name: string,
-    code: string,
-    position: {
-      latitude: string,
-      longitude: string
-    }
+export interface FlightDataType {
+  identification: {
+    number: {
+      default: string,
+    },
+    callsign: string,
   },
-  departureAirport: {
+  airline: {
     name: string,
     code: string,
-    position: {
-      latitude: string,
-      longitude: string
-    }
+  },
+  airport: {
+    origin: {
+      name: string,
+      code: {
+        iata: string,
+        icao: string,
+      },
+      position: GeoPosition,
+    },
+    destination: {
+      name: string,
+      code: {
+        iata: string,
+        icao: string,
+      },
+      position: GeoPosition,
+    },
+  },
+  aircraft: {
+    registration: string,
   },
 }
-

@@ -1,6 +1,7 @@
 import { LatLngExpression, LeafletMouseEvent } from 'leaflet';
 
 export interface AircraftMarkerProps {
+  flightId: string,
   position: LatLngExpression,
   altitude: number,
   trackAngle: number,

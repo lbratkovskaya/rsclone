@@ -1,5 +1,5 @@
 import { LatLngExpression, latLng } from 'leaflet';
-import { FlightsMapStyle } from '../types/FlightsMapType';
+import { FlightsMapStyle } from '../types';
 
 export const mapCenterCoordinates: LatLngExpression = [56.852, 60.612];
 

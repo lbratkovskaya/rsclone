@@ -24,7 +24,7 @@ class Airport extends Component<AirportProps, AirportState> {
       runwaysData: null,
       satelliteImageData: '',
       activeTab: props.activeTab || AIRPORT_TAB_BUTTONS.General.num,
-      openPanel: props.openAirportPanel || false,
+      openPanel: props.isPanelOpen || false,
     };
   }
 
@@ -82,13 +82,14 @@ class Airport extends Component<AirportProps, AirportState> {
       satelliteImageData,
       openPanel,
     } = this.state;
+    const { isPanelOpen } = this.props;
     const checkTab1 = activeTab === AIRPORT_TAB_BUTTONS.General.num && airportInfo && schedule
     && satelliteImageData;
     const checkTab2 = activeTab === AIRPORT_TAB_BUTTONS.Arrivals.num && airportInfo;
     const checkTab3 = activeTab === AIRPORT_TAB_BUTTONS.Departures.num && airportInfo;
 
     return (
-      <div id="airport" className={openPanel ? 'opened' : 'closed'}>
+      <div id="airport" className={(isPanelOpen || openPanel) ? 'opened' : 'closed'}>
         {!!airportInfo && <Header airportInfo={airportInfo} closeHandler={this.closeHandler} />}
         {checkTab1 && (
           <>

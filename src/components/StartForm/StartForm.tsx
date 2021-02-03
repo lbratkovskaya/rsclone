@@ -14,15 +14,17 @@ const StartForm = (props: StartFormProps): JSX.Element => {
   const [loginPassword, setLoginPassword] = useState('');
   const [isRegister, toggleIsRegister] = useState(false);
 
-  const { getCurrentUser, onLoginRedirectHandler } = props;
+  const onLoginRedirectHandler = (): void => {
+    props.history.push('/');
+    props.getCurrentUser();
+  }
+  const { getCurrentUser } = props;
 
   const register = () => {
     API.post('auth/register', {
-      method: 'post',
-      data: {
         username: registerUsername,
         password: registerPassword,
-      },
+    }, {
       withCredentials: true,
     }).then((res) => {
       onLoginRedirectHandler();
@@ -30,12 +32,10 @@ const StartForm = (props: StartFormProps): JSX.Element => {
   };
 
   const login = () => {
-    API.post('auth/login',{
-      method: 'post',
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
+    API.post('auth/login', {
+      username: loginUsername,
+      password: loginPassword,
+    }, {
       withCredentials: true,
     }).then((res) => {
       onLoginRedirectHandler();

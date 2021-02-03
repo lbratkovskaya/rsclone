@@ -41,7 +41,7 @@ const FlightProgress = ({
   }
 
   useEffect(() => {
-    setInterval(() => {
+    const intervalId = setInterval(() => {
       fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
         .then((response) => response.json())
         .then((data) => {
@@ -51,6 +51,9 @@ const FlightProgress = ({
           setFinalPoint(data.airport?.destination?.position);
         });
     }, 15000);
+    return function cleanup() {
+      clearInterval(intervalId);
+    }
   }, [hexCode]);
 
   return (

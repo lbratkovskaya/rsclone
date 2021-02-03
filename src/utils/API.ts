@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: 'https://infinite-forest-56486.herokuapp.com',
-  responseType: "json"
+  //это временное для отладки baseURL: 'https://infinite-forest-56486.herokuapp.com',
+  baseURL: 'http://localhost:3000',
+  // responseType: "json"
 });
