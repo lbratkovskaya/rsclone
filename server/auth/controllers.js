@@ -39,7 +39,7 @@ const registerController = async (req, res) => {
           throw err;
         }
 
-        res.send(`User ${username} was successfully registered and authenticated`);
+        res.send(newUser);
       });
 
     });    
@@ -61,13 +61,13 @@ const loginController = (req, res, next) => {
         }
 
         res.send('Authentication succeed');
-        console.log(req.user);
       })
     }
   })(req, res, next);
 };
 
 const currentUserController = async (req, res) => {
+  console.log(req.body);
   const { username } = req.body;
   const user = await getUser(username);
   res.send(user);

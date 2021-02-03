@@ -66,8 +66,9 @@ const StartForm = (): JSX.Element => {
   };
 
   const getCurrentUser = () => {
+    console.log(loginUsername);
     axios({
-      method: 'get',
+      method: 'post',
       withCredentials: true,
       data: {
         username: loginUsername,
