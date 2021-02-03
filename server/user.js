@@ -23,6 +23,7 @@ const user = new mongoose.Schema({
                     longitude: String,
                 }
             },
+            flightId: String,
         }
     ]
 });
