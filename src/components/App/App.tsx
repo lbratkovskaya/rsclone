@@ -15,7 +15,7 @@ const App:React.FC = (): JSX.Element => {
     <>
       <Flight hexCode={hexCode} openFlightPanel={openFlightPanel} />
       <StartForm />
-      {/* <FlightsMap /> */}
+      <FlightsMap />
       <Airport code={code} openAirportPanel={openAirportPanel} />
     </>
   );

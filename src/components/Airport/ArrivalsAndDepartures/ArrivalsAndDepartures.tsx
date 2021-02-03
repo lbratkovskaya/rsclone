@@ -27,7 +27,7 @@ const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps):
     flightsSeparatedByDate = separateFlightsByDate(flights, modeInSingle);
   }
   const flightsSeparatedByDateBoolean = flightsSeparatedByDate.length > 0;
-  console.log(flightsSeparatedByDate)
+
   return (
     <div className="airport-flight-wrapper">
       { flightsSeparatedByDateBoolean
