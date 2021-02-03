@@ -30,7 +30,8 @@ const registerController = async (req, res) => {
         if (err) {
           throw err;
         }
-        res.send(`User ${username} was successfully registered and authenticated`);
+
+        res.send(newUser);
       });
     });
   }
@@ -50,15 +51,17 @@ const loginController = (req, res, next) => {
           throw err;
         }
 
-        res.send('Authentication succeed');
-        console.log(req.user);
+        res.send(user);
       })
     }
   })(req, res, next);
 };
 
-const currentUserController = (req, res) => {
-  res.send(req.user);
+const currentUserController = async (req, res) => {
+  console.log(req.user);
+  const { username } = req.user;
+  const user = await getUser(username);
+  res.send(user);
 };
 
 const saveFavorites = (req, res) => {

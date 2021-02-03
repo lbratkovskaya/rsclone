@@ -6,6 +6,8 @@ import Switcher from './Switcher';
 import { StartFormProps } from '../../types/StartFormType';
 import API from '../../utils/API';
 import './start-form.scss';
+import { isWidthUp } from '@material-ui/core';
+import { IUser } from '../../types';
 
 const StartForm = (props: StartFormProps): JSX.Element => {
   const [registerUsername, setRegisterUsername] = useState('');
@@ -14,20 +16,27 @@ const StartForm = (props: StartFormProps): JSX.Element => {
   const [loginPassword, setLoginPassword] = useState('');
   const [isRegister, toggleIsRegister] = useState(false);
 
-  const onLoginRedirectHandler = (): void => {
-    props.history.push('/');
-    props.getCurrentUser();
+  const onLoginRedirectHandler = (user: IUser): void => {
+    const { history, setCurrentUser } = props;
+    history.push('/');
+    setCurrentUser(user);
   }
-  const { getCurrentUser } = props;
 
   const register = () => {
     API.post('auth/register', {
-        username: registerUsername,
-        password: registerPassword,
+      username: registerUsername,
+      password: registerPassword,
     }, {
       withCredentials: true,
+    }).then((res) => console.log(res));
+  };
+
+  const getCurrentUser = () => {
+    console.log(loginUsername);
+    API.post('auth/current_user', {
+      username: loginUsername,
     }).then((res) => {
-      onLoginRedirectHandler();
+      onLoginRedirectHandler(res.data);
     });
   };
 
@@ -38,7 +47,7 @@ const StartForm = (props: StartFormProps): JSX.Element => {
     }, {
       withCredentials: true,
     }).then((res) => {
-      onLoginRedirectHandler();
+      onLoginRedirectHandler(res.data);
     });
   };
 
