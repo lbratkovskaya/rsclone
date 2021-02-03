@@ -233,6 +233,10 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
 
       const aircraft: AircraftState = aircrafts[flightId];
 
+      if (!aircraft) {
+        return null;
+      }
+
       const joinedTracks = needUpdateTrack ? joinTracks(aircraft.positions, historicTrail)
         : aircraft.positions;
 
@@ -257,14 +261,16 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
   };
 
   showTrack(flightId: string, append: boolean): void {
-    // const apiDomain = API_DOMAIN;
+    if(!flightId) {
+      return;
+    }
     const { trackShowingAircrafts } = this.state;
     if (!trackShowingAircrafts.includes(flightId)) {
       const fetchStr = `/api/flightStatus?flightId=${flightId}`;
       API.get(fetchStr, { method: 'GET' })
         .then((resp) => resp.data)
         .then((json) => {
-          const historicTrail = json.trail.map((itm: {
+          const historicTrail = json.trail?.map((itm: {
             lat: number,
             lng: number,
             alt: number,
@@ -280,7 +286,7 @@ class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
             time_position: itm.ts,
           }));
 
-          this.revealTrack(flightId, true, append, historicTrail);
+          this.revealTrack(flightId, true, append, historicTrail || []);
         });
     }
     this.revealTrack(flightId, false, append, []);

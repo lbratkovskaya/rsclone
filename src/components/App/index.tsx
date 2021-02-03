@@ -26,8 +26,6 @@ import './index.scss';
 class App extends Component<ComponentProps<'object'>, AppState> {
   history: History;
 
-  hexCode: string;
-
   constructor(props: ComponentProps<'object'>) {
     super(props);
     this.state = {
@@ -39,10 +37,9 @@ class App extends Component<ComponentProps<'object'>, AppState> {
       userData: null,
     };
     this.history = createBrowserHistory();
-    this.hexCode = '26b92eb6';
   }
 
-  AddSelectedFlightToFavorites = (flightInfo: FlightDataType, doAdd: boolean): void => {
+  addSelectedFlightToFavorites = (flightInfo: FlightDataType, doAdd: boolean): void => {
     const { userData, currentAircraftCode } = this.state;
     if (!userData) {
       return;
@@ -84,15 +81,20 @@ class App extends Component<ComponentProps<'object'>, AppState> {
     this.setUserFavorities(userData.id, userData.username, selectedFlights);
   };
 
-  getCurrentUser = (): null | IUser => {
-    API.get('auth/current_user', {
-      method: 'get',
-      withCredentials: true,
+  getCurrentUser = (username: string): null | IUser => {
+    API.put('auth/current_user', {
+      username,
     }).then((res) => {
       this.setState({ userData: res.data });
       return res.data;
     });
     return null;
+  };
+
+  setCurrentUser = (user: null | IUser): void => {
+    if (user) {
+      this.setState({ userData: user });
+    }
   };
 
   setUserFavorities = (userId: string, username: string, favorites: FavoritiesItem[]) => {
@@ -102,9 +104,14 @@ class App extends Component<ComponentProps<'object'>, AppState> {
         username,
         favorites,
       }, {
-      withCredentials: true,
-    }).then(() => {
-      this.getCurrentUser();
+        withCredentials: true,
+      }).then(() => {
+      this.setState((state) => {
+        const { userData } = state;
+        const newData = Object.assign({}, userData, { favorites });
+
+        return { userData: newData };
+      });
     });
   };
 
@@ -195,7 +202,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
                 hexCode={currentAircraftCode}
                 isFollowed={isFollowed}
                 isPanelOpen={openFlightPanel}
-                addToFavoritiesHandler={this.AddSelectedFlightToFavorites}
+                addToFavoritiesHandler={this.addSelectedFlightToFavorites}
                 setOpenPanel={this.setOpenAircraftPanel}
               />
               <Airport
@@ -214,7 +221,7 @@ class App extends Component<ComponentProps<'object'>, AppState> {
             return (
               <StartForm
                 history={history}
-                getCurrentUser={this.getCurrentUser}
+                setCurrentUser={this.setCurrentUser}
               />
             );
           }}

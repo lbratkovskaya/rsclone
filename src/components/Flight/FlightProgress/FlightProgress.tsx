@@ -3,7 +3,9 @@ import AircraftProgress from '../SVGComponents/AircraftProgress';
 import getDistance from '../../../utils/getDistance';
 import getFlightTime from '../../../utils/getFlightTime';
 import { FlightProgressProps } from '../../../types/flightDataTypes';
+import API from '../../../utils/API';
 import './FlightProgress.scss';
+
 
 const FlightProgress = ({
   startPoint, currentPoint, endPoint, currentTime, startTime, endTime, hexCode,
@@ -42,8 +44,8 @@ const FlightProgress = ({
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
-        .then((response) => response.json())
+      API.get(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
+        .then((response) => response.data)
         .then((data) => {
           setNowTime(data.trail[0]?.ts);
           setFinalTime(data.time?.estimated?.arrival);

@@ -28,7 +28,7 @@ const StartForm = (props: StartFormProps): JSX.Element => {
       password: registerPassword,
     }, {
       withCredentials: true,
-    }).then((res) => console.log(res));
+    }).then((res) => onLoginRedirectHandler(res.data));
   };
 
   const getCurrentUser = () => {

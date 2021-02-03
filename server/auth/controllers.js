@@ -68,16 +68,15 @@ const saveFavorites = (req, res) => {
   const { id, username, favorites } = req.body;
 
   User.findOneAndUpdate(
-    { _id: id },
+    { username: username },
     { $set: { favorites } },
     async (err, doc) => {
       if (err) {
         throw err;
       }
-
       if (doc) {
         console.log(`Favorites of ${username} were successfully updated`);
-        res.sendStatus(200);
+        res.send('Success');
       }
     });
 };
