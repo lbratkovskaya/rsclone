@@ -1,0 +1,44 @@
+.map-style-selector {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: flex;
+  padding: 5px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  transform: translateX(calc(100% - 28px)) translateY(-50%);
+  z-index: 500;
+  background-color: #707070;
+  transition: all .3s ease-in-out;
+
+  &:hover {
+    transform: translateX(0)  translateY(-50%);
+  }
+
+  svg {
+    align-self: center;
+    fill: rgb(131, 130, 130);
+  }
+  .style-item {
+    display: flex;
+    padding: 2px;
+
+    &.style-item__selected {
+      & .box {
+        outline: 2px solid rgb(68, 68, 170) !important;
+      }
+    }
+
+    & .box {
+      width: 30px;
+      height: 30px;
+      box-sizing: border-box;
+    }
+
+    & .text {
+      margin: auto;
+      margin-left: 4px;
+      color: #f5f5f5;
+    }
+  }
+}

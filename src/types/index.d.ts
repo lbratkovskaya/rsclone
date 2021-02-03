@@ -1,3 +1,5 @@
+import { FlightsMapStyle } from "./FlightsMapType";
+
 export interface AircraftPosition {
   latitude: number,
   longitude: number,
@@ -40,4 +42,9 @@ export interface AircraftIcon {
 
 export interface AircraftIconGroup {
   [key: string]: AircraftIcon,
+}
+
+export interface UserMapSettings {
+  mapStyle: FlightsMapStyle,
+  mapZoom: number,
 }
