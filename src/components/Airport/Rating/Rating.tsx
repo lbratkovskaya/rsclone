@@ -14,23 +14,21 @@ const Rating:React.FC<RatingProps> = ({ iata, name }:RatingProps) => {
       });
   }, [iata]);
 
+  const ratingBoolean = ratingInfo && ratingInfo.rating && ratingInfo.total;
+
   return (
     <>
-      { ratingInfo
+      { ratingBoolean
       && (
       <div className="airport-rating">
         <p>
-          <span className="airport-rating__number">{ratingInfo.rating || 'N/A'}</span>
+          <span className="airport-rating__number">{ratingInfo.rating}</span>
           <span className="airport-rating__stars" />
         </p>
         <p>
-          {ratingInfo.total || 'N/A'}
-          {' '}
+          {`${ratingInfo.total} `}
           <span className="airport-rating__name">RSCloneFlightRadar</span>
-          {' '}
-          users have rated
-          {' '}
-          {name}
+          {` users have rated ${name}`}
         </p>
       </div>
       )}
