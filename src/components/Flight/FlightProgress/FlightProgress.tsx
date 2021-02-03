@@ -45,10 +45,10 @@ const FlightProgress = ({
       fetch(`/api/fly?flightCode=${hexCode}`, { method: 'GET' })
         .then((response) => response.json())
         .then((data) => {
-          setNowTime(data.trail[0].ts);
-          setFinalTime(data.time.estimated.arrival);
+          setNowTime(data.trail[0]?.ts);
+          setFinalTime(data.time?.estimated?.arrival);
           setNowPoint(data.trail[0]);
-          setFinalPoint(data.airport.destination.position);
+          setFinalPoint(data.airport?.destination?.position);
         });
     }, 15000);
   }, [hexCode]);
