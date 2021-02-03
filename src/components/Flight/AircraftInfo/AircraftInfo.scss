@@ -1,0 +1,23 @@
+.flight-aircraft-info {
+  border-bottom: none;
+  border-top: 10px solid #327db6;
+  box-sizing: border-box;
+
+  & .flex-wrapper {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: inherit;
+  }
+
+  .row {
+    &-no-flex {
+      padding-bottom: 5px;
+      border-bottom: 1px solid #fff;
+    }
+
+    & img {
+      margin-top: 5px;
+      max-width: 100px;
+    }
+  }
+}

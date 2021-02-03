@@ -77,24 +77,27 @@ const StartForm = (): JSX.Element => {
   };
 
   return (
-    <div className='start-form-container'>
+    <div className="start-form-container">
       <Switcher
         isRegister={isRegister}
         toggleIsRegister={toggleIsRegister}
       />
       {isRegister
-        ? <Register
-          setRegisterUsername={setRegisterUsername}
-          setRegisterPassword={setRegisterPassword}
-          register={register}
-        />
-        : <Login
-          setLoginUsername={setLoginUsername}
-          setLoginPassword={setLoginPassword}
-          login={login}
-        />
-      }
-      <button className='btn' id='checkUser' onClick={getCurrentUser}>Check user authorization</button>
+        ? (
+          <Register
+            setRegisterUsername={setRegisterUsername}
+            setRegisterPassword={setRegisterPassword}
+            register={register}
+          />
+        )
+        : (
+          <Login
+            setLoginUsername={setLoginUsername}
+            setLoginPassword={setLoginPassword}
+            login={login}
+          />
+        )}
+      <button className="btn" id="checkUser" onClick={getCurrentUser}>Check user authorization</button>
     </div>
   );
 };

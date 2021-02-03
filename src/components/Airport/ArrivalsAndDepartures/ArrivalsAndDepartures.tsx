@@ -23,15 +23,15 @@ const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps):
   }, [airportCode, mode]);
 
   let flightsSeparatedByDate: Array<Array<Flight>> = [];
-  if (flights) {
+  if (flights && flights.length > 0) {
     flightsSeparatedByDate = separateFlightsByDate(flights, modeInSingle);
   }
-  const flightsSeparatedByDateBoolean = flightsSeparatedByDate && flightsSeparatedByDate !== [];
+  const flightsSeparatedByDateBoolean = flightsSeparatedByDate.length > 0;
 
   return (
     <div className="airport-flight-wrapper">
       { flightsSeparatedByDateBoolean
-        && flightsSeparatedByDate.map((flightsDay: Flight[], i: number) => {
+        ? flightsSeparatedByDate.map((flightsDay: Flight[], i: number) => {
           const { time, airport: airp } = flightsDay[0]?.flight || {};
           const dateBoolean = time.scheduled[modeInSingle] && airp.origin?.timezone?.offset;
           return (
@@ -61,7 +61,8 @@ const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps):
               })}
             </React.Fragment>
           );
-        })}
+        })
+        : <p className="airport-flight__error">There are no fligths</p>}
     </div>
   );
 };
