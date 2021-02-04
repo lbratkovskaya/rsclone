@@ -10,7 +10,7 @@ const Register = ({
     <h1>Register</h1>
     <input type="text" placeholder="Username" onChange={(event) => setRegisterUsername(event.target.value)} />
     <input type="text" placeholder="Password" onChange={(event) => setRegisterPassword(event.target.value)} />
-    <button className="btn" onClick={register}>Register</button>
+    <button type="button" className="btn" onClick={register}>Register</button>
   </div>
 );
 

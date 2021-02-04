@@ -3,7 +3,7 @@ import Routes from '../SVGComponents/Routes';
 import Arrow from '../SVGComponents/Arrow';
 import './ScheduledFlights.scss';
 import { ScheduledFlightsProps } from '../../../types/airportDataTypes';
-import futurePeriod from '../../../utils/airportConstants';
+import { futurePeriod } from '../../../utils/airportConstants';
 
 const ScheduledFlights:React.FC<ScheduledFlightsProps> = ({ schedule }: ScheduledFlightsProps)
 : JSX.Element => {

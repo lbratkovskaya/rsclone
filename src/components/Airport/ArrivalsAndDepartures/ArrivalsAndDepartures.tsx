@@ -4,6 +4,7 @@ import OneFlight from './OneFlight/OneFlight';
 import FlightHeader from './FlightHeader/FlightHeader';
 import getLocalData from '../../../utils/getLocalData';
 import separateFlightsByDate from '../../../utils/separateFlightsBeDate';
+import API from '../../../utils/API';
 import './ArrivalsAndDepartures.scss';
 
 const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps): JSX.Element => {
@@ -17,8 +18,8 @@ const Arrivals:React.FC<ArrivalsProps> = ({ airportCode, mode }: ArrivalsProps):
   const timestamp = Math.floor(((new Date()).getTime()) / 1000);
 
   useEffect(() => {
-    fetch(`/api/schedule?airportCode=${airportCode}&mode=${mode}&timestamp=${timestamp}`, { method: 'GET' })
-      .then((response) => response.json())
+    API.get(`/api/schedule?airportCode=${airportCode}&mode=${mode}&timestamp=${timestamp}`, { method: 'GET' })
+      .then((response) => response.data)
       .then((res) => setFlights(res.result.response.airport.pluginData.schedule[mode].data));
   }, [airportCode, mode]);
 

@@ -1,9 +1,13 @@
-import React, { Component, ComponentPropsWithoutRef } from 'react';
+import React, { Component } from 'react';
 import { Polyline } from 'react-leaflet';
 import { Map } from 'leaflet';
-import { FlightsLayerState } from '../../types/FlightsLayerType';
+import {
+  FlightsLayerProps,
+  FlightsLayerState,
+} from '../../types/FlightsLayerType';
 import FlightLayerUpdater from './FlightsLayerUpdater';
 import { AircraftPosition, AircraftState } from '../../types';
+import API from '../../utils/API';
 import AircraftMarker from './AircraftMarker';
 import {
   joinTracks,
@@ -12,12 +16,14 @@ import {
 } from '../../utils/apiUtils';
 import './index.scss';
 
-class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, FlightsLayerState> {
+class FlightsLayer extends Component<FlightsLayerProps, FlightsLayerState> {
+  intervalId: NodeJS.Timeout;
+
   timerId: NodeJS.Timeout;
 
   angleStep: number;
 
-  constructor(props: ComponentPropsWithoutRef<'object'>) {
+  constructor(props: FlightsLayerProps) {
     super(props);
     this.state = {
       suppressRequest: false,
@@ -30,14 +36,15 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   }
 
   componentDidMount(): void {
-    this.timerId = setInterval(
+    this.intervalId = setInterval(
       () => this.getAircrafts(),
       3000,
     );
   }
 
   componentWillUnmount(): void {
-    clearInterval(this.timerId);
+    clearTimeout(this.intervalId);
+    clearTimeout(this.timerId);
   }
 
   getAircrafts(): void {
@@ -50,8 +57,8 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     const se = mapBounds.getSouthEast();
 
     const fetchStr = `/api/flights?bounds=${nw.lat},${se.lat},${nw.lng},${se.lng}`;
-    fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
-      .then((resp) => resp.json())
+    API.get(fetchStr, { method: 'GET' })
+      .then((resp) => resp.data)
       .then((json) => {
         if (!json) {
           return;
@@ -131,6 +138,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
       return (
         <AircraftMarker
           key={flightId}
+          flightId={flightId}
           position={[latitude, longitude]}
           altitude={aircraft.positions[0].altitude}
           trackAngle={aircraft.positions[0].true_track}
@@ -159,42 +167,17 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
   }
 
   aircraftIconClickHandler = (flightId: string, append: boolean): void => {
+    const { onAircraftIconClickHandler: upperLevelHandler } = this.props;
     const { trackShowingAircrafts } = this.state;
-    if (trackShowingAircrafts.includes(flightId)) {
+    const isShowing = trackShowingAircrafts.includes(flightId);
+    if (isShowing) {
       this.hideTrack(flightId);
     } else {
       this.showTrack(flightId, append);
     }
+
+    upperLevelHandler(flightId, isShowing);
   };
-
-  showTrack(flightId: string, append: boolean): void {
-    const { trackShowingAircrafts } = this.state;
-    if (!trackShowingAircrafts.includes(flightId)) {
-      const fetchStr = `/api/flightStatus?flightId=${flightId}`;
-      fetch(fetchStr, { method: 'GET', mode: 'no-cors' })
-        .then((resp) => resp.json())
-        .then((json) => {
-          const historicTrail = json.trail.map((itm: {
-            lat: number,
-            lng: number,
-            alt: number,
-            spd: number,
-            ts: number,
-            hd: number
-          }) => ({
-            longitude: itm.lng,
-            latitude: itm.lat,
-            true_track: itm.hd,
-            altitude: itm.alt,
-            velocity: itm.spd,
-            time_position: itm.ts,
-          }));
-
-          this.revealTrack(flightId, true, append, historicTrail);
-        });
-    }
-    this.revealTrack(flightId, false, append, []);
-  }
 
   toggleSuppressRequest = (): void => this.setState((state) => ({
     suppressRequest: !state.suppressRequest,
@@ -202,11 +185,14 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
   updateMapBounds = (map: Map): void => {
     const { suppressRequest } = this.state;
+    const { onMapBoundsUpdate } = this.props;
     if (suppressRequest) {
       return;
     }
 
-    setTimeout(() => this.toggleSuppressRequest(), 5000);
+    this.timerId = setTimeout(() => this.toggleSuppressRequest(), 5000);
+
+    onMapBoundsUpdate(map);
 
     this.setState((state) => {
       if (state.mapBounds === null
@@ -247,6 +233,10 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
 
       const aircraft: AircraftState = aircrafts[flightId];
 
+      if (!aircraft) {
+        return null;
+      }
+
       const joinedTracks = needUpdateTrack ? joinTracks(aircraft.positions, historicTrail)
         : aircraft.positions;
 
@@ -270,6 +260,45 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
     });
   };
 
+  showTrack(flightId: string, append: boolean): void {
+    if(!flightId) {
+      return;
+    }
+    const { trackShowingAircrafts } = this.state;
+    if (!trackShowingAircrafts.includes(flightId)) {
+      const fetchStr = `/api/flightStatus?flightId=${flightId}`;
+      API.get(fetchStr, { method: 'GET' })
+        .then((resp) => resp.data)
+        .then((json) => {
+          const historicTrail = json.trail?.map((itm: {
+            lat: number,
+            lng: number,
+            alt: number,
+            spd: number,
+            ts: number,
+            hd: number
+          }) => ({
+            longitude: itm.lng,
+            latitude: itm.lat,
+            true_track: itm.hd,
+            altitude: itm.alt,
+            velocity: itm.spd,
+            time_position: itm.ts,
+          }));
+
+          this.revealTrack(flightId, true, append, historicTrail || []);
+        });
+    }
+    this.revealTrack(flightId, false, append, []);
+  }
+
+  showFavoritiesTacks = () => {
+    const { userFavorities } = this.props;
+    userFavorities?.forEach((userFav) => {
+      this.showTrack(userFav.flightId, true);
+    });
+  }
+
   render(): JSX.Element {
     const markers = this.getMarkers();
     const tracks = this.getTracks();
@@ -277,7 +306,7 @@ class FlightsLayer extends Component<ComponentPropsWithoutRef<'object'>, Flights
       <>
         <FlightLayerUpdater
           updateMapBounds={this.updateMapBounds}
-          showFavoritiesTacks={() => { /* TODO */ }}
+          showFavoritiesTacks={this.showFavoritiesTacks}
         />
         {markers}
         {tracks}

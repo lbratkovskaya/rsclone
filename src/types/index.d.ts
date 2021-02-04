@@ -41,3 +41,41 @@ export interface AircraftIcon {
 export interface AircraftIconGroup {
   [key: string]: AircraftIcon,
 }
+
+export interface UserMapSettings {
+  mapStyle: FlightsMapStyle,
+  mapZoom: number,
+}
+
+export type FlightsMapStyle = 'dark' | 'light' | 'natural';
+
+export interface FavoritiesItem {
+  addedToFavorites: Date,
+  flightId: string,
+  codeName: string,
+  arrivalAirport: UserAirport,
+  departureAirport: UserAirport,
+}
+
+export interface UserAirport {
+  name: string,
+  code: string,
+  position: GeoPosition,
+}
+
+export interface GeoPosition {
+  latitude: number,
+  longitude: number,
+}
+
+export interface IUser {
+  id: string,
+  username: string,
+  lastSessionEndedDate?: Date,
+  favorites?: FavoritiesItem[],
+}
+
+export interface TypeWithPanelOpening {
+  isPanelOpen: boolean,
+  setOpenPanel: (setOpen: boolean) => void,
+}

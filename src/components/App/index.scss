@@ -18,3 +18,60 @@ body {
   margin: auto;
 }
 
+.login-form {
+  position: absolute;
+  right: 0;
+  padding: 10px;
+  z-index: 1000;
+  background-color: #707070;
+
+  a {
+    display: flex;
+    text-decoration: none;
+    color: #838282;
+  }
+}
+
+.footer {
+  position: absolute;
+  z-index: 1000;
+  bottom: 0;
+  left: 0;
+  display: flex;
+
+  h6 {
+    margin: auto;
+    color: #268c56;
+  }
+
+  .footer__column {
+    display: flex;
+
+    ul {
+      margin: 0 5px;
+      padding: 0;
+      display: flex;
+      column-gap: 30px;
+      list-style-type: none;
+
+      li {
+        margin: auto;
+
+        a {
+          display: flex;
+          text-decoration: none;
+          color: #268c56;
+          font-size: 0.67em;
+        }
+      }
+    }
+  }
+
+  a {
+    margin-right: 5px;
+
+    svg {
+      fill: #268c56;
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import { TypeWithPanelOpening } from ".";
+
 type Photo = {
   copyright: string,
   link: string,
@@ -21,11 +23,11 @@ export type AirportInfo = {
   },
   name?: string | null,
   position?: {
-    country?: {name?: string | null, code?: string | null, id?: number | null},
+    country?: { name?: string | null, code?: string | null, id?: number | null },
     elevation?: number | null,
     latitude?: number | null,
     longitude?: number | null,
-    region?: {city?: string | null},
+    region?: { city?: string | null },
   },
   stats?: any,
   timezone?: {
@@ -82,7 +84,11 @@ export type Flight = {
       origin?: any,
       real?: any,
     }
-    identification?: any,
+    identification?: {
+      id: string,
+      row: number,
+      number: { default: string, alternative?: string }
+    },
     owner?: any,
     status?: any,
     time?: any,
@@ -105,9 +111,18 @@ export interface ArrivalsProps {
   mode: string,
 }
 
-export interface AirportProps {
+export interface AirportProps extends TypeWithPanelOpening {
   code: string,
-  openAirportPanel: boolean,
+  activeTab?: number,
+}
+
+export interface AirportState {
+  airportInfo: AirportInfo,
+  schedule: Schedule,
+  runwaysData: Runways[],
+  satelliteImageData: string,
+  activeTab: number,
+  openPanel: boolean,
 }
 
 export interface FlightHeaderProps {
@@ -157,21 +172,21 @@ export interface ButtonProps {
 }
 
 export type WeatherInfo = {
-  id?:number | null,
-  main?:string | null,
+  id?: number | null,
+  main?: string | null,
   description?: string | null,
   icon?: string | null
 };
 
 export type Temp = {
-  temp?:number | null,
+  temp?: number | null,
   feels_like?: number | null,
-  temp_min?:number | null,
-  temp_max?:number | null,
-  pressure?:number | null,
-  humidity?:number | null,
-  sea_level?:number | null,
+  temp_min?: number | null,
+  temp_max?: number | null,
+  pressure?: number | null,
+  humidity?: number | null,
+  sea_level?: number | null,
   grnd_level?: number | null,
 };
 
-export type Wind= {speed?: number | null, deg?: number | null};
+export type Wind = { speed?: number | null, deg?: number | null };

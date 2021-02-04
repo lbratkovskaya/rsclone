@@ -3,18 +3,16 @@ import Follow from '../SVGComponents/Follow';
 import { FlightButtonProps } from '../../../types/flightDataTypes';
 import './FlightButton.scss';
 
-const FlightButton:React.FC<FlightButtonProps> = ({ toggleSelectedFlights, isFollowed }
-: FlightButtonProps): JSX.Element => {
-  const [clicked, setClicked] = useState(isFollowed);
+const FlightButton: React.FC<FlightButtonProps> = ({ toggleSelectedFlights, isFollowed }
+  : FlightButtonProps): JSX.Element => {
   const handleTab = () => {
-    setClicked(!clicked);
-    toggleSelectedFlights(!clicked);
+    toggleSelectedFlights(!isFollowed);
   };
 
   return (
     <button
       type="button"
-      className={`flight-button ${clicked ? 'flight-button_active' : ''}`}
+      className={`flight-button ${isFollowed ? 'flight-button_active' : ''}`}
       onClick={handleTab}
     >
       <Follow />

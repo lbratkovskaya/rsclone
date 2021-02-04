@@ -1,5 +1,5 @@
-import { LatLngBounds, LatLngExpression, Map } from 'leaflet';
-import { AircraftsMap } from '.';
+import { LatLngBounds, LatLngExpression, LeafletMouseEvent, Map } from 'leaflet';
+import { AircraftsMap, FavoritiesItem } from '.';
 
 export interface FlightsLayerState {
   suppressRequest: boolean,
@@ -11,6 +11,11 @@ export interface FlightsLayerState {
   trackShowingAircrafts: string[],
 }
 
+export interface FlightsLayerProps {
+  onMapBoundsUpdate: (map: Map) => void,
+  onAircraftIconClickHandler: (flightId: string, isShowing: boolean) => void,
+  userFavorities: FavoritiesItem[],
+}
 export interface TrackLayerUpdaterProps {
   latLngs: LatLngExpression[],
 }

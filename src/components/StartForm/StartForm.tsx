@@ -3,76 +3,51 @@ import axios from 'axios';
 import Register from './Register';
 import Login from './Login';
 import Switcher from './Switcher';
+import { StartFormProps } from '../../types/StartFormType';
+import API from '../../utils/API';
 import './start-form.scss';
+import { isWidthUp } from '@material-ui/core';
+import { IUser } from '../../types';
 
-interface IUser{
-  id: string,
-  username: string,
-  lastSessionEndedDate?: Date,
-  favorites?: [
-    {
-      addedToFavorites: Date,
-      codeName: string,
-      arrivalAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-      departureAirport: {
-        name: string,
-        code: string,
-        position: {
-          latitude: string,
-          longitude: string
-        }
-      },
-    },
-  ]
-}
-
-const StartForm = (): JSX.Element => {
+const StartForm = (props: StartFormProps): JSX.Element => {
   const [registerUsername, setRegisterUsername] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
-  const [userData, setUserData] = useState<null | IUser>(null);
   const [isRegister, toggleIsRegister] = useState(false);
 
-  const register = () => {
-    axios({
-      method: 'post',
-      data: {
-        username: registerUsername,
-        password: registerPassword,
-      },
-      withCredentials: true,
-      url: 'auth/register',
-    }).then((res) => console.log(res));
-  };
+  const onLoginRedirectHandler = (user: IUser): void => {
+    const { history, setCurrentUser } = props;
+    history.push('/');
+    setCurrentUser(user);
+  }
 
-  const login = () => {
-    axios({
-      method: 'post',
-      data: {
-        username: loginUsername,
-        password: loginPassword,
-      },
+  const register = () => {
+    API.post('auth/register', {
+      username: registerUsername,
+      password: registerPassword,
+    }, {
       withCredentials: true,
-      url: 'auth/login',
-    }).then((res) => console.log(res));
+    }).then((res) => onLoginRedirectHandler(res.data));
   };
 
   const getCurrentUser = () => {
-    axios({
-      method: 'get',
-      withCredentials: true,
-      url: 'auth/current_user',
+    console.log(loginUsername);
+    API.post('auth/current_user', {
+      username: loginUsername,
     }).then((res) => {
-      console.log(res.data);
-      setUserData(res.data);
+      onLoginRedirectHandler(res.data);
+    });
+  };
+
+  const login = () => {
+    API.post('auth/login', {
+      username: loginUsername,
+      password: loginPassword,
+    }, {
+      withCredentials: true,
+    }).then((res) => {
+      onLoginRedirectHandler(res.data);
     });
   };
 
@@ -97,7 +72,7 @@ const StartForm = (): JSX.Element => {
             login={login}
           />
         )}
-      <button className="btn" id="checkUser" onClick={getCurrentUser}>Check user authorization</button>
+      <button type="button" className="btn" id="checkUser" onClick={getCurrentUser}>Check user authorization</button>
     </div>
   );
 };
