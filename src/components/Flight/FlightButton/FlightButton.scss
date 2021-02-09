@@ -1,0 +1,36 @@
+.flight-button {
+  background: #333;
+  width: 303px;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  cursor: pointer;
+
+  & svg {
+    width: 20px;
+  }
+
+  path {
+    fill: #fff;
+  }
+
+  &:hover{
+    color: #f8c023;
+    path {
+      fill: #f8c023;
+    }
+  }
+
+  &_active {
+    color: #f58020;
+    path {
+      fill: #f58020;
+    }
+  }
+}

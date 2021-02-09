@@ -1,0 +1,17 @@
+.flight-data {
+  box-sizing: border-box;
+  & .flex-wrapper {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: inherit;
+
+    & .row {
+      margin-bottom: 0;
+      &:first-child {
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #fff;
+      }
+    }
+  }
+}
